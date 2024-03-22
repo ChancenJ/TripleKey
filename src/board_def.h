@@ -27,8 +27,8 @@
 #include "fonts/Coming_Soon_Regular_12.h"
 #include "fonts/DSEG14_Classic_Regular_40.h"
 
-#define VER_HW "2.0"
-#define VER_SW "1.2.0"
+#define VER_HW "TRIPLEKEY_V0.1"
+#define VER_SW "0.0.1"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
