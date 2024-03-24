@@ -1,6 +1,7 @@
 #include "keyboard.h"
 #include "board_def.h"
 #include "app/app_key.h"
+#include "app/app_led.h"
 
 static int8_t letter_upper_id = 0;
 static int8_t letter_lower_id = 0;
@@ -41,7 +42,7 @@ static void disp_char(const char *letter, uint8_t id)
 		gfx[i]->setTextColor(letter_color[random(9)]);
 		gfx[i]->setFont(&Orbitron_Medium_48);
 		gfx[i]->getTextBounds(&data, 0, 0, &x1, &y1, &w, &h);
-		gfx[i]->setCursor((OLED_WIDTH - w) / 2, 48);
+		gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
 		gfx[i]->write(letter[id + i]);
 
 		// Serial.println(letter_upper);
@@ -147,6 +148,8 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
+		app_led_set(LED1, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 			bleKeyboard.write(p_letter[chartype][id]);
@@ -154,6 +157,8 @@ static void loop(void *data)
 		break;
 
 	case KEY2_DOWN:
+		app_led_set(LED2, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 			bleKeyboard.write(p_letter[chartype][id + 1]);
@@ -161,10 +166,19 @@ static void loop(void *data)
 		break;
 
 	case KEY3_DOWN:
+		app_led_set(LED3, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
+
 		if (bleKeyboard.isConnected())
 		{
 			bleKeyboard.write(p_letter[chartype][id + 2]);
 		}
+		break;
+
+	case KEY1_UP:
+	case KEY2_UP:
+	case KEY3_UP:
+		app_led_off();
 		break;
 
 	case ENC_NEXT:
@@ -185,8 +199,8 @@ static void loop(void *data)
 
 		disp(chartype, 0);
 		break;
-	case KEY4_LONG:				  //长按
-		manager_switchToParent(); //进入父项目 //退出
+	case KEY4_LONG:				  // 长按
+		manager_switchToParent(); // 进入父项目 //退出
 		break;
 	default:
 		break;
