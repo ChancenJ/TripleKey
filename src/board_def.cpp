@@ -258,6 +258,8 @@ void board_init()
 
     audio_poweroff();
 
+    app_led_init();
+
     pinMode(rst, OUTPUT);
     digitalWrite(rst, 1);
     delay(100);
@@ -490,4 +492,5 @@ void board_init()
     WiFi.setSleep(true);
 
     bleKeyboard.begin();
+    app_led_off();
 }

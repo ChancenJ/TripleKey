@@ -28,6 +28,8 @@
 #include "fonts/DSEG14_Classic_Regular_40.h"
 #include "fonts/MiSans_Demibold_12.h"
 
+#include  "app/app_led.h"
+
 #define VER_HW "TRIPLEKEY_V0.1"
 #define VER_SW "0.0.2"
 
