@@ -31,7 +31,7 @@
 #include  "app/app_led.h"
 
 #define VER_HW "TRIPLEKEY_V0.1"
-#define VER_SW "0.0.2"
+#define VER_SW "0.0.9"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
