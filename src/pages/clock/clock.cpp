@@ -364,7 +364,7 @@ static void loop(void *data)
 	switch (key)
 	{
 
-	case KEY1_SHORT:
+	//case KEY1_SHORT:
 	case KEY2_SHORT:
 	// case KEY3_SHORT:
 		getLocalTime(&timeInfo);

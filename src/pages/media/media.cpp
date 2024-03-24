@@ -1,6 +1,7 @@
 #include "media.h"
 #include "board_def.h"
 #include "app/app_key.h"
+#include "app/app_led.h"
 
 static void init(void *data)
 {
@@ -41,6 +42,7 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
+	app_led_set(LED1, app_led_color(random(10,255), random(10,255), random(10,255)));app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
@@ -48,6 +50,7 @@ static void loop(void *data)
 		}
 		break;
 	case KEY2_DOWN:
+	app_led_set(LED2, app_led_color(random(10,255), random(10,255), random(10,255)));app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
@@ -55,11 +58,18 @@ static void loop(void *data)
 		}
 		break;
 	case KEY3_DOWN:
+	app_led_set(LED3, app_led_color(random(10,255), random(10,255), random(10,255)));app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
 			bleKeyboard.write(KEY_MEDIA_NEXT_TRACK);
 		}
+		break;
+
+	case KEY1_UP:
+	case KEY2_UP:
+	case KEY3_UP:
+		app_led_off();
 		break;
 
 	case ENC_NEXT:
