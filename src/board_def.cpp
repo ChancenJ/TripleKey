@@ -275,6 +275,8 @@ void board_init()
 
     pinMode(BUTTON3_PIN, INPUT);
 
+    pinMode(MIJIAKEY1_PIN,OUTPUT);
+
     gfx1->begin(40000000);
     gfx1->fillScreen(BLACK);
     w = gfx1->width(), h = gfx1->height();

@@ -17,6 +17,7 @@
 #include "pages/keyboard/keyboard.h"
 #include "pages/bilibili/bilibili.h"
 #include "pages/stocks/stocks.h"
+#include "pages/mijia/mijia.h"
 
 #define QINGSHUILAN RGB565(147,213,220)
 
@@ -33,6 +34,7 @@ page_t *pages[] = {
     &page_shortcut,
     &page_pomodoro,
     &page_stocks,
+    &page_mijia,
 };
 
 static const uint8_t pages_num = ARRAY_SIZE(pages);
