@@ -16,6 +16,9 @@
 #include "pages/pomodoro/pomodoro.h"
 #include "pages/keyboard/keyboard.h"
 #include "pages/bilibili/bilibili.h"
+#include "pages/stocks/stocks.h"
+
+#define QINGSHUILAN RGB565(147,213,220)
 
 //需要添加自己的功能页面
 page_t *pages[] = {
@@ -24,11 +27,12 @@ page_t *pages[] = {
     &page_media,
     &page_web,
     // &page_pcstate,
-    // &page_weather,
+    &page_weather,
     &page_keyboard,
     &page_bilibili,
     &page_shortcut,
     &page_pomodoro,
+    &page_stocks,
 };
 
 static const uint8_t pages_num = ARRAY_SIZE(pages);
@@ -75,15 +79,15 @@ static void enter(void *data)
         if ((i + page_index) < pages_num)
         {
             gfx[i]->setCursor(0, 40+32);
-            gfx[i]->setTextColor(GREEN);
+            gfx[i]->setTextColor(QINGSHUILAN);
             gfx[i]->setFont(u8g2_font_maniac_tr);
             gfx[i]->printf("%d\r\n", page_index + i);
 
-             
-            gfx[i]->setFont(&Coming_Soon_Regular_12);
+            
+            gfx[i]->setFont(&MiSans_Demibold_12);
             gfx[i]->getTextBounds(pages[page_index + i]->title_en, 0, 0, &x1, &y1, &w, &h);
             Serial.printf("%d %d %d %d\r\n",x1,y1,w,h);
-	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 62+32);
+	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
             gfx[i]->printf("%s", pages[page_index + i]->title_en);
             gfx[i]->drawXBitmap(40, 0+32, pages[page_index + i]->icon, pages[page_index + i]->icon_width, pages[page_index + i]->icon_height, random(0xffff));
         }
@@ -119,14 +123,14 @@ static void switchevent()
         if ((i + page_index) < pages_num)
         {
             gfx[i]->setCursor(5, 40+32);
-            gfx[i]->setTextColor(GREEN);
+            gfx[i]->setTextColor(QINGSHUILAN);
             gfx[i]->setFont(u8g2_font_maniac_tr);
             gfx[i]->printf("%d\r\n", page_index + i);
 
              
-            gfx[i]->setFont(&Coming_Soon_Regular_12);
+            gfx[i]->setFont(&MiSans_Demibold_12);
             gfx[i]->getTextBounds(pages[page_index + i]->title_en, 0, 0, &x1, &y1, &w, &h);
-	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 62+32);
+	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
             gfx[i]->printf("%s", pages[page_index + i]->title_en);
             gfx[i]->drawXBitmap(40, 0+32, pages[page_index + i]->icon, pages[page_index + i]->icon_width, pages[page_index + i]->icon_height, random(0xffff));
         }

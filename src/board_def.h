@@ -26,9 +26,10 @@
 #include "fonts/Calligraffitti_Regular_12.h"
 #include "fonts/Coming_Soon_Regular_12.h"
 #include "fonts/DSEG14_Classic_Regular_40.h"
+#include "fonts/MiSans_Demibold_12.h"
 
 #define VER_HW "TRIPLEKEY_V0.1"
-#define VER_SW "0.0.1"
+#define VER_SW "0.0.2"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
