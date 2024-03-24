@@ -160,15 +160,22 @@ static void loop(void *data)
     KEY_TYPE key = app_key_get();
     switch (key)
     {
-
-    case KEY1_SHORT:
+    case KEY1_DOWN:
+        app_led_set(LED1, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
+        break;
+    case KEY1_UP:
+        app_led_off();
         manager.index = page_index;
         Serial.println(manager.index);
         manager_switchToChild(); //进入子项目
-
         break;
-
-    case KEY2_SHORT:
+    case KEY2_DOWN:
+        app_led_set(LED2, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
+        break;
+    case KEY2_UP:
+        app_led_off();
         if ((page_index + 1) < pages_num)
         {
             manager.index = page_index + 1;
@@ -176,7 +183,12 @@ static void loop(void *data)
             manager_switchToChild(); //进入子项目
         }
         break;
-    case KEY3_SHORT:
+    case KEY3_DOWN:
+        app_led_set(LED3, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
+        break;
+    case KEY3_UP:
+        app_led_off();
         if ((page_index + 2) < pages_num)
         {
             manager.index = page_index + 2;
