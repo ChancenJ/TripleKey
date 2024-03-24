@@ -117,9 +117,19 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
+		app_led_off();
 		type = TYPE_POMODORO;
 		if (f_start_pomodoro == false)
+		{
 			t_pomodoro = 25 * 60;
+			app_led_set(LED1, app_led_color(0, 0x70, 0));
+			app_led_update();
+		}
+		else
+		{
+			app_led_set(LED1, app_led_color(0x70, 0x00, 0x00));
+			app_led_update();
+		}
 		f_start_pomodoro = !f_start_pomodoro;
 		f_start_short = false;
 		f_start_long = false;
@@ -137,9 +147,19 @@ static void loop(void *data)
 		break;
 
 	case KEY2_DOWN:
+		app_led_off();
 		type = TYPE_SHORT;
 		if (f_start_short == false)
+		{
 			t_pomodoro = 5 * 60;
+			app_led_set(LED2, app_led_color(0, 0x70, 0));
+			app_led_update();
+		}
+		else
+		{
+			app_led_set(LED2, app_led_color(0x70, 0x00, 0x00));
+			app_led_update();
+		}
 		f_start_short = !f_start_short;
 
 		f_start_long = false;
@@ -158,9 +178,19 @@ static void loop(void *data)
 		break;
 
 	case KEY3_DOWN:
+		app_led_off();
 		type = TYPE_LONG;
 		if (f_start_long == false)
+		{
 			t_pomodoro = 15 * 60;
+			app_led_set(LED3, app_led_color(0, 0x70, 0));
+			app_led_update();
+		}
+		else
+		{
+			app_led_set(LED3, app_led_color(0x70, 0x00, 0x00));
+			app_led_update();
+		}
 		f_start_long = !f_start_long;
 
 		f_start_short = false;
@@ -178,8 +208,9 @@ static void loop(void *data)
 
 		break;
 
-	case KEY4_LONG:				  //长按
-		manager_switchToParent(); //进入父项目 //退出
+	case KEY4_LONG:				  // 长按
+		app_led_off();
+		manager_switchToParent(); // 进入父项目 //退出
 		break;
 	default:
 		break;
