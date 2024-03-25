@@ -276,6 +276,7 @@ void board_init()
     pinMode(BUTTON3_PIN, INPUT);
 
     pinMode(MIJIAKEY1_PIN,OUTPUT);
+    digitalWrite(MIJIAKEY1_PIN,HIGH);
 
     gfx1->begin(40000000);
     gfx1->fillScreen(BLACK);

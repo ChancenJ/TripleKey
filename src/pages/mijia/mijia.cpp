@@ -4,8 +4,7 @@
 
 static void init(void *data)
 {
-	app_key_clean();
-	digitalWrite(MIJIAKEY1_PIN,HIGH);
+	
 }
 
 static void enter(void *data)
@@ -25,7 +24,7 @@ static void enter(void *data)
 
 static void loop(void *data)
 {
-	delay(300);
+	delay(100);
 	KEY_TYPE key;
 	key = app_key_get();
 	switch (key)
@@ -56,7 +55,7 @@ static void loop(void *data)
 		digitalWrite(MIJIAKEY1_PIN,LOW);
 		delay(2000);
 		digitalWrite(MIJIAKEY1_PIN,HIGH);
-		delay(200);
+		delay(100);
 		break;
 
 	case KEY4_LONG:				  // 长按
