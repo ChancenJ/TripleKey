@@ -17,6 +17,7 @@ StockInfo stocks[] = {
 	StockInfo("半导体ETF", "sh512480"),
 	StockInfo("中证消费", "sh000932"),
 	StockInfo("中证军工", "sz399967"),
+	//StockInfo("中证银行", "sz399986"),
 	StockInfo("新能源车LOF", "sz161028"),
 };
 
@@ -24,14 +25,15 @@ static const uint8_t maxstocks = sizeof(stocks) / sizeof(StockInfo);
 
 unsigned long lastUpdateTime;
 unsigned long lastScrollTime;
+unsigned long lastBreathelTime;
 static int8_t pageindex;
 static int8_t index_num;
 static int8_t firstgot; // 首次是否已获取数据
 
 static uint32_t t_old, t_now = 0;
-static uint8_t hour = timeInfo.tm_hour;
-static uint8_t minute = timeInfo.tm_min;
-static uint8_t second = timeInfo.tm_sec;
+
+static uint8_t brightness;  //呼吸灯亮度
+static uint8_t lighttend;  //呼吸灯变化趋势，0为变亮，1为变暗
 
 char timestr[20];
 char datastr[40];
@@ -100,7 +102,6 @@ void dispTime()
 	gfx[2]->print(timestr);
 }
 
-
 void Scroll() // 轮播股票
 {
 	if (millis() - lastScrollTime > 10 * 1000)
@@ -114,6 +115,18 @@ void Scroll() // 轮播股票
 		dispStocks();
 		Serial.println("Auto Next Page");
 	}
+}
+
+void BreatheLight(uint8_t brigthness){
+	for(int i=0;i<3;i++){
+		if(stocks[pageindex * 3 + i].difference.toFloat()>0){
+			app_led_set(2-i,app_led_color(0x70, 0x00, 0x00));
+		}else if(stocks[pageindex * 3 + i].difference.toFloat()<0){
+			app_led_set(2-i, app_led_color(0, 0x70, 0));
+		}
+	}
+	app_led_brightness(brigthness);
+	app_led_update();
 }
 
 static void init(void *data)
@@ -138,6 +151,9 @@ static void enter(void *data)
 	}
 	dispStocks();
 	lastScrollTime = millis();
+	lastBreathelTime = millis();
+	brightness=255;
+	lighttend=1;
 	t_now = millis();
 	t_old = t_now;
 	gfx[0]->fillRect(0,0,128,26,QINGSHUILAN);
@@ -153,7 +169,7 @@ static void enter(void *data)
 static void loop(void *data)
 {
 	t_now = millis();
-	if (t_now - t_old >= 1000)
+	if (t_now - t_old >= 1000)  //更新时间
 	{
 		t_old = t_now;
 		if (getLocalTime(&timeInfo))
@@ -161,9 +177,24 @@ static void loop(void *data)
 			dispTime();
 		}
 	}
-	if (millis() - lastUpdateTime >= 2 * 60 * 1000)
+	if(millis()-lastBreathelTime>=50){  //呼吸灯
+		if(lighttend==0){
+			brightness++;
+			if(brightness==255){
+				lighttend=1;
+			}
+		}else if(lighttend==1){
+			brightness--;
+			if(brightness==0){
+				lighttend=0;
+			}
+		}
+		BreatheLight(brightness);
+		lastBreathelTime=millis();
+	}
+	if (millis() - lastUpdateTime >= 2 * 60 * 1000) // 限制请求频率
 	{
-		if ((hour >= 16 || hour <= 8 || hour == 12 || (hour == 9 && minute <= 20) || (hour == 15 && minute >= 35)) && firstgot == 1)
+		if ((timeInfo.tm_hour >= 16 || timeInfo.tm_hour <= 8 || timeInfo.tm_hour == 12 || (timeInfo.tm_hour == 9 && timeInfo.tm_min <= 20) || (timeInfo.tm_hour == 15 && timeInfo.tm_min >= 35)) && firstgot == 1)
 		{
 			Serial.println("休市时间暂停获取数据"); // 限制请求时间
 		}
@@ -175,7 +206,6 @@ static void loop(void *data)
 			}
 		}
 		lastUpdateTime = millis();
-		// 限制请求频率
 	}
 	Scroll();
 
@@ -203,6 +233,7 @@ static void loop(void *data)
 		dispStocks();
 		break;
 	case KEY4_LONG:				  // 长按
+		app_led_off();
 		manager_switchToParent(); // 进入父项目 //退出
 		break;
 	default:

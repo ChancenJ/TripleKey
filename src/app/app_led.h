@@ -21,6 +21,7 @@ void app_led_set(uint16_t id, uint32_t color);
 uint32_t app_led_color(uint8_t r,uint8_t g, uint8_t b);
 void app_led_update(void);
 void app_led_off(void);
+void app_led_brightness(uint8_t brightness);
 
 
 void rainbow(uint8_t wait);
