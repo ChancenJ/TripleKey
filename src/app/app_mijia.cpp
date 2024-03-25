@@ -1,5 +1,6 @@
 #include "app_mijia.h"
 
+
 void app_mijia_control(uint8_t pin, uint8_t type)
 {
     if (type == 1)
@@ -40,7 +41,8 @@ void app_mijia_long(uint8_t pin)
 {
     Serial.println("米家长按");
     digitalWrite(pin, LOW);
-    delay(2000);
+    uint16_t pressStartTime = (uint16_t)millis(); // 记录按下操作的开始时间，并转换为uint16_t
+    while ((uint16_t)millis() - pressStartTime < 2000) {}
     digitalWrite(pin, HIGH);
     delay(100);
 }
