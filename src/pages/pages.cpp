@@ -25,16 +25,18 @@
 page_t *pages[] = {
     &page_main,
     &page_clock,
-    &page_media,
-    &page_web,
+    &page_stocks,
+    &page_mijia,
     // &page_pcstate,
     &page_weather,
     &page_keyboard,
+    &page_web,
+    &page_media,
     &page_bilibili,
     &page_shortcut,
     &page_pomodoro,
-    &page_stocks,
-    &page_mijia,
+    
+    
 };
 
 static const uint8_t pages_num = ARRAY_SIZE(pages);
