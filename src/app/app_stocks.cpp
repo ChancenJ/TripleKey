@@ -1,25 +1,5 @@
 #include "app_stocks.h"
 
-// void Scroll()
-// { // 轮播股票
-//     if (millis() - lastScrollTime > 10 * 1000)
-//     {
-//         lastScrollTime = millis();
-//         if (scrollIndex > ceil(STOCKSNUM / 4))
-//         {
-//             scrollIndex = 0;
-//         }
-//         for (int i = 0; i < 4; i++)
-//         {
-//             if (i + 4 * scrollIndex < STOCKSNUM)
-//             {
-//                 drawInfo(10, 40 + 50 * i, Stocks[i + 4 * scrollIndex]);
-//             }
-//         }
-//         scrollIndex++;
-//     }
-// }
-
 void getInfo(StockInfo *stock)
 {
     String URL = "http://hq.sinajs.cn/list=" + stock->id;
