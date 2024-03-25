@@ -20,17 +20,8 @@ struct StockInfo
     StockInfo(String inname, String inid) : name(inname), id(inid), price("0.00"), percentage("0.00"), difference("0.00") {}
 };
 
-StockInfo Stocks[STOCKSNUM];
 
-long lastUpdateTime;
-long lastScrollTime;
-int scrollIndex = 0;
-int firstgot = 0; // 首次是否已获取数据
-
-void initializeStocks();
-void getInfo(StockInfo Stocks[]);
-void drawInfo(int32_t x, int32_t y, StockInfo stock);
-void Scroll();
+void getInfo(StockInfo *stock);
 String sinaStringtoJson(String &s);
 String SetPrecison(float in, int flag);
 
