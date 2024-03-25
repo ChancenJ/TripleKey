@@ -41,16 +41,20 @@ void dispStocks()
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 
+	gfx1->setUTF8Print(true);
+	gfx2->setUTF8Print(true);
+	gfx3->setUTF8Print(true);
+
 	for (uint8_t i = 0; i < 3; i++)
 	{
 		if ((pageindex * 3 + i) < maxstocks)
 		{
 			uint16_t color = (stocks[pageindex * 3 + i].difference.toFloat() > 0) ? RED : ((stocks[pageindex * 3 + i].difference.toFloat() < 0) ? DARKGREEN : DARKGREY);
 			gfx[i]->setTextColor(color);
-			gfx[i]->setFont(&MiSans_Demibold_12);
-			gfx[i]->getTextBounds(stocks[pageindex * 3 + i].id, 0, 0, &x1, &y1, &w, &h);
+			gfx[i]->setFont(DreamHanSerifCN_W15_21);
+			gfx[i]->getTextBounds(stocks[pageindex * 3 + i].name, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
-			gfx[i]->print(stocks[pageindex * 3 + i].id);
+			gfx[i]->print(stocks[pageindex * 3 + i].name);
 		}
 	}
 }
@@ -63,6 +67,7 @@ static void init(void *data)
 	index_num = (maxstocks % 3 == 0) ? (maxstocks / 3) : (maxstocks / 3 + 1);
 	firstgot = 0;
 	Serial.println(maxstocks);
+	
 }
 
 static void enter(void *data)

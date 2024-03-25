@@ -27,6 +27,8 @@
 #include "fonts/Coming_Soon_Regular_12.h"
 #include "fonts/DSEG14_Classic_Regular_40.h"
 #include "fonts/MiSans_Demibold_12.h"
+#include "fonts/DreamHanSerifCN-W15_21.h"
+#include "fonts/MiSans_DemiboldCN_25.h"
 
 #include  "app/app_led.h"
 

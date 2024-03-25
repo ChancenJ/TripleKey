@@ -75,6 +75,11 @@ static void enter(void *data)
     gfx2->setTextSize(1);
     gfx3->setTextSize(1);
 
+    gfx1->setUTF8Print(true);
+	gfx2->setUTF8Print(true);
+	gfx3->setUTF8Print(true);
+
+
 
     for (uint8_t i = 0; i < 3; i++)
     {
@@ -86,11 +91,11 @@ static void enter(void *data)
             gfx[i]->printf("%d\r\n", page_index + i);
 
             
-            gfx[i]->setFont(&MiSans_Demibold_12);
-            gfx[i]->getTextBounds(pages[page_index + i]->title_en, 0, 0, &x1, &y1, &w, &h);
+            gfx[i]->setFont(MiSans_Demibold_25);
+            gfx[i]->getTextBounds(pages[page_index + i]->title_cn, 0, 0, &x1, &y1, &w, &h);
             Serial.printf("%d %d %d %d\r\n",x1,y1,w,h);
 	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
-            gfx[i]->printf("%s", pages[page_index + i]->title_en);
+            gfx[i]->printf("%s", pages[page_index + i]->title_cn);
             gfx[i]->drawXBitmap(40, 0+32, pages[page_index + i]->icon, pages[page_index + i]->icon_width, pages[page_index + i]->icon_height, random(0xffff));
         }
     }
@@ -120,6 +125,10 @@ static void switchevent()
     gfx2->fillScreen(BLACK);
     gfx3->fillScreen(BLACK);
 
+    gfx1->setUTF8Print(true);
+	gfx2->setUTF8Print(true);
+	gfx3->setUTF8Print(true);
+
     for (uint8_t i = 0; i < 3; i++)
     {
         if ((i + page_index) < pages_num)
@@ -130,10 +139,10 @@ static void switchevent()
             gfx[i]->printf("%d\r\n", page_index + i);
 
              
-            gfx[i]->setFont(&MiSans_Demibold_12);
-            gfx[i]->getTextBounds(pages[page_index + i]->title_en, 0, 0, &x1, &y1, &w, &h);
+            gfx[i]->setFont(MiSans_Demibold_25);
+            gfx[i]->getTextBounds(pages[page_index + i]->title_cn, 0, 0, &x1, &y1, &w, &h);
 	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
-            gfx[i]->printf("%s", pages[page_index + i]->title_en);
+            gfx[i]->printf("%s", pages[page_index + i]->title_cn);
             gfx[i]->drawXBitmap(40, 0+32, pages[page_index + i]->icon, pages[page_index + i]->icon_width, pages[page_index + i]->icon_height, random(0xffff));
         }
     }
