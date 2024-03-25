@@ -19,6 +19,18 @@ sw sws[] = {
 	{MIJIAKEY1_PIN, "场景2", "Scene2", 2, 1},
 	{MIJIAKEY1_PIN, "场景3", "Scene3", 3, 1},
 	{MIJIAKEY1_PIN, "场景4", "Scene4", 2, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene5", 1, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene6", 2, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene7", 3, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene8", 2, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene9", 1, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene10", 2, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene11", 3, 1},
+	{MIJIAKEY1_PIN, "场景4", "Scene12", 2, 1},
+	{MIJIAKEY1_PIN, "开关1", "Switch1", 1, 2},
+	{MIJIAKEY1_PIN, "开关2", "Switch2", 1, 2},
+	{MIJIAKEY1_PIN, "开关3", "Switch3", 1, 2},
+	{MIJIAKEY1_PIN, "开关4", "Switch4", 1, 2},
 };
 
 static const uint8_t maxsw = sizeof(sws) / sizeof(sw);
@@ -38,11 +50,22 @@ static void dispSwitch()
 
 	for (uint8_t i = 0; i < 3; i++)
 	{
-		gfx[i]->setTextColor(MIJIALV);
-		gfx[i]->setFont(&MiSans_Demibold_12);
-		gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
-		gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
-		gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
+		if (sws[(firstindex + i) % maxsw].type == 1)  //情景开关
+		{
+			gfx[i]->setTextColor(MIJIALV);
+			gfx[i]->setFont(&MiSans_Demibold_12);
+			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
+			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
+			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
+		}
+		else if (sws[(firstindex + i) % maxsw].type == 2)  //普通开关（显示开关状态）
+		{
+			gfx[i]->setTextColor(MIJIALV);
+			gfx[i]->setFont(&MiSans_Demibold_12);
+			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
+			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
+			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
+		}
 	}
 }
 
@@ -117,7 +140,7 @@ static void loop(void *data)
 static void exit(void *data)
 {
 	// insert code
-
+	
 	//
 	manager_setBusy(true);
 }
