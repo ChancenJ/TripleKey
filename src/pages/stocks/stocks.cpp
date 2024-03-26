@@ -203,7 +203,7 @@ static void loop(void *data)
 	if(millis()-lastBreatheTime>=40){  //呼吸灯
 		if(lighttend==0){
 			brightness++;
-			if(brightness==200){
+			if(brightness==255){
 				lighttend=1;
 			}
 		}else if(lighttend==1){
@@ -258,6 +258,7 @@ static void loop(void *data)
 		break;
 	case KEY4_LONG:				  // 长按
 		app_led_off();
+		app_led_brightness(255);
 		manager_switchToParent(); // 进入父项目 //退出
 		break;
 	default:
