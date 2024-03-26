@@ -23,21 +23,24 @@ StockInfo stocks[] = {
 
 static const uint8_t maxstocks = sizeof(stocks) / sizeof(StockInfo);
 
-unsigned long lastUpdateTime;
-unsigned long lastScrollTime;
-unsigned long lastBreathelTime;
+static unsigned long lastUpdateTime;
+static unsigned long lastScrollTime;
+
+static uint8_t brightness;  //呼吸灯亮度
+static uint8_t lighttend;  //呼吸灯变化趋势，0为变亮，1为变暗
+static unsigned long lastBreatheTime;
+
 static int8_t pageindex;
 static int8_t index_num;
 static int8_t firstgot; // 首次是否已获取数据
 
-static uint32_t t_old, t_now = 0;
-
-static uint8_t brightness;  //呼吸灯亮度
-static uint8_t lighttend;  //呼吸灯变化趋势，0为变亮，1为变暗
-
+static unsigned long lastTimeUpdateTime;
 char timestr[20];
 char datastr[40];
+char wdaystr[20];
 char *nowtimetitle="时间";
+String weekdaystr[7]={"周一","周二","周三","周四","周五","周六","周日",};
+
 
 void dispStocks()
 {
@@ -81,25 +84,40 @@ void dispTime()
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
-	
-	for(int i=0;i<3;i++){
-		gfx[i]->setTextColor(BLUE);
-		gfx[i]->setFont(&MiSans_Demibold_12);
-	}
-	gfx[0]->setFont(DreamHanSerifCN_W15_21);
-	gfx[0]->getTextBounds(nowtimetitle, 0, 0, &x1, &y1, &w, &h);
-	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 22);
-	gfx[0]->print(nowtimetitle);
-	sprintf(datastr, "%d-%d-%d", timeInfo.tm_year+1900, timeInfo.tm_mon+1, timeInfo.tm_mday);
-	gfx[1]->getTextBounds(datastr, 0, 0, &x1, &y1, &w, &h);
-	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 22);
-	gfx[1]->fillRect(0,0,128,26,QINGSHUILAN);
-	gfx[1]->print(datastr);
+	gfx[2]->setTextColor(BLUE);
+	gfx[2]->setFont(&MiSans_Demibold_12);
 	sprintf(timestr, "%02d:%02d:%02d", timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec);
 	gfx[2]->getTextBounds(timestr, 0, 0, &x1, &y1, &w, &h);
 	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 22);
 	gfx[2]->fillRect(0,0,128,26,QINGSHUILAN);
 	gfx[2]->print(timestr);
+}
+void dispDate(){
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	gfx[0]->setTextColor(BLUE);
+	gfx[0]->setFont(&MiSans_Demibold_12);
+	sprintf(datastr, "%d-%d-%d", timeInfo.tm_year+1900, timeInfo.tm_mon+1, timeInfo.tm_mday);
+	gfx[0]->getTextBounds(datastr, 0, 0, &x1, &y1, &w, &h);
+	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 22);
+	gfx[0]->fillRect(0,0,128,26,QINGSHUILAN);
+	gfx[0]->print(datastr);
+}
+void dispWeekday(){
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	gfx[1]->setTextColor(BLUE);
+	gfx[1]->setFont(&MiSans_Demibold_12);
+	sprintf(wdaystr, "Week%d", timeInfo.tm_wday);
+	gfx[1]->getTextBounds(wdaystr, 0, 0, &x1, &y1, &w, &h);
+	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 22);
+	gfx[1]->fillRect(0,0,128,26,QINGSHUILAN);
+	gfx[1]->print(wdaystr);
+
 }
 
 void Scroll() // 轮播股票
@@ -149,38 +167,45 @@ static void enter(void *data)
 	{
 		getInfo(&stocks[i]);
 	}
+	firstgot = 1;
 	dispStocks();
+
 	lastScrollTime = millis();
-	lastBreathelTime = millis();
-	brightness=255;
+	lastBreatheTime = millis();
+	brightness=200;
 	lighttend=1;
-	t_now = millis();
-	t_old = t_now;
-	gfx[0]->fillRect(0,0,128,26,QINGSHUILAN);
+
+	lastTimeUpdateTime = millis();
 	if (getLocalTime(&timeInfo))
 	{
 		dispTime();
+		dispDate();
+		dispWeekday();
 	}
-	firstgot = 1;
+	
 	//
 	manager_setBusy(false);
 }
 
 static void loop(void *data)
 {
-	t_now = millis();
-	if (t_now - t_old >= 1000)  //更新时间
+	if (millis() - lastTimeUpdateTime >= 1000)  //更新时间
 	{
-		t_old = t_now;
 		if (getLocalTime(&timeInfo))
 		{
 			dispTime();
+			if(timeInfo.tm_hour==0&&timeInfo.tm_min==0){
+				dispDate();
+				dispWeekday();
+			}
 		}
+		lastTimeUpdateTime=millis();
 	}
-	if(millis()-lastBreathelTime>=40){  //呼吸灯
+
+	if(millis()-lastBreatheTime>=40){  //呼吸灯
 		if(lighttend==0){
 			brightness++;
-			if(brightness==255){
+			if(brightness==200){
 				lighttend=1;
 			}
 		}else if(lighttend==1){
@@ -190,8 +215,9 @@ static void loop(void *data)
 			}
 		}
 		BreatheLight(brightness);
-		lastBreathelTime=millis();
+		lastBreatheTime=millis();
 	}
+	
 	if (millis() - lastUpdateTime >= 2 * 60 * 1000) // 限制请求频率
 	{
 		if ((timeInfo.tm_hour >= 16 || timeInfo.tm_hour <= 8 || timeInfo.tm_hour == 12 || (timeInfo.tm_hour == 9 && timeInfo.tm_min <= 20) || (timeInfo.tm_hour == 15 && timeInfo.tm_min >= 35)) && firstgot == 1)
