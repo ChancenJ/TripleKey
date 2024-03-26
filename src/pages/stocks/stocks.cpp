@@ -177,7 +177,7 @@ static void loop(void *data)
 			dispTime();
 		}
 	}
-	if(millis()-lastBreathelTime>=50){  //呼吸灯
+	if(millis()-lastBreathelTime>=40){  //呼吸灯
 		if(lighttend==0){
 			brightness++;
 			if(brightness==255){
