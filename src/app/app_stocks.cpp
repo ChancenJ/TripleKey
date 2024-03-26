@@ -27,6 +27,7 @@ void getInfo(StockInfo *stock)
         stock->difference = doc["ud"].as<String>();
         stock->percentage = doc["pc"].as<String>();
     }
+    httpClient.end();
 }
 
 String sinaStringtoJson(String &sinastr)
