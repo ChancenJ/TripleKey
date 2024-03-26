@@ -37,9 +37,7 @@ static int8_t firstgot; // 首次是否已获取数据
 static unsigned long lastTimeUpdateTime;
 char timestr[20];
 char datastr[40];
-char wdaystr[20];
-char *nowtimetitle="时间";
-String weekdaystr[7]={"周一","周二","周三","周四","周五","周六","周日",};
+String weekdaystr[7]={"星期一","星期二","星期三","星期四","星期五","星期六","星期日",};
 
 
 void dispStocks()
@@ -110,13 +108,13 @@ void dispWeekday(){
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
+	gfx[1]->setUTF8Print(true);
 	gfx[1]->setTextColor(BLUE);
-	gfx[1]->setFont(&MiSans_Demibold_12);
-	sprintf(wdaystr, "Week%d", timeInfo.tm_wday);
-	gfx[1]->getTextBounds(wdaystr, 0, 0, &x1, &y1, &w, &h);
+	gfx[1]->setFont(DreamHanSerifCN_W17_21);
+	gfx[1]->getTextBounds(weekdaystr[timeInfo.tm_wday-1], 0, 0, &x1, &y1, &w, &h);
 	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 22);
 	gfx[1]->fillRect(0,0,128,26,QINGSHUILAN);
-	gfx[1]->print(wdaystr);
+	gfx[1]->print(weekdaystr[timeInfo.tm_wday-1]);
 
 }
 
@@ -217,7 +215,7 @@ static void loop(void *data)
 		BreatheLight(brightness);
 		lastBreatheTime=millis();
 	}
-	
+
 	if (millis() - lastUpdateTime >= 2 * 60 * 1000) // 限制请求频率
 	{
 		if ((timeInfo.tm_hour >= 16 || timeInfo.tm_hour <= 8 || timeInfo.tm_hour == 12 || (timeInfo.tm_hour == 9 && timeInfo.tm_min <= 20) || (timeInfo.tm_hour == 15 && timeInfo.tm_min >= 35)) && firstgot == 1)

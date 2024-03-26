@@ -29,6 +29,8 @@
 #include "fonts/MiSans_Demibold_12.h"
 #include "fonts/DreamHanSerifCN-W15_21.h"
 #include "fonts/MiSans_DemiboldCN_25.h"
+#include "fonts/MiSans_MediumEN_12.h"
+#include "fonts/DreamHanSerifCN_W17_21.h"
 
 #include  "app/app_led.h"
 
