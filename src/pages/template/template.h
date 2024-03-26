@@ -1,5 +1,5 @@
-#ifndef  __TEMPLATE_H
-#define  __TEMPLATE_H
+#ifndef  __TEMPLATE_H//修改
+#define  __TEMPLATE_H//修改
 #include "manager/manager.h"
 #include <stdint.h>
  
@@ -7,7 +7,7 @@
 
 
  
-extern page_t page_template;
+extern page_t page_template;//修改
 
 
 #endif

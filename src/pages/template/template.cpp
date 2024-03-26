@@ -1,4 +1,4 @@
-#include "template.h"
+#include "template.h"//修改
 #include "board_def.h"
 #include "app/app_key.h"
 
@@ -42,13 +42,13 @@ static void exit(void *data)
 }
 
 #include "img.h"
-page_t page_template = {
+page_t page_template = {  //修改
 	.init = init,
 	.enter = enter,
 	.exit = exit,
 	.loop = loop,
-	.title_en = "template",
-	.title_cn = "模板",
+	.title_en = "template",//修改
+	.title_cn = "模板",//修改
 	.icon = img_bits,
 	.icon_width = img_width,
 	.icon_height = img_height,
