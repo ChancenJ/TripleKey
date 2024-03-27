@@ -68,7 +68,6 @@ void dispStocks()
 			gfx[i]->getTextBounds(stocks[pageindex * 3 + i].price, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, 90);
 			gfx[i]->print(stocks[pageindex * 3 + i].price);
-			gfx[i]->setTextSize(0.5);
 			gfx[i]->getTextBounds(stocks[pageindex * 3 + i].percentage, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, 120);
 			gfx[i]->print(stocks[pageindex * 3 + i].percentage);
