@@ -31,11 +31,14 @@
 #include "fonts/MiSans_DemiboldCN_25.h"
 #include "fonts/MiSans_MediumEN_12.h"
 #include "fonts/DreamHanSerifCN_W17_21.h"
+#include "fonts/YousheTitleHeiCN_Weather_28.h"
+#include "fonts/YousheTitleHeiCN_Weather_35.h"
+#include "fonts/YousheTitleHeiCN_Weather_35_dpi20.h"
 
 #include  "app/app_led.h"
 
 #define VER_HW "TRIPLEKEY_V0.1"
-#define VER_SW "0.1.3"
+#define VER_SW "0.1.11"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"

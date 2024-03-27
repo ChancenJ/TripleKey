@@ -14,14 +14,27 @@ void dispWeather()
 	uint16_t h;
 	gfx[0]->fillScreen(BLACK);
 	gfx[0]->setUTF8Print(true);
-	gfx[0]->setFont(u8g2_font_unifont_t_chinese2);
+	gfx[0]->setFont(YousheTitleHeiCN_Weather_28);
 	gfx[0]->setTextColor(WHITE);
 	gfx[0]->getTextBounds(nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
-	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 50);
+	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 35);
 	gfx[0]->print(nowweather.weathertext);
 	gfx[0]->setFont(&MiSans_Demibold_12);
 	gfx[0]->setCursor(50, 80);
 	gfx[0]->print(nowweather.temp);
+
+	gfx[1]->setUTF8Print(true);
+	gfx[1]->setFont(YousheTitleHeiCN_Weather_35);
+	gfx[1]->setTextColor(WHITE);
+	gfx[1]->getTextBounds(nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
+	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 40);
+	gfx[1]->print(nowweather.weathertext);
+	gfx[2]->setUTF8Print(true);
+	gfx[2]->setFont(YousheTitleHeiCN_Weather_35_dpi20);
+	gfx[2]->setTextColor(WHITE);
+	gfx[2]->getTextBounds(nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
+	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 40);
+	gfx[2]->print(nowweather.weathertext);
 }
 
 static void init(void *data)

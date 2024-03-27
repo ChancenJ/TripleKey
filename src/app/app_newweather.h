@@ -30,6 +30,14 @@ struct DayWeather
     DayWeather() : tempmax(88), tempmin(88), sunrise("NA"), sunset("NA"), weatherday("NA"), weathernight("NA") {}
 };
 
+struct Weather
+{
+    String cityname_cn;
+    String citycode;
+    NowWeather nowweather;
+    DayWeather day3weather[3];
+};
+
 String getCityCode();
 void getNowWeather(String citycode, NowWeather *nowweather);
 void getNowAir(String citycode, NowWeather *nowweather);
