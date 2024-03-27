@@ -372,9 +372,9 @@ void board_init()
     // set config save notify callback
     wm.setSaveConfigCallback(saveConfigCallback);
 
-    WiFiManagerParameter custom_text("<H1><font color=\"blue\">心知天气</font></H1>");
+    WiFiManagerParameter custom_text("<H1><font color=\"blue\">和风天气</font></H1>");
     wm.addParameter(&custom_text);
-    WiFiManagerParameter custom_weather_city("weather_city", "城市", stored_weather_city, 40);
+    WiFiManagerParameter custom_weather_city("weather_city", "城市拼音", stored_weather_city, 40);
     WiFiManagerParameter custom_weather_key("weather_key", "私钥", stored_weather_key, 40);
 
     wm.addParameter(&custom_weather_city);

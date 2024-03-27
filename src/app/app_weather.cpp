@@ -63,7 +63,7 @@ int app_weather_get_now(weather_t *now)
 	HTTPClient http;
 	int httpCode;
 	http.begin(client, URL + "now.json?key=" + key + "&location=" +  city + "&language=" + LANGUAGE + "&unit=" + UNIT);
-
+	Serial.println(URL + "now.json?key=" + key + "&location=" +  city + "&language=" + LANGUAGE + "&unit=" + UNIT);
 	httpCode = http.GET();
 	Serial.printf("httpcode:%d:\n", httpCode);
 	if (httpCode > 0)

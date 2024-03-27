@@ -1,52 +1,143 @@
 #include "app_newweather.h"
 
-int16_t bgColor = BLACK;
+#define NOWWEATHER "weather/now"
+#define DAY3WEATHER "weather/3d"
+#define NOWAIR "air/now"
 
-String cityName;
-String temp;
-String temp_h;
-String temp_l;
-String humidity;
-
-static String weather;
-String weatherCode;
-int pm25 = 0; // PM2.5空气指数
-
-int frameIndex = 0;
-long lastAnimTime;
-
-// String cityCode="101190203";
-
-void getCityWeather(String cityCode)
-{
+const String weatherapi="https://devapi.qweather.com/v7/";
+const String citycodeapi="https://geoapi.qweather.com/v2/city/lookup?location=";
+const String apikey = "6c643fe9ed644de789830619cbea6a95";
+// const String cityname="宜兴";
+// const String citycode="101190203";
 
 
-    String URL = "http://chenyuebo.cn:8080/hello240/api/weather?cityCode=" + cityCode; // 原来
-    // 创建 HTTPClient 对象
+String getCityCode(){
+    String city(stored_weather_city);
+    String citycode="NA";
+    String URL=citycodeapi+city+"&key="+apikey;
     HTTPClient httpClient;
-    WiFiClient wifiClient;
-    httpClient.begin(wifiClient, URL);
+    httpClient.begin(URL);
     // 启动连接并发送HTTP请求
     int httpCode = httpClient.GET();
-    Serial.println("正在获取天气数据");
+    Serial.println("正在获取城市代码");
     Serial.println(URL);
-
+    Serial.println(httpCode);
     // 如果服务器响应OK则从服务器获取响应体信息并通过串口输出
     if (httpCode == HTTP_CODE_OK)
     {
-        String str = httpClient.getString();
-        Serial.println(str);
+        String payload = ProcessGzip(httpClient);
         DynamicJsonDocument doc(1024);
-        deserializeJson(doc, str);
+        deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
-        JsonObject data = json["data"].as<JsonObject>();
-        cityName = data["cityName"].as<String>();
-        temp = data["temp"].as<String>();
-        humidity = data["SD"].as<String>();
-        weather = data["weather"].as<String>();
-        weatherCode = data["weatherCode"].as<String>();
-        String aqi_pm25 = data["aqi_pm25"].as<String>();
-        pm25 = atoi(aqi_pm25.c_str());
+        JsonArray location = json["location"].as<JsonArray>();
+        citycode = location[0]["id"].as<String>();
+        Serial.println(city+":"+citycode);
+    }
+    else
+    {
+        Serial.println("请求城市代码错误：");
+        Serial.print(httpCode);
+    }
+    httpClient.end();
+    return citycode;
+}
+
+void getNowWeather(String citycode, NowWeather *nowweather)
+{
+    String URL=weatherapi+NOWWEATHER+"?location="+citycode+"&key="+apikey;
+    //String URL = "http://chenyuebo.cn:8080/hello240/api/weather?cityCode=" + cityCode; // 原来
+    // 创建 HTTPClient 对象
+    HTTPClient httpClient;
+    httpClient.begin(URL);
+    // 启动连接并发送HTTP请求
+    int httpCode = httpClient.GET();
+    Serial.println("正在获取实时天气数据");
+    Serial.println(URL);
+    // 如果服务器响应OK则从服务器获取响应体信息并通过串口输出
+    if (httpCode == HTTP_CODE_OK)
+    {
+        //String str = httpClient.getString();
+        String payload = ProcessGzip(httpClient);
+        Serial.println(payload);
+        DynamicJsonDocument doc(1024);
+        deserializeJson(doc, payload);
+        JsonObject json = doc.as<JsonObject>();
+        JsonObject now = json["now"].as<JsonObject>();
+        nowweather->temp=now["temp"].as<int8_t>();
+        nowweather->weathertext=now["text"].as<String>();
+        nowweather->winddir=now["windDir"].as<String>();
+        nowweather->windscale=now["windScale"].as<int8_t>();
+        nowweather->humidity==now["humidity"].as<int8_t>();
+        Serial.println("获取成功");
+    }
+    else
+    {
+        Serial.println("请求实时天气错误：");
+        Serial.print(httpCode);
+    }
+    httpClient.end();
+}
+
+void getNowAir(String citycode, NowWeather *nowweather)
+{
+    String URL=weatherapi+NOWAIR+"?location="+citycode+"&key="+apikey;
+    HTTPClient httpClient;
+    httpClient.begin(URL);
+    int httpCode = httpClient.GET();
+    Serial.println("正在获取实时空气数据");
+    Serial.println(URL);
+    // 如果服务器响应OK则从服务器获取响应体信息并通过串口输出
+    if (httpCode == HTTP_CODE_OK)
+    {
+        //String str = httpClient.getString();
+        String payload = ProcessGzip(httpClient);
+        Serial.println(payload);
+        DynamicJsonDocument doc(1024);
+        deserializeJson(doc, payload);
+        JsonObject json = doc.as<JsonObject>();
+        JsonObject now = json["now"].as<JsonObject>();
+        nowweather->aqi=now["aqi"].as<int16_t>();
+        nowweather->aircategory=now["category"].as<String>();
+        Serial.println("获取成功");
+    }
+    else
+    {
+        Serial.println("请求实时空气错误：");
+        Serial.print(httpCode);
+    }
+    httpClient.end();
+}
+
+void getWeather(NowWeather *nowweather){
+    String citycode = getCityCode();
+    getNowWeather(citycode,nowweather);
+    getNowAir(citycode,nowweather);
+}
+
+String ProcessGzip(HTTPClient &httpClient){
+    WiFiClient *stream = httpClient.getStreamPtr();
+    int size = httpClient.getSize();
+    uint8_t inbuff[size];
+    stream->readBytes(inbuff, size);
+    uint8_t *outbuf = NULL;
+    uint32_t out_size = 0;
+    int result = ArduinoUZlib::decompress(inbuff, size, outbuf, out_size);
+    String payload = String(outbuf, out_size);
+    stream->stop();
+    return payload;
+}
+
+
+
+
+
+// cityName = data["cityName"].as<String>();
+        // temp = data["temp"].as<String>();
+        // humidity = data["SD"].as<String>();
+        // weather = data["weather"].as<String>();
+        // weatherCode = data["weatherCode"].as<String>();
+        // String aqi_pm25 = data["aqi_pm25"].as<String>();
+        // pm25 = atoi(aqi_pm25.c_str());
 
         // scrollText[0] = "实时天气 " + weather;
         // scrollText[1] = "空气质量 " + aqi_pm25;
@@ -59,15 +150,3 @@ void getCityWeather(String cityCode)
         // Serial.printf("temp=%s\n", temp.c_str());
         // Serial.printf("date=%s\n", date.c_str());
         // Serial.printf("week=%s\n", week.c_str());
-        Serial.println("获取成功");
-        
-    }
-    else
-    {
-        Serial.println("请求城市天气错误：");
-        Serial.print(httpCode);
-    }
-    // 关闭ESP8266与服务器连接
-    httpClient.end();
-
-}

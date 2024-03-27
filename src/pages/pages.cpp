@@ -12,7 +12,7 @@
 #include "pages/media/media.h"
 #include "pages/web/web.h"
 #include "pages/pcstate/pcstate.h"
-#include "pages/weather/weather.h"
+//#include "pages/weather/weather.h"
 #include "pages/pomodoro/pomodoro.h"
 #include "pages/keyboard/keyboard.h"
 #include "pages/bilibili/bilibili.h"
@@ -29,7 +29,7 @@ page_t *pages[] = {
     &page_stocks,
     &page_mijia,
     // &page_pcstate,
-    &page_weather,
+    // &page_weather,
     &page_keyboard,
     &page_web,
     &page_media,

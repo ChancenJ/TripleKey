@@ -4,6 +4,26 @@
 #include "app/app_newweather.h"
 #include <ArduinoJson.h>
 
+NowWeather nowweather;
+
+void dispWeather()
+{
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	gfx[0]->fillScreen(BLACK);
+	gfx[0]->setUTF8Print(true);
+	gfx[0]->setFont(u8g2_font_unifont_t_chinese2);
+	gfx[0]->setTextColor(WHITE);
+	gfx[0]->getTextBounds(nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
+	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 50);
+	gfx[0]->print(nowweather.weathertext);
+	gfx[0]->setFont(&MiSans_Demibold_12);
+	gfx[0]->setCursor(50, 80);
+	gfx[0]->print(nowweather.temp);
+}
+
 static void init(void *data)
 {
 }
@@ -11,11 +31,12 @@ static void init(void *data)
 static void enter(void *data)
 {
 	// insert code
-	getCityWeather("101190203");
+
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-
+	getWeather(&nowweather);
+	dispWeather();
 	//
 	manager_setBusy(false);
 }
