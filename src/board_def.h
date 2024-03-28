@@ -31,9 +31,8 @@
 #include "fonts/MiSans_DemiboldCN_25.h"
 #include "fonts/MiSans_MediumEN_12.h"
 #include "fonts/DreamHanSerifCN_W17_21.h"
-#include "fonts/YousheTitleHeiCN_Weather_28.h"
 #include "fonts/YousheTitleHeiCN_Weather_35.h"
-#include "fonts/YousheTitleHeiCN_Weather_35_dpi20.h"
+#include "fonts/MiSans_Regular45pt_num.h"
 
 #include  "app/app_led.h"
 

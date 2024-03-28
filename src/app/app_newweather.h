@@ -9,20 +9,20 @@
 
 struct NowWeather
 {
-    int8_t temp;        // 温度
+    String temp;        // 温度
     String weathertext; // 天气状况
     String winddir;     // 风向
-    int8_t windscale;   // 风力等级
-    int8_t humidity;    // 相对湿度
-    int16_t aqi;        // 空气质量指数
+    String windscale;   // 风力等级
+    String humidity;    // 相对湿度
+    String aqi;        // 空气质量指数
     String aircategory; // 空气质量等级
-    NowWeather() : temp(88), weathertext("NA"), winddir("NA"), windscale(-1), humidity(-1), aqi(-1), aircategory("NA") {}
+    NowWeather() : temp("88"), weathertext("NA"), winddir("NA"), windscale(-1), humidity(-1), aqi(-1), aircategory("NA") {}
 };
 
 struct DayWeather
 {
-    int8_t tempmax;      // 最高温度
-    int8_t tempmin;      // 最低温度
+    String tempmax;      // 最高温度
+    String tempmin;      // 最低温度
     String sunrise;      // 日出时间
     String sunset;       // 日落时间
     String weatherday;   // 白天天气状况

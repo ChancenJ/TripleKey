@@ -63,11 +63,11 @@ void getNowWeather(String citycode, NowWeather *nowweather)
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         JsonObject now = json["now"].as<JsonObject>();
-        nowweather->temp=now["temp"].as<int8_t>();
+        nowweather->temp=now["temp"].as<String>();
         nowweather->weathertext=now["text"].as<String>();
         nowweather->winddir=now["windDir"].as<String>();
-        nowweather->windscale=now["windScale"].as<int8_t>();
-        nowweather->humidity==now["humidity"].as<int8_t>();
+        nowweather->windscale=now["windScale"].as<String>();
+        nowweather->humidity==now["humidity"].as<String>();
         Serial.println("获取成功");
     }
     else
@@ -96,7 +96,7 @@ void getNowAir(String citycode, NowWeather *nowweather)
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         JsonObject now = json["now"].as<JsonObject>();
-        nowweather->aqi=now["aqi"].as<int16_t>();
+        nowweather->aqi=now["aqi"].as<String>();
         nowweather->aircategory=now["category"].as<String>();
         Serial.println("获取成功");
     }
