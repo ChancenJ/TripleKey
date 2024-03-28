@@ -26,6 +26,7 @@ page_t *pages[] = {
     &page_main,
     &page_clock,
     &page_stocks,
+    &page_newweather,
     &page_mijia,
     // &page_pcstate,
     // &page_weather,
@@ -35,7 +36,7 @@ page_t *pages[] = {
     &page_bilibili,
     &page_shortcut,
     &page_pomodoro,
-    &page_newweather,
+    
     
     
 };

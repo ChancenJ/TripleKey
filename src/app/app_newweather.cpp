@@ -66,7 +66,7 @@ void getNowWeather(Weather *weather)
         weather->nowweather.weathertext=now["text"].as<String>();
         weather->nowweather.winddir=now["windDir"].as<String>();
         weather->nowweather.windscale=now["windScale"].as<String>();
-        weather->nowweather.humidity==now["humidity"].as<String>();
+        weather->nowweather.humidity=now["humidity"].as<String>();
         Serial.println("获取成功");
     }
     else
