@@ -149,6 +149,7 @@ void PNGDraw3(PNGDRAW *pDraw)
     gfx3->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels,  pDraw->iWidth, 1);
 }
 
+
 void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index)
 {
     unsigned long start = millis();
@@ -191,6 +192,47 @@ void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index)
         gfx[oled_index]->setCursor(x, y + 20);
         gfx[oled_index]->println("png failed!");
     }
+}
+
+void DrawPNGCentre(const char *path, uint8_t oled_index){
+    unsigned long start = millis();
+    int rc;
+    PNG_DRAW_CALLBACK *pfnDraw = NULL;
+    switch (oled_index)
+    {
+    case 0:
+        pfnDraw = PNGDraw1;
+        break;
+    case 1:
+        pfnDraw = PNGDraw2;
+        break;
+    case 2:
+        pfnDraw = PNGDraw3;
+        break;
+    default:
+        break;
+    }
+    rc = png.open(path, myOpen, myClose, myRead, mySeek, pfnDraw);
+    if (rc == PNG_SUCCESS)
+    {
+        int16_t pw = png.getWidth();
+        int16_t ph = png.getHeight();
+        xOffset =(OLED_WIDTH - pw) / 2;
+        yOffset =(OLED_HEIGHT - ph) / 2;
+        rc = png.decode(NULL, 0);
+
+        // Serial.printf("Draw offset: (%d, %d), time used: %lu\r\n", xOffset, yOffset, millis() - start);
+        // Serial.printf("image specs: (%d x %d), %d bpp, pixel type: %d\r\n", png.getWidth(), png.getHeight(), png.getBpp(), png.getPixelType());
+        png.close();
+        // delay(5000);
+    }
+    else
+    {
+        gfx[oled_index]->setFont(u8g_font_5x7);
+        gfx[oled_index]->setCursor(5, 20);
+        gfx[oled_index]->println("png failed!");
+    }
+
 }
 
 void configModeCallback(WiFiManager *myWiFiManager)

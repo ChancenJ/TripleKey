@@ -68,6 +68,7 @@ void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);
 void PNGDraw3(PNGDRAW *pDraw);
 void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
+void DrawPNGCentre(const char *path, uint8_t oled_index);
 void dispProcessing();
 
 void board_init();

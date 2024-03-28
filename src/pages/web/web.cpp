@@ -2,12 +2,12 @@
 #include "board_def.h"
 #include "app/app_key.h"
 static const char *webstring[][2] = {
-	{"https://www.mouser.cn/", "/web/mouser.png"},
+	//{"https://www.mouser.cn/", "/web/mouser.png"},
 	{"https://www.bilibili.com/", "/web/bili.png"},
-	{"https://hackaday.io/projects", "/web/hackaday.png"},
-	{"http://bbs.eeworld.com.cn/", "/web/eeworld.png"},
-	{"https://www.digikey.cn/", "/web/digikey.png"},
-	
+	//{"https://hackaday.io/projects", "/web/hackaday.png"},
+	//{"http://bbs.eeworld.com.cn/", "/web/eeworld.png"},
+	//{"https://www.digikey.cn/", "/web/digikey.png"},
+	{"https://gitee.com/chancenj","/web/gitee.png"},
 	{"https://www.szlcsc.com/", "/web/lcsc.png"},
 	{"https://oshwhub.com/", "/web/oshwhub.png"},
 	
@@ -26,11 +26,11 @@ static void dispWeb()
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 	if ((pageindex * 3 + 0) < maxweb)
-		myDrawPNG(16, 0, webstring[pageindex * 3 + 0][1], 0);
+		DrawPNGCentre(webstring[pageindex * 3 + 0][1], 0);
 	if ((pageindex * 3 + 1) < maxweb)
-		myDrawPNG(8, 0, webstring[pageindex * 3 + 1][1], 1);
+		DrawPNGCentre(webstring[pageindex * 3 + 1][1], 1);
 	if ((pageindex * 3 + 2) < maxweb)
-		myDrawPNG(16, 0, webstring[pageindex * 3 + 2][1], 2);
+		DrawPNGCentre(webstring[pageindex * 3 + 2][1], 2);
 
 	// gfx[1]->setTextColor(BLUE >> 1);
 	// // gfx[1]->setFont(u8g2_font_10x20_mr);
