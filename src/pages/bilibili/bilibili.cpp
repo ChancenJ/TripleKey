@@ -101,7 +101,19 @@ static void loop(void *data)
 			gfx[2]->drawXBitmap(24, 0, quanping_bits,quanping_width, quanping_height, random(0xffff));
 		}
 		break;
-
+		
+	case ENC_NEXT:
+		if (bleKeyboard.isConnected())
+		{
+			bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN);
+		}
+		break;
+	case ENC_PREV:
+		if (bleKeyboard.isConnected())
+		{
+			bleKeyboard.write(KEY_MEDIA_VOLUME_UP);
+		}
+		break;
 	case KEY4_LONG:				  //长按
 		manager_switchToParent(); //进入父项目 //退出
 		break;
