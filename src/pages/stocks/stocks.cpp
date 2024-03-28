@@ -142,6 +142,7 @@ void BreatheLight(uint8_t brigthness){
 	app_led_update();
 }
 
+
 static void init(void *data)
 {
 	lastUpdateTime = millis(); // 重置时间
@@ -158,6 +159,7 @@ static void enter(void *data)
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
+	dispProcessing();
 	for (int i = 0; i < maxstocks; i++)
 	{
 		getInfo(&stocks[i]);

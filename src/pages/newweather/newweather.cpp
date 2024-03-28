@@ -7,7 +7,16 @@
 Weather weather;
 
 void dispNowTemp(){
-	
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	gfx[0]->fillScreen(BLACK);
+	gfx[0]->setUTF8Print(true);
+	gfx[0]->setFont(&MiSans_Regular45pt_number);
+	gfx[0]->getTextBounds(weather.nowweather.temp, 0, 0, &x1, &y1, &w, &h);
+	gfx[0]->setCursor((OLED_WIDTH - w) / 2-5, 75);
+	gfx[0]->print(weather.nowweather.temp+"°");
 }
 
 void dispWeather()
@@ -16,14 +25,8 @@ void dispWeather()
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
-	gfx[0]->fillScreen(BLACK);
-	gfx[0]->setUTF8Print(true);
-
-	gfx[0]->setFont(&MiSans_Regular45pt_number);
-	gfx[0]->getTextBounds(weather.nowweather.temp, 0, 0, &x1, &y1, &w, &h);
-	gfx[0]->setCursor((OLED_WIDTH - w) / 2-5, 75);
-	gfx[0]->print(weather.nowweather.temp+"°");
-
+	gfx[1]->fillScreen(BLACK);
+	gfx[2]->fillScreen(BLACK);
 	gfx[1]->setUTF8Print(true);
 	gfx[1]->setFont(YousheTitleHeiCN_Weather_35);
 	gfx[1]->setTextSize(2);
@@ -53,8 +56,10 @@ static void enter(void *data)
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
+	dispProcessing();
 	getCity(&weather);
 	getNowWeather(&weather);
+	dispNowTemp();
 	getNowAir(&weather);
 	dispWeather();
 	getDay3Weather(&weather);

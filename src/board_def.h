@@ -31,8 +31,10 @@
 #include "fonts/MiSans_DemiboldCN_25.h"
 #include "fonts/MiSans_MediumEN_12.h"
 #include "fonts/DreamHanSerifCN_W17_21.h"
+#include "fonts/DreamHanSerifCN_W17_Processing_24.h"
 #include "fonts/YousheTitleHeiCN_Weather_35.h"
 #include "fonts/MiSans_Regular45pt_num.h"
+#include "fonts/YousheTitleHeiCN_Weather_35_dpi213.h"
 
 #include  "app/app_led.h"
 
@@ -66,6 +68,7 @@ void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);
 void PNGDraw3(PNGDRAW *pDraw);
 void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
+void dispProcessing();
 
 void board_init();
 
