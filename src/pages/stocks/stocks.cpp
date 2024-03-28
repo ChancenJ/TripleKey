@@ -3,8 +3,6 @@
 #include "app/app_key.h"
 #include "app/app_stocks.h"
 
-#define QINGSHUILAN RGB565(147, 213, 220)
-
 StockInfo stocks[] = {
 	StockInfo("上证指数", "sh000001"),
 	StockInfo("深证成指", "sz399001"),

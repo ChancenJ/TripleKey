@@ -44,7 +44,7 @@
 #define NTP2 "ntp2.aliyun.com"
 #define NTP3 "ntp3.aliyun.com"
 
- 
+#define QINGSHUILAN RGB565(147, 213, 220)
 
 #define OLED_WIDTH 128
 #define OLED_HEIGHT 128

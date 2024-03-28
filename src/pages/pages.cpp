@@ -20,7 +20,6 @@
 #include "pages/mijia/mijia.h"
 #include "pages/newweather/newweather.h"
 
-#define QINGSHUILAN RGB565(147,213,220)
 
 //需要添加自己的功能页面
 page_t *pages[] = {

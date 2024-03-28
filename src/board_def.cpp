@@ -201,7 +201,7 @@ void configModeCallback(WiFiManager *myWiFiManager)
     gfx2->println(WiFi.softAPIP());
     gfx2->setTextColor(RED);
     gfx2->println(myWiFiManager->getConfigPortalSSID());
-    gfx2->setTextColor(GREEN);
+    gfx2->setTextColor(QINGSHUILAN);
 }
 
 
@@ -335,9 +335,9 @@ void board_init()
         Serial.println("failed to mount FS");
     }
 
-    myDrawPNG(0, 0, "/san.png", 0);
-    myDrawPNG(0, 0, "/jian.png", 1);
-    myDrawPNG(0, 0, "/ke.png", 2);
+    myDrawPNG(0, 0, "/TRI.png", 0);
+    myDrawPNG(0, 0, "/PLE.png", 1);
+    myDrawPNG(0, 0, "/KEY.png", 2);
 
     delay(1000);
 
@@ -349,9 +349,9 @@ void board_init()
         delay(5);
     }
 
-    gfx1->setTextColor(GREEN);
-    gfx2->setTextColor(GREEN);
-    gfx3->setTextColor(GREEN);
+    gfx1->setTextColor(QINGSHUILAN);
+    gfx2->setTextColor(QINGSHUILAN);
+    gfx3->setTextColor(QINGSHUILAN);
 
     gfx1->setFont(u8g2_font_5x7_mr);
     gfx2->setFont(u8g2_font_5x7_mr);
@@ -447,9 +447,9 @@ void board_init()
 
     gfx2->println("WiFi Connected ");
     gfx2->println("IP address: ");
-    gfx2->setTextColor(GREENYELLOW);
+    gfx2->setTextColor(QINGSHUILAN);
     gfx2->println(WiFi.localIP()); // 显示连接WIFI后的IP地址
-    gfx2->setTextColor(GREEN);
+    gfx2->setTextColor(QINGSHUILAN);
     gfx2->print("RSSI: ");      // 显示连接WIFI后的IP地址
     gfx2->println(WiFi.RSSI()); // 显示连接WIFI后的IP地址
     delay(1000);
