@@ -75,15 +75,13 @@ static void loop(void *data)
 	case ENC_NEXT:
 		if (bleKeyboard.isConnected())
 		{
-
-			bleKeyboard.write(KEY_MEDIA_VOLUME_UP);
+			bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN);
 		}
 		break;
 	case ENC_PREV:
 		if (bleKeyboard.isConnected())
 		{
-
-			bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN);
+			bleKeyboard.write(KEY_MEDIA_VOLUME_UP);
 		}
 		break;
 
