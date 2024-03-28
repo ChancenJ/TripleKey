@@ -6,15 +6,14 @@
 
 const String weatherapi="https://devapi.qweather.com/v7/";
 const String citycodeapi="https://geoapi.qweather.com/v2/city/lookup?location=";
-const String apikey = "6c643fe9ed644de789830619cbea6a95";
+//const String apikey = "6c643fe9ed644de789830619cbea6a95";
 // const String cityname="宜兴";
 // const String citycode="101190203";
 
 
-String getCityCode(){
+void getCity(Weather *weather){
     String city(stored_weather_city);
-    String citycode="NA";
-    String URL=citycodeapi+city+"&key="+apikey;
+    String URL=citycodeapi+city+"&key="+stored_weather_key;
     HTTPClient httpClient;
     httpClient.begin(URL);
     // 启动连接并发送HTTP请求
@@ -30,8 +29,9 @@ String getCityCode(){
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         JsonArray location = json["location"].as<JsonArray>();
-        citycode = location[0]["id"].as<String>();
-        Serial.println(city+":"+citycode);
+        weather->citycode = location[0]["id"].as<String>();
+        weather->cityname_cn = location[0]["name"].as<String>();
+        Serial.println(weather->cityname_cn+":"+weather->citycode);
     }
     else
     {
@@ -39,12 +39,11 @@ String getCityCode(){
         Serial.print(httpCode);
     }
     httpClient.end();
-    return citycode;
 }
 
-void getNowWeather(String citycode, NowWeather *nowweather)
+void getNowWeather(Weather *weather)
 {
-    String URL=weatherapi+NOWWEATHER+"?location="+citycode+"&key="+apikey;
+    String URL=weatherapi+NOWWEATHER+"?location="+weather->citycode+"&key="+stored_weather_key;
     //String URL = "http://chenyuebo.cn:8080/hello240/api/weather?cityCode=" + cityCode; // 原来
     // 创建 HTTPClient 对象
     HTTPClient httpClient;
@@ -63,11 +62,11 @@ void getNowWeather(String citycode, NowWeather *nowweather)
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         JsonObject now = json["now"].as<JsonObject>();
-        nowweather->temp=now["temp"].as<String>();
-        nowweather->weathertext=now["text"].as<String>();
-        nowweather->winddir=now["windDir"].as<String>();
-        nowweather->windscale=now["windScale"].as<String>();
-        nowweather->humidity==now["humidity"].as<String>();
+        weather->nowweather.temp=now["temp"].as<String>();
+        weather->nowweather.weathertext=now["text"].as<String>();
+        weather->nowweather.winddir=now["windDir"].as<String>();
+        weather->nowweather.windscale=now["windScale"].as<String>();
+        weather->nowweather.humidity==now["humidity"].as<String>();
         Serial.println("获取成功");
     }
     else
@@ -78,9 +77,9 @@ void getNowWeather(String citycode, NowWeather *nowweather)
     httpClient.end();
 }
 
-void getNowAir(String citycode, NowWeather *nowweather)
+void getNowAir(Weather *weather)
 {
-    String URL=weatherapi+NOWAIR+"?location="+citycode+"&key="+apikey;
+    String URL=weatherapi+NOWAIR+"?location="+weather->citycode+"&key="+stored_weather_key;
     HTTPClient httpClient;
     httpClient.begin(URL);
     int httpCode = httpClient.GET();
@@ -96,8 +95,8 @@ void getNowAir(String citycode, NowWeather *nowweather)
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         JsonObject now = json["now"].as<JsonObject>();
-        nowweather->aqi=now["aqi"].as<String>();
-        nowweather->aircategory=now["category"].as<String>();
+        weather->nowweather.aqi=now["aqi"].as<String>();
+        weather->nowweather.aircategory=now["category"].as<String>();
         Serial.println("获取成功");
     }
     else
@@ -108,11 +107,41 @@ void getNowAir(String citycode, NowWeather *nowweather)
     httpClient.end();
 }
 
-void getWeather(NowWeather *nowweather){
-    String citycode = getCityCode();
-    getNowWeather(citycode,nowweather);
-    getNowAir(citycode,nowweather);
+void getDay3Weather(Weather *weather){
+    String URL=weatherapi+DAY3WEATHER+"?location="+weather->citycode+"&key="+stored_weather_key;
+    HTTPClient httpClient;
+    httpClient.begin(URL);
+    int httpCode = httpClient.GET();
+    Serial.println("正在获取三天预报数据");
+    Serial.println(URL);
+    // 如果服务器响应OK则从服务器获取响应体信息并通过串口输出
+    if (httpCode == HTTP_CODE_OK)
+    {
+        //String str = httpClient.getString();
+        String payload = ProcessGzip(httpClient);
+        Serial.println(payload);
+        DynamicJsonDocument doc(1024);
+        deserializeJson(doc, payload);
+        JsonObject json = doc.as<JsonObject>();
+        JsonArray daily = json["daily"].as<JsonArray>();
+        for(int i=0;i<2;i++){
+            weather->day3weather[i].tempmax=daily[i]["tempMax"].as<String>();
+            weather->day3weather[i].tempmin=daily[i]["tempMin"].as<String>();
+            weather->day3weather[i].sunrise=daily[i]["sunrise"].as<String>();
+            weather->day3weather[i].sunset=daily[i]["sunset"].as<String>();
+            weather->day3weather[i].weatherday=daily[i]["textDay"].as<String>();
+            weather->day3weather[i].weathernight=daily[i]["textNight"].as<String>();
+        }
+        Serial.println("获取成功");
+    }
+    else
+    {
+        Serial.println("请求三天预报错误：");
+        Serial.print(httpCode);
+    }
+    httpClient.end();
 }
+
 
 String ProcessGzip(HTTPClient &httpClient){
     WiFiClient *stream = httpClient.getStreamPtr();

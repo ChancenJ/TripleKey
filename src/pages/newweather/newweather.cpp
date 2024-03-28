@@ -4,7 +4,11 @@
 #include "app/app_newweather.h"
 #include <ArduinoJson.h>
 
-NowWeather nowweather;
+Weather weather;
+
+void dispNowTemp(){
+	
+}
 
 void dispWeather()
 {
@@ -16,16 +20,25 @@ void dispWeather()
 	gfx[0]->setUTF8Print(true);
 
 	gfx[0]->setFont(&MiSans_Regular45pt_number);
-	gfx[0]->getTextBounds(nowweather.temp, 0, 0, &x1, &y1, &w, &h);
+	gfx[0]->getTextBounds(weather.nowweather.temp, 0, 0, &x1, &y1, &w, &h);
 	gfx[0]->setCursor((OLED_WIDTH - w) / 2-5, 75);
-	gfx[0]->print(nowweather.temp+"°");
+	gfx[0]->print(weather.nowweather.temp+"°");
 
 	gfx[1]->setUTF8Print(true);
 	gfx[1]->setFont(YousheTitleHeiCN_Weather_35);
+	gfx[1]->setTextSize(2);
 	gfx[1]->setTextColor(WHITE);
-	gfx[1]->getTextBounds(nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
-	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 40);
-	gfx[1]->print(nowweather.weathertext);
+	gfx[1]->getTextBounds(weather.nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
+	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 70);
+	gfx[1]->print(weather.nowweather.weathertext);
+
+	gfx[2]->setUTF8Print(true);
+	gfx[2]->setFont(YousheTitleHeiCN_Weather_35_dpi213);
+	gfx[2]->setTextSize(2);
+	gfx[2]->setTextColor(WHITE);
+	gfx[2]->getTextBounds(weather.nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
+	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 70);
+	gfx[2]->print(weather.nowweather.weathertext);
 
 }
 
@@ -40,8 +53,11 @@ static void enter(void *data)
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-	getWeather(&nowweather);
+	getCity(&weather);
+	getNowWeather(&weather);
+	getNowAir(&weather);
 	dispWeather();
+	getDay3Weather(&weather);
 	//
 	manager_setBusy(false);
 }

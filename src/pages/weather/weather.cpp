@@ -5,7 +5,7 @@
 TaskHandle_t weatherTask_Handler = NULL;
 QueueHandle_t weatherQueue = NULL;
 static bool f_init = false;
-weather_t weather[3];
+static weather_t weather[3];
 void drawWeatherNow(weather_t *weather)
 {
 	gfx1->fillScreen(BLACK);
