@@ -2,7 +2,7 @@
 #include "board_def.h"
 #include "app/app_key.h"
 
-#define COLOR_pomodoro (PINK << 1)
+#define COLOR_pomodoro (PALERED << 1)
 #define COLOR_SHORT_BREAK (CYAN << 2)
 #define COLOR_LONG_BREAK (BLUE << 2)
 #define COLOR_DISABLE (DARKGREY)
