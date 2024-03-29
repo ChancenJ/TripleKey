@@ -125,14 +125,17 @@ void dispMtempAndSun()
 	gfx[2]->fillScreen(BLACK);
 	gfx[2]->setUTF8Print(true);
 	gfx[2]->setFont(MiSans_LightCN_Weather_20);
-	gfx[2]->setTextColor(WHITE);
 	gfx[2]->setCursor(0, 30);
+	gfx[2]->setTextColor(ORANGE);
 	gfx[2]->print("最高温度" + weather.day3weather[0].tempmax + "℃");
 	gfx[2]->setCursor(0, 60);
+	gfx[2]->setTextColor(JINZI);
 	gfx[2]->print("最低温度" + weather.day3weather[0].tempmin + "℃");
 	gfx[2]->setCursor(0, 90);
+	gfx[2]->setTextColor(ORANGE);
 	gfx[2]->print("日出    " + weather.day3weather[0].sunrise);
 	gfx[2]->setCursor(0, 120);
+	gfx[2]->setTextColor(JINZI);
 	gfx[2]->print("日落    " + weather.day3weather[0].sunset);
 }
 
