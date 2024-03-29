@@ -290,18 +290,18 @@ void onOTAEnd(bool success) {
   // <Add your own code here>
 }
 
-void dispProcessing(){
+void dispProcessing(uint8_t screen){
 	int16_t x1;
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
 	String processing = "正在查询…";
-	gfx[1]->setTextColor(QINGSHUILAN);
-	gfx[1]->setUTF8Print(TRUE);
-	gfx[1]->setFont(DreamHanSerifCN_W17_Processing_24);
-	gfx[1]->getTextBounds(processing, 0, 0, &x1, &y1, &w, &h);
-	gfx[1]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
-	gfx[1]->print(processing);
+	gfx[screen]->setTextColor(QINGSHUILAN);
+	gfx[screen]->setUTF8Print(TRUE);
+	gfx[screen]->setFont(DreamHanSerifCN_W17_Processing_24);
+	gfx[screen]->getTextBounds(processing, 0, 0, &x1, &y1, &w, &h);
+	gfx[screen]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
+	gfx[screen]->print(processing);
 }
 
 void board_init()

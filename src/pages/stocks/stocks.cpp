@@ -159,7 +159,7 @@ static void enter(void *data)
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-	dispProcessing();
+	dispProcessing(1);
 	for (int i = 0; i < maxstocks; i++)
 	{
 		getInfo(&stocks[i]);

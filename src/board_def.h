@@ -25,7 +25,6 @@
 #include "fonts/Orbitron_Medium_12.h"
 #include "fonts/Calligraffitti_Regular_12.h"
 #include "fonts/Coming_Soon_Regular_12.h"
-#include "fonts/DSEG14_Classic_Regular_40.h"
 #include "fonts/MiSans_Demibold_12.h"
 #include "fonts/DreamHanSerifCN-W15_21.h"
 #include "fonts/MiSans_DemiboldCN_25.h"
@@ -69,7 +68,7 @@ void PNGDraw2(PNGDRAW *pDraw);
 void PNGDraw3(PNGDRAW *pDraw);
 void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
 void DrawPNGCentre(const char *path, uint8_t oled_index);
-void dispProcessing();
+void dispProcessing(uint8_t screen);
 
 void board_init();
 
