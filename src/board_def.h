@@ -34,7 +34,7 @@
 #include "fonts/DreamHanSerifCN_W17_Processing_24.h"
 #include "fonts/YousheTitleHeiCN_Weather_35.h"
 #include "fonts/MiSans_Regular45pt_num.h"
-#include "fonts/YousheTitleHeiCN_Weather_35_dpi213.h"
+#include "fonts/DouyinSansBoldCN_Weather_38.h"
 
 #include  "app/app_led.h"
 

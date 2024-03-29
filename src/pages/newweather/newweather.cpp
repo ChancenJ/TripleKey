@@ -12,12 +12,13 @@ void dispNowTemp()
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
+	String tempstr=weather.nowweather.temp + "°";
 	gfx[0]->fillRect(0, 0, 128, 75, BLACK);
 	gfx[0]->setUTF8Print(true);
 	gfx[0]->setFont(&MiSans_Regular45pt_number);
-	gfx[0]->getTextBounds(weather.nowweather.temp, 0, 0, &x1, &y1, &w, &h);
-	gfx[0]->setCursor((OLED_WIDTH - w) / 2 - 5, 72);
-	gfx[0]->print(weather.nowweather.temp + "°");
+	gfx[0]->getTextBounds(tempstr, 0, 0, &x1, &y1, &w, &h);
+	gfx[0]->setCursor((OLED_WIDTH - w) / 2 , 72);
+	gfx[0]->print(tempstr);
 }
 void dispAir()
 {
@@ -58,7 +59,7 @@ void dispAir()
 	gfx[0]->getTextBounds(airstr, 0, 0, &x1, &y1, &w, &h);
 	gfx[0]->fillRect(0, 102, 128, 26, BLACK);
 	gfx[0]->fillRoundRect((OLED_WIDTH - w) / 2 - 3, 104, w + 6, 23, 3, color);
-	gfx[0]->setCursor((OLED_WIDTH - w) / 2-2, 124);
+	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 124);
 	gfx[0]->print(airstr);
 }
 
@@ -74,7 +75,7 @@ void dispHumidity()
 	gfx[0]->setUTF8Print(true);
 	gfx[0]->setFont(MiSans_LightCN_Weather_20);
 	gfx[0]->setTextColor(WHITE);
-	gfx[0]->setCursor(OLED_WIDTH / 2 , 98);
+	gfx[0]->setCursor(OLED_WIDTH / 2 -5, 98);
 	gfx[0]->print(humstr);
 }
 
@@ -84,27 +85,43 @@ void dispWeather()
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
-	gfx[1]->fillScreen(BLACK);
-	gfx[2]->fillScreen(BLACK);
+	gfx[1]->fillRect(0,0,128,90,BLACK);
 	gfx[1]->setUTF8Print(true);
-	gfx[1]->setFont(YousheTitleHeiCN_Weather_35);
-	gfx[1]->setTextColor(WHITE);
+	gfx[1]->setFont(DouyinSansBoldCN_Weather_38);
+	gfx[1]->setTextColor(QINGSHUILAN);
 	gfx[1]->getTextBounds(weather.nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
-	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 70);
+	Serial.println(w);
+	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 88);
 	gfx[1]->print(weather.nowweather.weathertext);
-	gfx[1]->fillRoundRect(5, 100, 20, 23, 3, RGB565(0, 153, 102));
-	gfx[1]->fillRoundRect(25, 100, 20, 23, 3, YELLOW);
-	gfx[1]->fillRoundRect(45, 100, 20, 23, 3, ORANGE);
-	gfx[1]->fillRoundRect(65, 100, 20, 23, 3, RED);
-	gfx[1]->fillRoundRect(85, 100, 20, 23, 3, PURPLE);
-	gfx[1]->fillRoundRect(105, 100, 20, 23, 3, RGB565(126, 0, 35));
+	char path[30];
+	sprintf(path,"/weather/weather/%s.png",weather.nowweather.weathercode);
+	Serial.println(path);
+	myDrawPNG((OLED_WIDTH - 48) / 2, 0,path,1);
 
-	gfx[2]->setUTF8Print(true);
-	gfx[2]->setFont(YousheTitleHeiCN_Weather_35_dpi213);
-	gfx[2]->setTextColor(WHITE);
-	gfx[2]->getTextBounds(weather.nowweather.weathertext, 0, 0, &x1, &y1, &w, &h);
-	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 70);
-	gfx[2]->print(weather.nowweather.weathertext);
+
+
+	gfx[2]->fillRoundRect(5, 100, 20, 23, 3, DARKGREEN);
+	gfx[2]->fillRoundRect(25, 100, 20, 23, 3, YELLOW);
+	gfx[2]->fillRoundRect(45, 100, 20, 23, 3, ORANGE);
+	gfx[2]->fillRoundRect(65, 100, 20, 23, 3, RED);
+	gfx[2]->fillRoundRect(85, 100, 20, 23, 3, PURPLE);
+	gfx[2]->fillRoundRect(105, 100, 20, 23, 3, RGB565(100, 0, 35));
+
+	
+}
+void dispWind(){
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	gfx[1]->fillRect(0,90,128,38,BLACK);
+	gfx[1]->setUTF8Print(true);
+	gfx[1]->setFont(MiSans_LightCN_Weather_20);
+	gfx[1]->setTextColor(WHITE);
+	String windstr = weather.nowweather.winddir + " " + weather.nowweather.windscale + "级";
+	gfx[1]->getTextBounds(windstr, 0, 0, &x1, &y1, &w, &h);
+	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 125);
+	gfx[1]->print(windstr);
 }
 
 static void init(void *data)
@@ -123,9 +140,10 @@ static void enter(void *data)
 	getNowWeather(&weather);
 	dispNowTemp();
 	dispHumidity();
+	dispWeather();
+	dispWind();
 	getNowAir(&weather);
 	dispAir();
-	dispWeather();
 	getDay3Weather(&weather);
 	//
 	manager_setBusy(false);

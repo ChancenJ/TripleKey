@@ -33,14 +33,14 @@ void drawWeatherNow(weather_t *weather)
 	myDrawPNG(0, 32, "/weather/Temperature.png", 1);
 
 	gfx2->setTextColor(GREEN);
-	gfx2->setFont(&DSEG14_Classic_Regular_40);
+	gfx2->setFont(&MiSans_Demibold_12);
 	gfx2->getTextBounds(weather->temperature_now, 0, 0, &x1, &y1, &w, &h);
 	gfx2->setCursor((24), h + 10);
 	gfx2->print(weather->temperature_now);
 
 	myDrawPNG(0, 32, "/weather/Humidity.png", 2);
 	gfx3->setTextColor(BLUE);
-	gfx3->setFont(&DSEG14_Classic_Regular_40);
+	gfx3->setFont(&MiSans_Demibold_12);
 	gfx3->getTextBounds(weather->humidity_now, 0, 0, &x1, &y1, &w, &h);
 	gfx3->setCursor((24), h + 10);
 	gfx3->print(weather->humidity_now);
