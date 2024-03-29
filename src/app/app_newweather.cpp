@@ -34,7 +34,7 @@ void getCity(Weather *weather)
     if (httpCode == HTTP_CODE_OK)
     {
         String payload = ProcessGzip(httpClient);
-        DynamicJsonDocument doc(1024);
+        DynamicJsonDocument doc(2048);
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         int16_t hefengcode = json["code"].as<int16_t>();
@@ -185,21 +185,24 @@ void getDay3Weather(Weather *weather)
         // String str = httpClient.getString();
         String payload = ProcessGzip(httpClient);
         Serial.println(payload);
-        DynamicJsonDocument doc(1024);
+        DynamicJsonDocument doc(2048);
         deserializeJson(doc, payload);
         JsonObject json = doc.as<JsonObject>();
         int16_t hefengcode = json["code"].as<int16_t>();
         if (hefengcode == HTTP_CODE_OK)
         {
             JsonArray daily = json["daily"].as<JsonArray>();
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
-                weather->day3weather[i].tempmax = daily[i]["tempMax"].as<String>();
-                weather->day3weather[i].tempmin = daily[i]["tempMin"].as<String>();
-                weather->day3weather[i].sunrise = daily[i]["sunrise"].as<String>();
-                weather->day3weather[i].sunset = daily[i]["sunset"].as<String>();
-                weather->day3weather[i].weatherday = daily[i]["textDay"].as<String>();
-                weather->day3weather[i].weathernight = daily[i]["textNight"].as<String>();
+                JsonObject day = daily[i].as<JsonObject>();
+                weather->day3weather[i].tempmax = day["tempMax"].as<String>();
+                weather->day3weather[i].tempmin = day["tempMin"].as<String>();
+                weather->day3weather[i].sunrise = day["sunrise"].as<String>();
+                weather->day3weather[i].sunset = day["sunset"].as<String>();
+                weather->day3weather[i].weatherday = day["textDay"].as<String>();
+                weather->day3weather[i].weathernight = day["textNight"].as<String>();
+                weather->day3weather[i].daycode = day["iconDay"].as<String>();
+                weather->day3weather[i].nightcode = day["iconNight"].as<String>();
             }
             Serial.println("获取成功");
         }
