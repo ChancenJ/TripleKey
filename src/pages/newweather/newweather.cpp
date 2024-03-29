@@ -8,7 +8,6 @@
 Weather weather;
 String day[3] = {"今天", "明天", "后天"};
 int8_t dispIndex;
-const uint8_t Indexnum = 2;
 
 void dispNowTemp()
 {
@@ -151,14 +150,14 @@ void dispPredict()
 	{
 		gfx[i]->setTextColor(BLACK);
 		gfx[i]->setFont(MiSans_LightCN_Weather_20);
-		gfx[i]->fillRect(0,0,128,23,QINGSHUILAN);
+		gfx[i]->fillRect(0, 0, 128, 23, QINGSHUILAN);
 		gfx[i]->getTextBounds(day[i], 0, 0, &x1, &y1, &w, &h);
 		gfx[i]->setCursor((OLED_WIDTH - w) / 2, 20);
 		gfx[i]->print(day[i]);
 		sprintf(path, "/weather/weather/%s.png", weather.day3weather[i].daycode);
 		Serial.println(path);
 		myDrawPNG(0, 24, path, i);
-		gfx[i]->drawLine(0,74,48,74,QINGSHUILAN);
+		gfx[i]->drawLine(0, 74, 48, 74, QINGSHUILAN);
 		sprintf(path, "/weather/weather/%s.png", weather.day3weather[i].nightcode);
 		Serial.println(path);
 		myDrawPNG(0, 76, path, i);
@@ -171,10 +170,9 @@ void dispPredict()
 		gfx[i]->setFont(MiSans_LightCN_Weather_20);
 		gfx[i]->setTextColor(WHITE);
 		gfx[i]->setCursor(84, 53);
-		gfx[i]->print(weather.day3weather[i].tempmax+"℃");
+		gfx[i]->print(weather.day3weather[i].tempmax + "℃");
 		gfx[i]->setCursor(84, 114);
-		gfx[i]->print(weather.day3weather[i].tempmin+"℃");
-
+		gfx[i]->print(weather.day3weather[i].tempmin + "℃");
 	}
 }
 
@@ -191,20 +189,12 @@ void dispToday()
 	dispMtempAndSun();
 }
 
-void disp()
-{
-	switch (dispIndex)
-	{
-	case 0:
-		dispToday();
-		break;
-	case 1:
-		dispPredict();
-		break;
-	default:
-		break;
-	}
-}
+typedef void (*dispContent)();
+dispContent disp[] = {
+	dispToday,
+	dispPredict,
+};
+const uint8_t Indexnum = ARRAY_SIZE(disp);
 
 static void init(void *data)
 {
@@ -246,7 +236,7 @@ static void loop(void *data)
 		{
 			dispIndex = 0;
 		}
-		disp();
+		disp[dispIndex]();
 		break;
 	case ENC_PREV:
 		dispIndex--;
@@ -254,7 +244,7 @@ static void loop(void *data)
 		{
 			dispIndex = Indexnum - 1;
 		}
-		disp();
+		disp[dispIndex]();
 		break;
 
 	case KEY4_LONG:				  // 长按
