@@ -5,6 +5,8 @@
 
 #define MIJIALV RGB565(25, 203, 139)
 
+static uint32_t lastUpdateTime;
+
 struct sw
 {
 	uint8_t pin;
@@ -75,6 +77,8 @@ static void init(void *data)
 	digitalWrite(MIJIAKEY1_PIN, HIGH);
 	firstindex = 0;
 	Serial.println(maxsw);
+	app_mijia_get(7);
+	lastUpdateTime=millis();
 }
 
 static void enter(void *data)
@@ -88,6 +92,10 @@ static void enter(void *data)
 
 static void loop(void *data)
 {
+	if (millis() - lastUpdateTime >= 2000){
+		app_mijia_get(7);
+		lastUpdateTime=millis();
+	}
 	KEY_TYPE key;
 	key = app_key_get();
 	switch (key)

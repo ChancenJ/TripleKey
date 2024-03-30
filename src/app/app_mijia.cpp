@@ -86,3 +86,12 @@ void app_mijia_long(uint8_t pin)
     Wire.endTransmission();
 #endif
 }
+
+void app_mijia_get(uint8_t pin){
+    uint8_t value;
+    Wire.requestFrom(PCF8574_ADDRESS, 1); // 请求从PCF8574读取一个字节
+  if (Wire.available()) {
+    value = Wire.read(); // 读取引脚状态
+  }
+  Serial.println(value & (1 << pin),BIN);
+}
