@@ -14,16 +14,18 @@ struct sw
 	String name_en;
 	uint8_t optype; // 1为单击，2为双击，3为长按
 	uint8_t type;	// 1为场景开关，2为普通开关
+	uint8_t on;		// 普通开关开关状态
+	sw(uint8_t pin, String name_cn, String name_en, uint8_t optype, uint8_t type) : pin(pin), name_cn(name_cn), name_en(name_en), optype(optype), type(type), on(0) {}
 };
 
 sw sws[] = {
+	{0, "场景1", "K1Short", 1, 2},
 	{4, "场景1", "K5Short", 1, 1},
 	{4, "场景2", "K5Double", 2, 1},
 	{4, "场景3", "K5Long", 3, 1},
 	{5, "场景1", "K6Short", 1, 1},
 	{5, "场景2", "K6Double", 2, 1},
 	{5, "场景3", "K6Long", 3, 1},
-	{0, "场景1", "K1Short", 1, 2},
 	{6, "场景1", "K7Short", 1, 1},
 	{6, "场景2", "K7Double", 2, 1},
 	{6, "场景3", "K7Long", 3, 1},
@@ -53,7 +55,7 @@ static void dispSwitch()
 
 	for (uint8_t i = 0; i < 3; i++)
 	{
-		if (sws[(firstindex + i) % maxsw].type == 1)  //情景开关
+		if (sws[(firstindex + i) % maxsw].type == 1) // 情景开关
 		{
 			gfx[i]->setTextColor(MIJIALV);
 			gfx[i]->setFont(&MiSans_Demibold_12);
@@ -61,9 +63,10 @@ static void dispSwitch()
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
 			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
 		}
-		else if (sws[(firstindex + i) % maxsw].type == 2)  //普通开关（显示开关状态）
+		else if (sws[(firstindex + i) % maxsw].type == 2) // 普通开关（显示开关状态）
 		{
-			gfx[i]->setTextColor(MIJIALV);
+			uint16_t color = sws[(firstindex + i) % maxsw].on ? RED : MIJIALV;
+			gfx[i]->setTextColor(color);
 			gfx[i]->setFont(&MiSans_Demibold_12);
 			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
@@ -78,7 +81,7 @@ static void init(void *data)
 	firstindex = 0;
 	Serial.println(maxsw);
 	app_mijia_get(7);
-	lastUpdateTime=millis();
+	lastUpdateTime = millis();
 }
 
 static void enter(void *data)
@@ -92,9 +95,15 @@ static void enter(void *data)
 
 static void loop(void *data)
 {
-	if (millis() - lastUpdateTime >= 2000){
-		app_mijia_get(7);
-		lastUpdateTime=millis();
+	if (millis() - lastUpdateTime >= 1000)
+	{
+		uint8_t tempon=sws[0].on;
+		uint8_t on = app_mijia_get(7);
+		lastUpdateTime = millis();
+		if(on!=tempon){
+			sws[0].on=on;
+			dispSwitch();
+		}
 	}
 	KEY_TYPE key;
 	key = app_key_get();
@@ -149,7 +158,7 @@ static void loop(void *data)
 static void exit(void *data)
 {
 	// insert code
-	
+
 	//
 	manager_setBusy(true);
 }

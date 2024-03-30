@@ -8,7 +8,7 @@ void app_mijia_short(uint8_t pin);
 void app_mijia_double(uint8_t pin);
 void app_mijia_long(uint8_t pin);
 void app_mijia_control(uint8_t pin,uint8_t type);
-void app_mijia_get(uint8_t pin);
+uint8_t app_mijia_get(uint8_t pin);
 
 
 #endif
