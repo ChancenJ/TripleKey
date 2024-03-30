@@ -304,6 +304,11 @@ void dispProcessing(uint8_t screen){
 	gfx[screen]->print(processing);
 }
 
+
+
+
+
+
 void board_init()
 {
     WiFi.mode(WIFI_STA);
@@ -333,6 +338,12 @@ void board_init()
 
     pinMode(MIJIAKEY1_PIN,OUTPUT);
     digitalWrite(MIJIAKEY1_PIN,HIGH);
+
+    Wire.begin(SDA_PIN, SCL_PIN);  // 初始化I2C总线，指定SDA和SCL引脚
+    Wire.setClock(400000); // 设置I2C时钟频率为400kHz
+    Wire.beginTransmission(PCF8574_ADDRESS); // 开始I2C传输
+    Wire.write(0xff); // 初始化所有引脚为高电平
+    Wire.endTransmission(); // 结束I2C传输
 
     gfx1->begin(40000000);
     gfx1->fillScreen(BLACK);

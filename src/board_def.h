@@ -17,6 +17,7 @@
 #include "Button2.h"
 #include <Encoder.h>
 #include <AsyncTCP.h>
+#include <Wire.h>
 
 #include "fonts/Orbitron_Light_32.h"
 #include "fonts/Orbitron_Light_24.h"
@@ -50,6 +51,8 @@
 
 #define QINGSHUILAN RGB565(147, 213, 220)  //清水蓝
 #define JINZI RGB565(128,109,158)  //槿紫
+
+#define PCF8574_ADDRESS 0x20
 
 extern char stored_weather_key[], stored_weather_city[];
 
