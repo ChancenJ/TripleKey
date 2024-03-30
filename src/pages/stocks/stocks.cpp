@@ -35,7 +35,7 @@ static int8_t firstgot; // 首次是否已获取数据
 static unsigned long lastTimeUpdateTime;
 char timestr[20];
 char datastr[40];
-String weekdaystr[7]={"星期一","星期二","星期三","星期四","星期五","星期六","星期日",};
+String weekdaystr[7]={"星期日","星期一","星期二","星期三","星期四","星期五","星期六",};
 
 
 void dispStocks()
@@ -108,11 +108,10 @@ void dispWeekday(){
 	gfx[1]->setUTF8Print(true);
 	gfx[1]->setTextColor(BLUE);
 	gfx[1]->setFont(DreamHanSerifCN_W17_21);
-	gfx[1]->getTextBounds(weekdaystr[timeInfo.tm_wday-1], 0, 0, &x1, &y1, &w, &h);
+	gfx[1]->getTextBounds(weekdaystr[timeInfo.tm_wday], 0, 0, &x1, &y1, &w, &h);
 	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 22);
 	gfx[1]->fillRect(0,0,128,26,QINGSHUILAN);
-	gfx[1]->print(weekdaystr[timeInfo.tm_wday-1]);
-
+	gfx[1]->print(weekdaystr[timeInfo.tm_wday]);
 }
 
 void Scroll() // 轮播股票
