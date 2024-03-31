@@ -336,9 +336,6 @@ void board_init()
 
     pinMode(BUTTON3_PIN, INPUT);
 
-    pinMode(MIJIAKEY1_PIN,OUTPUT);
-    digitalWrite(MIJIAKEY1_PIN,HIGH);
-
     Wire.begin(SDA_PIN, SCL_PIN);  // 初始化I2C总线，指定SDA和SCL引脚
     Wire.setClock(400000); // 设置I2C时钟频率为400kHz
     Wire.beginTransmission(PCF8574_ADDRESS); // 开始I2C传输

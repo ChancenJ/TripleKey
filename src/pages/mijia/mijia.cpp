@@ -77,7 +77,6 @@ static void dispSwitch()
 
 static void init(void *data)
 {
-	digitalWrite(MIJIAKEY1_PIN, HIGH);
 	firstindex = 0;
 	Serial.println(maxsw);
 	app_mijia_get(7);
