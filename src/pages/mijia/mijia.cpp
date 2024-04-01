@@ -20,6 +20,7 @@ struct sw
 
 sw sws[] = {
 	{0, "场景1", "K1Short", 1, 2},
+	{1, "场景1", "K2Short", 1, 2},
 	{4, "场景1", "K5Short", 1, 1},
 	{4, "场景2", "K5Double", 2, 1},
 	{4, "场景3", "K5Long", 3, 1},
@@ -65,13 +66,28 @@ static void dispSwitch()
 		}
 		else if (sws[(firstindex + i) % maxsw].type == 2) // 普通开关（显示开关状态）
 		{
-			uint16_t color = sws[(firstindex + i) % maxsw].on ? RED : MIJIALV;
-			gfx[i]->setTextColor(color);
+			gfx[i]->setTextColor(MIJIALV);
 			gfx[i]->setFont(&MiSans_Demibold_12);
 			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
-			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
+			gfx[i]->setCursor((OLED_WIDTH - w) / 2, 40);
 			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
+			if(sws[(firstindex + i) % maxsw].on){
+				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/on.png",i);
+			}else{
+				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/off.png",i);
+			}
 		}
+	}
+}
+
+void dispUpdateState(uint8_t i){
+	uint8_t screen=firstindex==i?0:((firstindex+1)%maxsw==i?1:((firstindex+2)%maxsw==i?2:-1));
+	if(screen>=0){
+		if(sws[i].on){
+				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/on.png",screen);
+			}else{
+				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/off.png",screen);
+			}
 	}
 }
 
@@ -101,7 +117,7 @@ static void loop(void *data)
 		lastUpdateTime = millis();
 		if(on!=tempon){
 			sws[0].on=on;
-			dispSwitch();
+			dispUpdateState(0);
 		}
 	}
 	KEY_TYPE key;
