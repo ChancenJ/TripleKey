@@ -418,9 +418,9 @@ void board_init()
     gfx2->setTextColor(QINGSHUILAN);
     gfx3->setTextColor(QINGSHUILAN);
 
-    gfx1->setFont(u8g2_font_5x7_mr);
-    gfx2->setFont(u8g2_font_5x7_mr);
-    gfx3->setFont(u8g2_font_5x7_mr);
+    gfx1->setFont(u8g2_font_6x10_mr);
+    gfx2->setFont(u8g2_font_6x10_mr);
+    gfx3->setFont(u8g2_font_6x10_mr);
 
     // if (!SPIFFS.begin())
 
