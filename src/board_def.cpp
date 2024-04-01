@@ -9,7 +9,7 @@ AsyncWebServer server(80);
 char stored_weather_key[40];
 char stored_weather_city[40];
 
-BleKeyboard bleKeyboard("3Plus_2.0", "M0dular", 100);
+BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
 // flag for saving data
 bool shouldSaveConfig = false;
@@ -242,6 +242,7 @@ void configModeCallback(WiFiManager *myWiFiManager)
     gfx2->setTextColor(RED, WHITE);
     gfx2->println(WiFi.softAPIP());
     gfx2->setTextColor(RED);
+    gfx2->println("Please connect to");
     gfx2->println(myWiFiManager->getConfigPortalSSID());
     gfx2->setTextColor(QINGSHUILAN);
 }
@@ -462,7 +463,7 @@ void board_init()
     gfx2->println("WiFi Connecting ");
 
     // and goes into a blocking loop awaiting configuration
-    if (!wm.autoConnect("AutoConnectAP"))
+    if (!wm.autoConnect("TripleKey"))
     {
         gfx2->println("failed to connect and hit timeout");
         delay(3000);
