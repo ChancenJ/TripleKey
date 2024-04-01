@@ -207,6 +207,7 @@ static void loop(void *data)
         if ((page_index + 2) < pages_num)
         {
             manager.index = page_index + 2;
+            Serial.println(manager.index);
             manager_switchToChild(); //进入子项目
         }
         break;

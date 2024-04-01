@@ -51,6 +51,13 @@ void manager_switchToParent()
     manager.cur->enter(nullptr);
 }
 
+void manager_switchToPage(page_t *topage){
+    manager.cur->exit(nullptr);
+    manager.cur = topage;
+    manager.cur->init(nullptr);
+    manager.cur->enter(nullptr);
+}
+
 void manager_switchToNext()
 {
     //old exit

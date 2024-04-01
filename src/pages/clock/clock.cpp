@@ -15,6 +15,8 @@ static uint8_t num_old[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 static uint8_t xpos=64;
 
+extern page_t page_newweather;
+
 void dispTime(uint8_t hour, uint8_t min, uint8_t sec)
 {
 	char path[100];
@@ -366,9 +368,13 @@ static void loop(void *data)
 
 	//case KEY1_SHORT:
 	case KEY2_SHORT:
-	// case KEY3_SHORT:
+	
 		getLocalTime(&timeInfo);
 		app_audio_sayTimeCN(timeInfo.tm_hour, timeInfo.tm_min);
+		break;
+
+	case KEY1_DOUBLE:
+		manager_switchToPage(&page_newweather);
 		break;
 
 	case KEY4_LONG:				  //长按

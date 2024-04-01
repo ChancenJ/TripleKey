@@ -46,6 +46,7 @@ void manager_switch();
 void manager_switchToNext();
 void manager_switchToChild();
 void manager_switchToParent();
+void manager_switchToPage(page_t *topage);
 void manager_setBusy(bool state);
 bool manager_getBusy();
 
