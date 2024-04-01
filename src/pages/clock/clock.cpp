@@ -7,15 +7,16 @@ const char *number_name[] = {"zero", "one", "two", "three", "four", "five", "six
 
 String clock_name[36];
 static uint8_t CLOCK_TYPE_MAX = 0;
-int8_t clock_type_index ;
+int8_t clock_type_index;
 bool f_updateall = false;
 static uint8_t num_old[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 #define POS_Y 0
 
-static uint8_t xpos=64;
+static uint8_t xpos = 64;
 
 extern page_t page_newweather;
+extern page_t page_mijia;
 
 void dispTime(uint8_t hour, uint8_t min, uint8_t sec)
 {
@@ -81,7 +82,7 @@ void dispTime(uint8_t hour, uint8_t min, uint8_t sec)
 	f_updateall = false;
 }
 
-//防止烧屏，一分钟切换一次界面风格显示
+// 防止烧屏，一分钟切换一次界面风格显示
 void dispTimeX(uint8_t hour, uint8_t min, uint8_t sec)
 {
 	char path[100];
@@ -265,7 +266,7 @@ void dispTimeDot(uint8_t hour, uint8_t min, uint8_t sec)
 	f_updateall = false;
 }
 
-//获取时钟类型数目
+// 获取时钟类型数目
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
 {
 	// Serial.printf("Listing directory: %s\r\n", dirname);
@@ -307,13 +308,13 @@ static void init(void *data)
 {
 	if (CLOCK_TYPE_MAX == 0)
 	{
-		//获取时钟类型数目
+		// 获取时钟类型数目
 		listDir(LittleFS, "/clock_theme/", 1);
 
 		Serial.println(CLOCK_TYPE_MAX);
 		clock_type_index = CLOCK_TYPE_MAX;
 	}
-	 
+
 	for (uint8_t i = 0; i < 6; i++)
 	{
 		num_old[i] = 0xff;
@@ -328,8 +329,7 @@ static void enter(void *data)
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 	//
-	manager_setBusy(false); 
-
+	manager_setBusy(false);
 }
 uint32_t t_old, t_now = 0;
 uint8_t hour, minute, second = 0;
@@ -353,7 +353,7 @@ static void loop(void *data)
 				dispTime(timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec);
 			}
 
-			if (timeInfo.tm_min==0 && timeInfo.tm_sec==0  && timeInfo.tm_hour>7 &&timeInfo.tm_hour<23)
+			if (timeInfo.tm_min == 0 && timeInfo.tm_sec == 0 && timeInfo.tm_hour > 7 && timeInfo.tm_hour < 23)
 			{
 				app_audio_sayTimeCN(timeInfo.tm_hour, timeInfo.tm_min);
 			}
@@ -365,20 +365,21 @@ static void loop(void *data)
 	key = app_key_get();
 	switch (key)
 	{
-
-	//case KEY1_SHORT:
+	case KEY1_DOUBLE:
+		manager_switchToPage(&page_newweather);
+		break;
+	case KEY1_LONG:
+		manager_switchToPage(&page_mijia);
+		break;
+	// case KEY1_SHORT:
 	case KEY2_SHORT:
-	
+
 		getLocalTime(&timeInfo);
 		app_audio_sayTimeCN(timeInfo.tm_hour, timeInfo.tm_min);
 		break;
 
-	case KEY1_DOUBLE:
-		manager_switchToPage(&page_newweather);
-		break;
-
-	case KEY4_LONG:				  //长按
-		manager_switchToParent(); //进入父项目 //退出
+	case KEY4_LONG:				  // 长按
+		manager_switchToParent(); // 进入父项目 //退出
 		break;
 
 	case ENC_NEXT:
