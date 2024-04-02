@@ -13,6 +13,7 @@
 #include <LittleFS.h>
 // https://github.com/bitbank2/PNGdec.git
 #include <PNGdec.h>
+#include <ESPAsyncWebServer.h>
 
 #include "Button2.h"
 #include <Encoder.h>
@@ -39,7 +40,7 @@
 #include  "app/app_led.h"
 
 #define VER_HW "TRIPLEKEY_V0.1"
-#define VER_SW "0.2.0"
+#define VER_SW "0.2.11"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
@@ -62,6 +63,8 @@ extern Arduino_GFX *gfx3;
 extern Arduino_GFX *gfx[3];
 
 extern BleKeyboard bleKeyboard;
+
+extern AsyncWebServer server;
 
 extern struct tm timeInfo;
 
