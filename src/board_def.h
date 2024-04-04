@@ -19,6 +19,7 @@
 #include <Encoder.h>
 #include <AsyncTCP.h>
 #include <Wire.h>
+#include "DFRobot_CH423.h"
 
 #include "fonts/Orbitron_Light_32.h"
 #include "fonts/Orbitron_Light_24.h"
@@ -54,6 +55,7 @@
 #define JINZI RGB565(128,109,158)  //槿紫
 
 #define PCF8574_ADDRESS 0x20
+#define CH423S_ADDRESS 0x20
 
 extern char stored_weather_key[], stored_weather_city[];
 
@@ -70,6 +72,8 @@ extern struct tm timeInfo;
 
 extern Button2 button1, button2, button3, button4;
 extern Encoder myEnc;
+
+extern DFRobot_CH423 ch423;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);

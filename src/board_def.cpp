@@ -11,6 +11,8 @@ char stored_weather_city[40];
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
+DFRobot_CH423 ch423;
+
 // flag for saving data
 bool shouldSaveConfig = false;
 
@@ -337,11 +339,19 @@ void board_init()
 
     pinMode(BUTTON3_PIN, INPUT);
 
+
+#ifdef SUPPORT_PCF8574
     Wire.begin(SDA_PIN, SCL_PIN);  // 初始化I2C总线，指定SDA和SCL引脚
     Wire.setClock(400000); // 设置I2C时钟频率为400kHz
     Wire.beginTransmission(PCF8574_ADDRESS); // 开始I2C传输
     Wire.write(0xff); // 初始化所有引脚为高电平
     Wire.endTransmission(); // 结束I2C传输
+#endif
+#ifdef SUPPORT_CH423S
+    Wire.begin(SDA_PIN, SCL_PIN); 
+    ch423.begin();
+    ch423.pinMode(ch423.eGPO, ch423.ePUSH_PULL);
+#endif
 
     gfx1->begin(40000000);
     gfx1->fillScreen(BLACK);
