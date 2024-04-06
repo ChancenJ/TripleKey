@@ -7,6 +7,8 @@
 
 static uint32_t lastUpdateTime;
 
+extern page_t page_clock;
+
 sw sws[] = {
 	{K1, "有人存在", "Sensor", 1, 2},  //K1作为人体存在传感器状态，同步米家，用于智能联动，必须放在第一个
 	{K5, "场景1", "K5Short", 1, 1},
@@ -177,7 +179,9 @@ static void loop(void *data)
 		}
 		dispSwitch();
 		break;
-
+	case KEY4_SHORT:
+		manager_switchToPage(&page_clock);
+		break;
 	case KEY4_LONG:				  // 长按
 		manager_switchToParent(); // 进入父项目 //退出
 		break;
