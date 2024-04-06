@@ -105,9 +105,13 @@ uint8_t app_mijia_get(uint8_t pin)
         value = Wire.read(); // 读取引脚状态
     }
     uint8_t state = (value & (1 << pin)) >> pin;
-    Serial.printf("pin%d:%d\n", pin, state);
+    // Serial.printf("pin%d:%d\n", pin, state);
     return state;
 #endif
-    return 0;
-
+#ifdef SUPPORT_CH423S
+    uint8_t value = ch423.digitalRead(ch423.eGPIOTotal);
+    uint8_t state = (value & (1 << pin)) >> pin;
+    // Serial.printf("pin%d:%d\n", pin, state);
+    return state;
+#endif
 }
