@@ -5,29 +5,10 @@
 
 #define MIJIALV RGB565(25, 203, 139)
 
-#define K1 0
-#define K2 1
-#define K3 2
-#define K4 3
-#define K5 4
-#define K6 5
-#define K7 6
-#define K8 7
-
 static uint32_t lastUpdateTime;
 
-struct sw
-{
-	uint8_t pin;
-	String name_cn;
-	String name_en;
-	uint8_t optype; // 1为单击，2为双击，3为长按
-	uint8_t type;	// 1为场景开关，2为普通开关
-	uint8_t on;		// 普通开关开关状态
-	sw(uint8_t pin, String name_cn, String name_en, uint8_t optype, uint8_t type) : pin(pin), name_cn(name_cn), name_en(name_en), optype(optype), type(type), on(0) {}
-};
-
 sw sws[] = {
+	{K1, "有人存在", "Sensor", 1, 2},  //K1作为人体存在传感器状态，同步米家，用于智能联动，必须放在第一个
 	{K5, "场景1", "K5Short", 1, 1},
 	{K5, "场景2", "K5Double", 2, 1},
 	{K5, "场景3", "K5Long", 3, 1},
@@ -37,7 +18,6 @@ sw sws[] = {
 	{K7, "场景1", "K7Short", 1, 1},
 	{K7, "场景2", "K7Double", 2, 1},
 	{K7, "场景3", "K7Long", 3, 1},
-	{K1, "场景1", "K1Short", 1, 2},
 	{K2, "场景1", "K2Short", 1, 2},
 	{K3, "场景1", "K3Short", 1, 2},
 	{K4, "场景1", "K4Short", 1, 2},
