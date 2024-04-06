@@ -5,6 +5,15 @@
 
 #define MIJIALV RGB565(25, 203, 139)
 
+#define K1 0
+#define K2 1
+#define K3 2
+#define K4 3
+#define K5 4
+#define K6 5
+#define K7 6
+#define K8 7
+
 static uint32_t lastUpdateTime;
 
 struct sw
@@ -19,17 +28,19 @@ struct sw
 };
 
 sw sws[] = {
-	{0, "场景1", "K1Short", 1, 2},
-	{1, "场景1", "K2Short", 1, 2},
-	{4, "场景1", "K5Short", 1, 1},
-	{4, "场景2", "K5Double", 2, 1},
-	{4, "场景3", "K5Long", 3, 1},
-	{5, "场景1", "K6Short", 1, 1},
-	{5, "场景2", "K6Double", 2, 1},
-	{5, "场景3", "K6Long", 3, 1},
-	{6, "场景1", "K7Short", 1, 1},
-	{6, "场景2", "K7Double", 2, 1},
-	{6, "场景3", "K7Long", 3, 1},
+	{K5, "场景1", "K5Short", 1, 1},
+	{K5, "场景2", "K5Double", 2, 1},
+	{K5, "场景3", "K5Long", 3, 1},
+	{K6, "场景1", "K6Short", 1, 1},
+	{K6, "场景2", "K6Double", 2, 1},
+	{K6, "场景3", "K6Long", 3, 1},
+	{K7, "场景1", "K7Short", 1, 1},
+	{K7, "场景2", "K7Double", 2, 1},
+	{K7, "场景3", "K7Long", 3, 1},
+	{K1, "场景1", "K1Short", 1, 2},
+	{K2, "场景1", "K2Short", 1, 2},
+	{K3, "场景1", "K3Short", 1, 2},
+	{K4, "场景1", "K4Short", 1, 2},
 	// {MIJIAKEY1_PIN, "场景4", "Scene10", 2, 1},
 	// {MIJIAKEY1_PIN, "场景4", "Scene11", 3, 1},
 	// {MIJIAKEY1_PIN, "场景4", "Scene12", 2, 1},
@@ -71,23 +82,47 @@ static void dispSwitch()
 			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, 40);
 			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
-			if(sws[(firstindex + i) % maxsw].on){
-				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/on.png",i);
-			}else{
-				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/off.png",i);
+			if (sws[(firstindex + i) % maxsw].on)
+			{
+				myDrawPNG((OLED_WIDTH - 61) / 2, 70, "/mijia/on.png", i);
+			}
+			else
+			{
+				myDrawPNG((OLED_WIDTH - 61) / 2, 70, "/mijia/off.png", i);
 			}
 		}
 	}
 }
 
-void dispUpdateState(uint8_t i){
-	uint8_t screen=firstindex==i?0:((firstindex+1)%maxsw==i?1:((firstindex+2)%maxsw==i?2:-1));
-	if(screen>=0){
-		if(sws[i].on){
-				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/on.png",screen);
-			}else{
-				myDrawPNG((OLED_WIDTH-61)/2,70,"/mijia/off.png",screen);
+void dispUpdatedState(uint8_t i)
+{
+	uint8_t screen = firstindex == i ? 0 : ((firstindex + 1) % maxsw == i ? 1 : ((firstindex + 2) % maxsw == i ? 2 : -1));
+	if (screen >= 0)
+	{
+		if (sws[i].on)
+		{
+			myDrawPNG((OLED_WIDTH - 61) / 2, 70, "/mijia/on.png", screen);
+		}
+		else
+		{
+			myDrawPNG((OLED_WIDTH - 61) / 2, 70, "/mijia/off.png", screen);
+		}
+	}
+}
+
+void UpdateState()
+{
+	for (int i = 0; i < maxsw; i++)
+	{
+		if (sws[i].type == 2)
+		{
+			uint8_t on = app_mijia_get(sws[i].pin);
+			if (on != sws[i].on)
+			{
+				sws[i].on = on;
+				dispUpdatedState(i);
 			}
+		}
 	}
 }
 
@@ -95,7 +130,6 @@ static void init(void *data)
 {
 	firstindex = 0;
 	Serial.println(maxsw);
-	app_mijia_get(7);
 	lastUpdateTime = millis();
 }
 
@@ -103,22 +137,24 @@ static void enter(void *data)
 {
 	// insert code
 	dispSwitch();
-
+	UpdateState();
 	//
 	manager_setBusy(false);
 }
 
 static void loop(void *data)
 {
-	if (millis() - lastUpdateTime >= 1000)
+	if (millis() - lastUpdateTime >= 500)
 	{
-		uint8_t tempon=sws[0].on;
-		uint8_t on = app_mijia_get(7);
+	// 	uint8_t tempon=sws[0].on;
+	// 	uint8_t on = app_mijia_get(7);
+	// 	lastUpdateTime = millis();
+	// 	if(on!=tempon){
+	// 		sws[0].on=on;
+	// 		dispUpdateState(0);
+	// 	}
+		UpdateState();
 		lastUpdateTime = millis();
-		if(on!=tempon){
-			sws[0].on=on;
-			dispUpdateState(0);
-		}
 	}
 	KEY_TYPE key;
 	key = app_key_get();

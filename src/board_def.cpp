@@ -351,6 +351,8 @@ void board_init()
     Wire.begin(SDA_PIN, SCL_PIN); 
     ch423.begin();
     ch423.pinMode(ch423.eGPO, ch423.ePUSH_PULL);
+    delay(100);
+    ch423.digitalWrite(ch423.eGPO, 0xFFFF); 
 #endif
 
     gfx1->begin(40000000);
