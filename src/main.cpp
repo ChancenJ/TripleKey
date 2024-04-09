@@ -20,4 +20,5 @@ void setup()
 void loop()
 {
 	manager_loop();
+	Mijia_UpdateHumanState();
 }
