@@ -2,6 +2,7 @@
 #include "board_def.h"
 #include "app/app_key.h"
 #include "app/app_mijia.h"
+#include "fonts/DreamHanSerifCN_W17_Mijia_25.h"
 
 #define MIJIALV RGB565(25, 203, 139)
 
@@ -11,18 +12,18 @@ extern page_t page_clock;
 
 sw sws[] = {
 	{K1, "有人存在", "Sensor", 1, 2},  //K1作为人体存在传感器状态，同步米家，用于智能联动
-	{K5, "场景1", "K5Short", 1, 1},
-	{K5, "场景2", "K5Double", 2, 1},
-	{K5, "场景3", "K5Long", 3, 1},
-	{K6, "场景1", "K6Short", 1, 1},
-	{K6, "场景2", "K6Double", 2, 1},
-	{K6, "场景3", "K6Long", 3, 1},
-	{K7, "场景1", "K7Short", 1, 1},
-	{K7, "场景2", "K7Double", 2, 1},
-	{K7, "场景3", "K7Long", 3, 1},
-	{K2, "场景1", "K2Short", 1, 2},
-	{K3, "场景1", "K3Short", 1, 2},
-	{K4, "场景1", "K4Short", 1, 2},
+	{K5, "睡眠模式", "K5Short", 1, 1},
+	{K6, "关闭所有灯", "K6Short", 1, 1},
+	{K5, "情景1", "K5Double", 2, 1},
+	{K5, "情景2", "K5Long", 3, 1},
+	{K6, "情景3", "K6Double", 2, 1},
+	{K6, "情景4", "K6Long", 3, 1},
+	{K7, "情景5", "K7Short", 1, 1},
+	{K7, "情景6", "K7Double", 2, 1},
+	{K7, "情景7", "K7Long", 3, 1},
+	{K2, "开关2", "K2Short", 1, 2},
+	{K3, "开关3", "K3Short", 1, 2},
+	{K4, "开关4", "K4Short", 1, 2},
 	// {MIJIAKEY1_PIN, "场景4", "Scene10", 2, 1},
 	// {MIJIAKEY1_PIN, "场景4", "Scene11", 3, 1},
 	// {MIJIAKEY1_PIN, "场景4", "Scene12", 2, 1},
@@ -52,18 +53,20 @@ static void dispSwitch()
 		if (sws[(firstindex + i) % maxsw].type == 1) // 情景开关
 		{
 			gfx[i]->setTextColor(MIJIALV);
-			gfx[i]->setFont(&MiSans_Demibold_12);
-			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
+			gfx[i]->setUTF8Print(true);
+			gfx[i]->setFont(DreamHanSerifCN_W17_Mijia_25);
+			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_cn, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
-			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
+			gfx[i]->print(sws[(firstindex + i) % maxsw].name_cn);
 		}
 		else if (sws[(firstindex + i) % maxsw].type == 2) // 普通开关（显示开关状态）
 		{
 			gfx[i]->setTextColor(MIJIALV);
-			gfx[i]->setFont(&MiSans_Demibold_12);
-			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_en, 0, 0, &x1, &y1, &w, &h);
+			gfx[i]->setUTF8Print(true);
+			gfx[i]->setFont(DreamHanSerifCN_W17_Mijia_25);
+			gfx[i]->getTextBounds(sws[(firstindex + i) % maxsw].name_cn, 0, 0, &x1, &y1, &w, &h);
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, 40);
-			gfx[i]->print(sws[(firstindex + i) % maxsw].name_en);
+			gfx[i]->print(sws[(firstindex + i) % maxsw].name_cn);
 			if (sws[(firstindex + i) % maxsw].on)
 			{
 				myDrawPNG((OLED_WIDTH - 61) / 2, 70, "/mijia/on.png", i);
