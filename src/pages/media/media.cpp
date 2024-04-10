@@ -24,9 +24,7 @@ static void enter(void *data)
 	// {
 	// 	delay(20);
 	// }
- 
 
-	
 	// gfx[0]->setFont(u8g2_font_4x6_mr);
 	// gfx[0]->drawChar(0, 6, 'B', BLUE, BLACK);
 
@@ -42,7 +40,8 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
-	app_led_set(LED1, app_led_color(random(10,255), random(10,255), random(10,255)));app_led_update();
+		app_led_set(LED1, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
@@ -50,7 +49,8 @@ static void loop(void *data)
 		}
 		break;
 	case KEY2_DOWN:
-	app_led_set(LED2, app_led_color(random(10,255), random(10,255), random(10,255)));app_led_update();
+		app_led_set(LED2, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
@@ -58,7 +58,8 @@ static void loop(void *data)
 		}
 		break;
 	case KEY3_DOWN:
-	app_led_set(LED3, app_led_color(random(10,255), random(10,255), random(10,255)));app_led_update();
+		app_led_set(LED3, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
@@ -85,8 +86,8 @@ static void loop(void *data)
 		}
 		break;
 
-	case KEY4_LONG:				  //长按
-		manager_switchToParent(); //进入父项目 //退出
+	case KEY4_LONG:				  // 长按
+		manager_switchToParent(); // 进入父项目 //退出
 		break;
 	default:
 		break;
@@ -96,7 +97,7 @@ static void loop(void *data)
 static void exit(void *data)
 {
 	// insert code
-	
+
 	// bleKeyboard.end();
 	//
 	manager_setBusy(true);
