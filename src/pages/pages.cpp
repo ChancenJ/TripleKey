@@ -2,8 +2,6 @@
 #include "manager/manager.h"
 #include "board_def.h"
 #include "app/app_key.h"
-// #include "app/app_motion.h"
-// #include "app/app_batt.h"
 #include "app/app_timeout.h"
 
 
