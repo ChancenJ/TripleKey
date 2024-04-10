@@ -1,6 +1,7 @@
 #include "shortcut.h"
 #include "board_def.h"
 #include "app/app_key.h"
+#include "fonts/GillSansEN_Bold_12.h"
 
 typedef struct
 {
@@ -48,8 +49,7 @@ static void dispShortcut()
 				myDrawPNG(40, 0 + 30, sc[pageindex * 3 + i].imgpath, i);
 				gfx[i]->setTextSize(1);
 				gfx[i]->setTextColor(GREEN >> 1);
-				// gfx[0]->setFont(u8g2_font_10x20_mr);
-				gfx[i]->setFont(&Orbitron_Medium_12);
+				gfx[i]->setFont(&GillSansEN_Bold_12);
 				gfx[i]->getTextBounds(sc[pageindex * 3 + i].title, 0, 0, &x1, &y1, &w, &h);
 				gfx[i]->setCursor((OLED_WIDTH - w) / 2, 63 + 30);
 				gfx[i]->print(sc[pageindex * 3 + i].title);
@@ -58,8 +58,7 @@ static void dispShortcut()
 			{
 				gfx[i]->setTextSize(3);
 				gfx[i]->setTextColor(GREEN);
-				// gfx[0]->setFont(u8g2_font_10x20_mr);
-				gfx[i]->setFont(&Orbitron_Medium_12);
+				gfx[i]->setFont(&GillSansEN_Bold_12);
 				gfx[i]->getTextBounds(sc[pageindex * 3 + i].title, 0, 0, &x1, &y1, &w, &h);
 				gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
 				gfx[i]->print(sc[pageindex * 3 + i].title);

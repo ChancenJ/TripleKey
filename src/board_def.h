@@ -25,7 +25,6 @@
 #include "fonts/Orbitron_Light_24.h"
 #include "fonts/Orbitron_Medium_48.h"
 #include "fonts/Orbitron_Medium_16.h"
-#include "fonts/Orbitron_Medium_12.h"
 #include "fonts/Calligraffitti_Regular_12.h"
 #include "fonts/Coming_Soon_Regular_12.h"
 #include "fonts/MiSans_Demibold_12.h"

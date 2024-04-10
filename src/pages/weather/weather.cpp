@@ -12,7 +12,7 @@ void drawWeatherNow(weather_t *weather)
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 
-	gfx1->setFont(&Orbitron_Medium_12);
+	gfx1->setFont(&Orbitron_Medium_16);
 
 	char filepath[48];
 	sprintf(filepath, "/weather/white/%s@1x.png", weather->code_now);
@@ -80,7 +80,7 @@ static void init(void *data)
 		gfx2->fillScreen(BLACK);
 		gfx3->fillScreen(BLACK);
 
-		gfx1->setFont(&Orbitron_Medium_12);
+		gfx1->setFont(&Orbitron_Medium_16);
 
 		myDrawPNG(24, 0, "/weather/white/99@1x.png", 0);
 

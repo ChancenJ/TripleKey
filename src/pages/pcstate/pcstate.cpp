@@ -22,7 +22,7 @@ static void dispPCState()
 	char buffer[50];
 
 	// Draw some text with botttom right datum
-	gfx1->setFont(&Orbitron_Medium_12);
+	gfx1->setFont(&Orbitron_Medium_16);
 	gfx1->setCursor(0, 24);
 	gfx1->setTextColor(PC_LABLE_COLOR);
 	gfx1->print("CPU");
@@ -93,7 +93,7 @@ static void dispPCState()
 
 	// temp
 	// Draw some text with botttom right datum
-	gfx2->setFont(&Orbitron_Medium_12);
+	gfx2->setFont(&Orbitron_Medium_16);
 	gfx2->setCursor(0, 24);
 	gfx2->setTextColor(PC_LABLE_COLOR);
 	gfx2->print("TMP");
@@ -165,7 +165,7 @@ static void dispPCState()
 
 	// ram
 	// Draw some text with botttom right datum
-	gfx3->setFont(&Orbitron_Medium_12);
+	gfx3->setFont(&Orbitron_Medium_16);
 	gfx3->setCursor(0, 24);
 	gfx3->setTextColor(PC_LABLE_COLOR);
 	gfx3->print("RAM");
