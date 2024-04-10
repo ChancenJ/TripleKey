@@ -43,7 +43,7 @@ static void gotoWeb(const char *web)
  
 	bleKeyboard.releaseAll();
 	bleKeyboard.write(KEY_MEDIA_WWW_HOME);
-	delay(200);
+	delay(500);
 	bleKeyboard.println(web);
 	delay(200);
 

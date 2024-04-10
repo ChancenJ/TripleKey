@@ -21,7 +21,8 @@ shortcut_t sc[]=
 	{"paste", "/shortcut/paste_48px.png",{KEY_LEFT_CTRL,'v'},2},
 	{"select all", "/shortcut/select_all_48px.png",{KEY_LEFT_CTRL,'a'},2},
 	{"F5", NULL,{KEY_F5},1},
-	{"F6", NULL,{KEY_F5},1},
+	{"F6", NULL,{KEY_F6},1},
+	{"Home", NULL,{KEY_LEFT_GUI,'d'},2},
 
 
 };
