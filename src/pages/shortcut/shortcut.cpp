@@ -16,14 +16,15 @@ typedef struct
 
 shortcut_t sc[]=
 {
-	{"copy", "/shortcut/copy_48px.png",{KEY_LEFT_CTRL,'c'},2},
-	{"cut", "/shortcut/cut_48px.png",{KEY_LEFT_CTRL,'x'},2},
-	{"paste", "/shortcut/paste_48px.png",{KEY_LEFT_CTRL,'v'},2},
-	{"select all", "/shortcut/select_all_48px.png",{KEY_LEFT_CTRL,'a'},2},
-	{"F5", NULL,{KEY_F5},1},
-	{"F6", NULL,{KEY_F6},1},
-	{"Home", NULL,{KEY_LEFT_GUI,'d'},2},
-
+	{"Copy", "/shortcut/copy.png",{KEY_LEFT_CTRL,'c'},2},
+	{"Paste", "/shortcut/paste.png",{KEY_LEFT_CTRL,'v'},2},
+	{"Cut", "/shortcut/cut.png",{KEY_LEFT_CTRL,'x'},2},
+	{"Select All", "/shortcut/select_all.png",{KEY_LEFT_CTRL,'a'},2},
+	{"Desktop", "/shortcut/desktop.png",{KEY_LEFT_GUI,'d'},2},
+	{"Switch", "/shortcut/switch_windows.png",{KEY_LEFT_ALT,KEY_TAB},2},
+	{"Undo", "/shortcut/undo.png",{KEY_LEFT_CTRL,'z'},2},
+	{"F5", "/shortcut/refresh.png",{KEY_F5},1},
+	
 
 };
 
