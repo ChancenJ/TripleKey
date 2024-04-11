@@ -15,7 +15,7 @@ StockInfo stocks[] = {
 	StockInfo("半导体ETF", "sh512480"),
 	StockInfo("中证消费", "sh000932"),
 	StockInfo("中证军工", "sz399967"),
-	//StockInfo("中证银行", "sz399986"),
+	// StockInfo("中证银行", "sz399986"),
 	StockInfo("新能源车LOF", "sz161028"),
 };
 
@@ -24,8 +24,8 @@ static const uint8_t maxstocks = sizeof(stocks) / sizeof(StockInfo);
 static unsigned long lastUpdateTime;
 static unsigned long lastScrollTime;
 
-static uint8_t brightness;  //呼吸灯亮度
-static uint8_t lighttend;  //呼吸灯变化趋势，0为变亮，1为变暗
+static uint8_t brightness; // 呼吸灯亮度
+static uint8_t lighttend;  // 呼吸灯变化趋势，0为变亮，1为变暗
 static unsigned long lastBreatheTime;
 
 static int8_t pageindex;
@@ -35,8 +35,7 @@ static int8_t firstgot; // 首次是否已获取数据
 static unsigned long lastTimeUpdateTime;
 char timestr[20];
 char datastr[40];
-String weekdaystr[7]={"星期日","星期一","星期二","星期三","星期四","星期五","星期六",};
-
+String weekdaystr[7] = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六",};
 
 void dispStocks()
 {
@@ -46,7 +45,7 @@ void dispStocks()
 	uint16_t h;
 	for (uint8_t i = 0; i < 3; i++)
 	{
-		gfx[i]->fillRect(0,26,128,102,BLACK);
+		gfx[i]->fillRect(0, 26, 128, 102, BLACK);
 		gfx[i]->setUTF8Print(true);
 		if ((pageindex * 3 + i) < maxstocks)
 		{
@@ -54,9 +53,12 @@ void dispStocks()
 			gfx[i]->setFont(DreamHanSerifCN_W15_21);
 			gfx[i]->setTextColor(color);
 			gfx[i]->setCursor(5, 120);
-			if(stocks[pageindex * 3 + i].difference.toFloat() > 0){
+			if (stocks[pageindex * 3 + i].difference.toFloat() > 0)
+			{
 				gfx[i]->print("▲");
-			}else if(stocks[pageindex * 3 + i].difference.toFloat() < 0){
+			}
+			else if (stocks[pageindex * 3 + i].difference.toFloat() < 0)
+			{
 				gfx[i]->print("▼");
 			}
 			gfx[i]->getTextBounds(stocks[pageindex * 3 + i].name, 0, 0, &x1, &y1, &w, &h);
@@ -84,23 +86,25 @@ void dispTime()
 	sprintf(timestr, "%02d:%02d:%02d", timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec);
 	gfx[2]->getTextBounds(timestr, 0, 0, &x1, &y1, &w, &h);
 	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 22);
-	gfx[2]->fillRect(0,0,128,26,QINGSHUILAN);
+	gfx[2]->fillRect(0, 0, 128, 26, QINGSHUILAN);
 	gfx[2]->print(timestr);
 }
-void dispDate(){
+void dispDate()
+{
 	int16_t x1;
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
 	gfx[0]->setTextColor(BLUE);
 	gfx[0]->setFont(&MiSans_Demibold_12);
-	sprintf(datastr, "%d-%d-%d", timeInfo.tm_year+1900, timeInfo.tm_mon+1, timeInfo.tm_mday);
+	sprintf(datastr, "%d-%d-%d", timeInfo.tm_year + 1900, timeInfo.tm_mon + 1, timeInfo.tm_mday);
 	gfx[0]->getTextBounds(datastr, 0, 0, &x1, &y1, &w, &h);
 	gfx[0]->setCursor((OLED_WIDTH - w) / 2, 22);
-	gfx[0]->fillRect(0,0,128,26,QINGSHUILAN);
+	gfx[0]->fillRect(0, 0, 128, 26, QINGSHUILAN);
 	gfx[0]->print(datastr);
 }
-void dispWeekday(){
+void dispWeekday()
+{
 	int16_t x1;
 	int16_t y1;
 	uint16_t w;
@@ -110,7 +114,7 @@ void dispWeekday(){
 	gfx[1]->setFont(DreamHanSerifCN_W17_21);
 	gfx[1]->getTextBounds(weekdaystr[timeInfo.tm_wday], 0, 0, &x1, &y1, &w, &h);
 	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 22);
-	gfx[1]->fillRect(0,0,128,26,QINGSHUILAN);
+	gfx[1]->fillRect(0, 0, 128, 26, QINGSHUILAN);
 	gfx[1]->print(weekdaystr[timeInfo.tm_wday]);
 }
 
@@ -129,18 +133,22 @@ void Scroll() // 轮播股票
 	}
 }
 
-void BreatheLight(uint8_t brigthness){
-	for(int i=0;i<3;i++){
-		if(stocks[pageindex * 3 + i].difference.toFloat()>0){
-			app_led_set(2-i,app_led_color(0x70, 0x00, 0x00));
-		}else if(stocks[pageindex * 3 + i].difference.toFloat()<0){
-			app_led_set(2-i, app_led_color(0, 0x70, 0));
+void BreatheLight(uint8_t brigthness)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (stocks[pageindex * 3 + i].difference.toFloat() > 0)
+		{
+			app_led_set(2 - i, app_led_color(0x70, 0x00, 0x00));
+		}
+		else if (stocks[pageindex * 3 + i].difference.toFloat() < 0)
+		{
+			app_led_set(2 - i, app_led_color(0, 0x70, 0));
 		}
 	}
 	app_led_brightness(brigthness);
 	app_led_update();
 }
-
 
 static void init(void *data)
 {
@@ -168,8 +176,8 @@ static void enter(void *data)
 
 	lastScrollTime = millis();
 	lastBreatheTime = millis();
-	brightness=200;
-	lighttend=1;
+	brightness = 200;
+	lighttend = 1;
 
 	lastTimeUpdateTime = millis();
 	if (getLocalTime(&timeInfo))
@@ -178,40 +186,54 @@ static void enter(void *data)
 		dispDate();
 		dispWeekday();
 	}
-	
+
 	//
 	manager_setBusy(false);
 }
 
 static void loop(void *data)
 {
-	if (millis() - lastTimeUpdateTime >= 1000)  //更新时间
+	if (millis() - lastTimeUpdateTime >= 1000) // 更新时间
 	{
 		if (getLocalTime(&timeInfo))
 		{
 			dispTime();
-			if(timeInfo.tm_hour==0&&timeInfo.tm_min==0){
+			if (timeInfo.tm_hour == 0 && timeInfo.tm_min == 0)
+			{
 				dispDate();
 				dispWeekday();
 			}
 		}
-		lastTimeUpdateTime=millis();
+		lastTimeUpdateTime = millis();
 	}
 
-	if(millis()-lastBreatheTime>=40){  //呼吸灯
-		if(lighttend==0){
+	if (millis() - lastBreatheTime >= 40)  // 呼吸灯
+	{ 
+		if (lighttend == 0)
+		{
 			brightness++;
-			if(brightness==255){
-				lighttend=1;
-			}
-		}else if(lighttend==1){
-			brightness--;
-			if(brightness==0){
-				lighttend=0;
+			if (brightness == 255)
+			{
+				lighttend = 1;
 			}
 		}
+		else if (lighttend == 1)
+		{
+			brightness--;
+			if (brightness == 0)
+			{
+				lighttend = 0;
+			}
+		}
+#ifdef SUPPORT_HumanSensor
+		if (HumanState == 1)
+		{
+			BreatheLight(brightness);
+		}
+#else
 		BreatheLight(brightness);
-		lastBreatheTime=millis();
+#endif
+		lastBreatheTime = millis();
 	}
 
 	if (millis() - lastUpdateTime >= 2 * 60 * 1000) // 限制请求频率
@@ -254,7 +276,7 @@ static void loop(void *data)
 		}
 		dispStocks();
 		break;
-	case KEY4_LONG:				  // 长按
+	case KEY4_LONG: // 长按
 		app_led_off();
 		app_led_brightness(255);
 		manager_switchToParent(); // 进入父项目 //退出

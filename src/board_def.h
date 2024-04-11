@@ -72,6 +72,7 @@ extern Button2 button1, button2, button3, button4;
 extern Encoder myEnc;
 
 extern DFRobot_CH423 ch423;
+extern uint8_t HumanState;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);

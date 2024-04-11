@@ -77,6 +77,8 @@ int16_t w, h, xOffset, yOffset;
 // Functions to access a file on the SD card
 File pngFile;
 
+uint8_t HumanState;
+
 void *myOpen(const char *filename, int32_t *size)
 {
 
@@ -339,6 +341,7 @@ void board_init()
 
     pinMode(BUTTON3_PIN, INPUT);
 
+    HumanState=1;
 
 #ifdef SUPPORT_PCF8574
     Wire.begin(SDA_PIN, SCL_PIN);  // 初始化I2C总线，指定SDA和SCL引脚

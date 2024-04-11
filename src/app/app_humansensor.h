@@ -9,5 +9,6 @@ extern sw sws[];
 
 uint8_t getHumanSensorState();
 void Mijia_UpdateHumanState();
+void Screen_Control_by_HumanSensor();
 
 #endif
