@@ -38,6 +38,7 @@
 #include "fonts/DouyinSansBoldCN_Weather_38.h"
 
 #include  "app/app_led.h"
+#include "app/app_humansensor.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
 #define VER_SW "0.3.0"

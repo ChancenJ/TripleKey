@@ -415,6 +415,8 @@ void board_init()
         Serial.println("failed to mount FS");
     }
 
+    Mijia_UpdateHumanState();
+
     myDrawPNG(0, 0, "/TRI.png", 0);
     myDrawPNG(0, 0, "/PLE.png", 1);
     myDrawPNG(0, 0, "/KEY.png", 2);

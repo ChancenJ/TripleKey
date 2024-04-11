@@ -2,7 +2,6 @@
 #include "manager/manager.h"
 #include "app/app_key.h"
 #include "app/app_pc.h"
-#include "app/app_humansensor.h"
 //#include "app/app_weather.h"
 
 void setup()
