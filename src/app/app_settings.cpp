@@ -1,6 +1,8 @@
 #include "app_settings.h"
 
-
+const char *stocks_path = "/config_stocks.txt";
+const char *mijia_path = "/config_mijia.txt";
+const char *web_path = "/config_web.txt";
 
 String readConfig(const char *config_path)
 {
@@ -23,7 +25,8 @@ String readConfig(const char *config_path)
 void handleRoot(AsyncWebServerRequest *request)
 {
     // 读取配置文件中的默认值
-    String stocksConfig = readConfig("/config_stocks.txt");
+    String stocksConfig = readConfig(stocks_path);
+    String mijiaConfig = readConfig(mijia_path);
 
     // 创建HTML表单页面
     String page = "<html> \
@@ -40,12 +43,23 @@ void handleRoot(AsyncWebServerRequest *request)
 	<body>\
 	<h1>TripleKey 设置</h1>\
 	<form accept-charset=\"UTF-8\" method=\"post\" action=\"/config\"> \
+    <div> \
 	<p>实时股票配置（每行格式：名称,ID）:</p> \
     <p>例：上证指数,sh000001（沪市加sh，深市加sz）</p> \
     <textarea name=\"stocksConfig\" rows=\"10\" cols=\"50\" >" +
-                 stocksConfig+
+                  stocksConfig +
                   "</textarea>\n \
-	<input type=\"submit\" value=\"保存\">\
+    </div> \
+    <div> \
+    <p>米家配置（每行格式：）:</p> \
+    <p>例：上证指数,sh000001（沪市加sh，深市加sz）</p> \
+    <textarea name=\"mijiaConfig\" rows=\"16\" cols=\"50\" >" +
+                  mijiaConfig +
+                  "</textarea>\n \
+    </div> \
+    <div> \
+    <input type=\"submit\" value=\"保存\">\n \
+    </div> \
 	</form>\
 	</body>\
 	</html>";

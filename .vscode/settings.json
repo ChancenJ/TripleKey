@@ -22,6 +22,7 @@
         "initializer_list": "cpp",
         "functional": "cpp",
         "tuple": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "cstdlib": "cpp"
     }
 }
