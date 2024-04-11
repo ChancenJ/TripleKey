@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "board_def.h"
 #include "app/app_key.h"
+#include "app/app_settings.h"
 
 // 定义配置文件名
 const char *CONFIG_FILE = "/configstock.json";
@@ -29,31 +30,6 @@ void createNewConfigFile()
 	Serial.println("New config file created.");
 }
 
-void readConfig()
-{
-	File configFile = LittleFS.open(CONFIG_FILE, "r");
-	if (configFile)
-	{
-		
-		// Allocate a buffer to store contents of the file.
-		String fileContent = configFile.readString();
-
-		
-		// 读取文件内容并解析参数
-		DynamicJsonDocument doc(1024);
-		
-		deserializeJson(doc, fileContent);
-		serializeJson(doc, Serial);
-		configData1 = doc["param1"].as<String>();
-		configData2 = doc["param2"].as<String>();
-		configData3 = doc["param3"].as<String>();
-		configFile.close();
-	}
-	else
-	{
-		Serial.println("Failed to open config file for reading.");
-	}
-}
 
 void saveConfig(String param1, String param2, String param3)
 {
@@ -71,36 +47,32 @@ void saveConfig(String param1, String param2, String param3)
 	doc["param3"] = param3;
 	serializeJson(doc, Serial);
 	String jsonStr;
-  	serializeJson(doc, jsonStr);
+	serializeJson(doc, jsonStr);
 	configFile.print(jsonStr);
 	configFile.close();
 	Serial.println("Config saved.");
 }
 
 // 处理根路由，返回配置页面
-void handleRoot(AsyncWebServerRequest *request)
-{
-	// 读取配置文件中的默认值
-	readConfig();
 
-	// 创建HTML表单页面
-	String page = "<html><head><meta charset=\"UTF-8\"><title>TripleKey设置</title></head><body><h1>TripleKey 设置</h1><form accept-charset=\"UTF-8\" method=\"post\" action=\"/config\"><p>Parameter 1: <input type=\"text\" name=\"param1\" value=\"" + configData1 + "\"></p><p>Parameter 2: <input type=\"text\" name=\"param2\" value=\"" + configData2 + "\"></p><p>Parameter 3: <input type=\"text\" name=\"param3\" value=\"" + configData3 + "\"></p><input type=\"submit\" value=\"保存\"></form></body></html>";
-	request->send(200, "text/html", page);
-}
+	// <p>股票: <input type=\"text\" name=\"param1\" class=\"custom-input\" value=\"" +
+	// 			  configData1 + "\"></p>\
+	// <p>米家: <input type=\"text\" name=\"param2\" value=\"" +
+	// 			  configData2 + "\"></p>\
+	// <p>天气: <input type=\"text\" name=\"param3\" value=\"" +
+	// 			  configData3 + "\"></p>\
 
 // 处理配置提交
 void handleConfigPost(AsyncWebServerRequest *request)
 {
 	// 从表单中获取输入值
-	String param1 = request->arg("param1");
-	String param2 = request->arg("param2");
-	String param3 = request->arg("param3");
-
-	
+	String param1 = request->arg("stocksConfig");
 	Serial.println(param1);
 
+
+	
 	// 保存配置
-	saveConfig(param1, param2, param3);
+	//saveConfig(param1, param2, param3);
 
 	// 返回成功消息
 	request->send(200, "text/html", "Configuration saved successfully.");
@@ -111,8 +83,6 @@ void notFoundHandler(AsyncWebServerRequest *request)
 {
 	request->send(404, "text/html", "404: Page not found");
 }
-
-
 
 static void init(void *data)
 {
@@ -143,16 +113,14 @@ static void enter(void *data)
 	}
 	Serial.println("LittleFS mounted");
 
-	// 检查配置文件是否存在，如果不存在则创建
-	File configFile = LittleFS.open(CONFIG_FILE, "r");
-	if (!configFile)
-	{
-		Serial.println("Config file not found, creating new one.");
-		createNewConfigFile();
-	}
+	// // 检查配置文件是否存在，如果不存在则创建
+	// File configFile = LittleFS.open(CONFIG_FILE, "r");
+	// if (!configFile)
+	// {
+	// 	Serial.println("Config file not found, creating new one.");
+	// 	createNewConfigFile();
+	// }
 
-	// 读取配置文件中的默认值
-	readConfig();
 
 	// 设置Web服务器的路由
 	server.on("/", HTTP_GET, handleRoot);
@@ -189,7 +157,6 @@ static void loop(void *data)
 static void exit(void *data)
 {
 	// insert code
-	server.end();
 	//
 	manager_setBusy(true);
 }
@@ -200,7 +167,7 @@ page_t page_settings = {
 	.enter = enter,
 	.exit = exit,
 	.loop = loop,
-	.title_en = "settings",
+	.title_en = "Settings",
 	.title_cn = "设置",
 	.icon = img_bits,
 	.icon_width = img_width,
