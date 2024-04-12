@@ -17,7 +17,7 @@ static void gotoConfig()
 	String url= WiFi.localIP().toString();
 	bleKeyboard.releaseAll();
 	bleKeyboard.write(KEY_MEDIA_WWW_HOME);
-	delay(500);
+	delay(800);
 	bleKeyboard.println(url);
 	delay(200);
 	bleKeyboard.write(KEY_DELETE);
