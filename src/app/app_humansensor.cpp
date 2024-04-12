@@ -45,12 +45,14 @@ void Screen_Control_by_HumanSensor()
             gfx1->displayOff();
             gfx2->displayOff();
             gfx3->displayOff();
+            digitalWrite(PIN_BL, 0);
             app_led_off();
             Serial.println("无人关闭屏幕");
             delay(200);
         }
         else
         {
+            digitalWrite(PIN_BL, 1);
             gfx1->displayOn();
             gfx2->displayOn();
             gfx3->displayOn();
