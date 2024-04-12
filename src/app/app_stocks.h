@@ -1,5 +1,5 @@
-#ifndef StocksPage_H
-#define StocksPage_H
+#ifndef APP_STOCKS__H
+#define APP_STOCKS__H
 
 #include <Arduino.h>
 #include <ArduinoJson.h>

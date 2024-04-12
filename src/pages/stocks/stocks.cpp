@@ -3,24 +3,25 @@
 #include "app/app_key.h"
 #include "app/app_stocks.h"
 
-StockInfo stocks[] = {
-	StockInfo("上证指数", "sh000001"),
-	StockInfo("深证成指", "sz399001"),
-	StockInfo("创业板指", "sz399006"),
-	StockInfo("中证白酒", "sz399997"),
-	StockInfo("中证医疗", "sz399989"),
-	StockInfo("科创100", "sh000698"),
-	StockInfo("科创50", "sh000688"),
-	StockInfo("沪深300", "sz399300"),
-	StockInfo("半导体ETF", "sh512480"),
-	StockInfo("中证消费", "sh000932"),
-	StockInfo("中证军工", "sz399967"),
-	// StockInfo("中证银行", "sz399986"),
-	StockInfo("新能源车LOF", "sz161028"),
-};
+// StockInfo stocks[] = {
+// 	StockInfo("上证指数", "sh000001"),
+// 	StockInfo("深证成指", "sz399001"),
+// 	StockInfo("创业板指", "sz399006"),
+// 	StockInfo("中证白酒", "sz399997"),
+// 	StockInfo("中证医疗", "sz399989"),
+// 	StockInfo("科创100", "sh000698"),
+// 	StockInfo("科创50", "sh000688"),
+// 	StockInfo("沪深300", "sz399300"),
+// 	StockInfo("半导体ETF", "sh512480"),
+// 	StockInfo("中证消费", "sh000932"),
+// 	StockInfo("中证军工", "sz399967"),
+// 	// StockInfo("中证银行", "sz399986"),
+// 	StockInfo("新能源车LOF", "sz161028"),
+// };
 
-static const uint8_t maxstocks = sizeof(stocks) / sizeof(StockInfo);
+// static const uint8_t maxstocks = sizeof(stocks) / sizeof(StockInfo);
 
+static uint8_t maxstocks = stocks.size();
 static unsigned long lastUpdateTime;
 static unsigned long lastScrollTime;
 
@@ -35,7 +36,15 @@ static int8_t firstgot; // 首次是否已获取数据
 static unsigned long lastTimeUpdateTime;
 char timestr[20];
 char datastr[40];
-String weekdaystr[7] = {"星期日","星期一","星期二","星期三","星期四","星期五","星期六",};
+String weekdaystr[7] = {
+	"星期日",
+	"星期一",
+	"星期二",
+	"星期三",
+	"星期四",
+	"星期五",
+	"星期六",
+};
 
 void dispStocks()
 {
@@ -137,13 +146,16 @@ void BreatheLight(uint8_t brigthness)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if (stocks[pageindex * 3 + i].difference.toFloat() > 0)
+		if ((pageindex * 3 + i) < maxstocks)
 		{
-			app_led_set(2 - i, app_led_color(0x70, 0x00, 0x00));
-		}
-		else if (stocks[pageindex * 3 + i].difference.toFloat() < 0)
-		{
-			app_led_set(2 - i, app_led_color(0, 0x70, 0));
+			if (stocks[pageindex * 3 + i].difference.toFloat() > 0)
+			{
+				app_led_set(2 - i, app_led_color(0x70, 0x00, 0x00));
+			}
+			else if (stocks[pageindex * 3 + i].difference.toFloat() < 0)
+			{
+				app_led_set(2 - i, app_led_color(0, 0x70, 0));
+			}
 		}
 	}
 	app_led_brightness(brigthness);
@@ -152,8 +164,8 @@ void BreatheLight(uint8_t brigthness)
 
 static void init(void *data)
 {
+	maxstocks = stocks.size();
 	lastUpdateTime = millis(); // 重置时间
-
 	pageindex = 0;
 	index_num = (maxstocks % 3 == 0) ? (maxstocks / 3) : (maxstocks / 3 + 1);
 	firstgot = 0;
@@ -207,8 +219,8 @@ static void loop(void *data)
 		lastTimeUpdateTime = millis();
 	}
 
-	if (millis() - lastBreatheTime >= 40)  // 呼吸灯
-	{ 
+	if (millis() - lastBreatheTime >= 40) // 呼吸灯
+	{
 		if (lighttend == 0)
 		{
 			brightness++;

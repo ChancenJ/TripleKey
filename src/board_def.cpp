@@ -8,6 +8,8 @@ AsyncWebServer server(80);
 
 char stored_weather_key[40];
 char stored_weather_city[40];
+std::vector<StockInfo> stocks;
+std::vector<MijiaSwitch> sws;
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
@@ -560,7 +562,12 @@ void board_init()
 
     gfx3->setCursor(0, 7);
 
-    gfx3->print("time updating"); // 显示连接WIFI后的IP地址
+    gfx3->println("Config reading");
+    AnalyzeStocksConfig();
+    sws.push_back(MijiaSwitch(K1,"有人存在","Sensor",1,2));  //固定KEY1用于人在传感器显示有人无人
+    AnalyzeMijiaConfig();
+
+    gfx3->print("time updating");
     configTime(8 * 3600, 0, NTP1, NTP2, NTP3);
     while (!getLocalTime(&timeInfo))
     {

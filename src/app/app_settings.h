@@ -13,4 +13,10 @@ void handleRoot(AsyncWebServerRequest *request);
 void handleConfigPost(AsyncWebServerRequest *request);
 void notFoundHandler(AsyncWebServerRequest *request);
 
+std::vector<String> SplitString(String origin, char flag);
+void AnalyzeStocksConfig();
+void AnalyzeMijiaConfig();
+
+
+
 #endif

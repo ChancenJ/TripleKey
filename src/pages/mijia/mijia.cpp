@@ -10,30 +10,24 @@ static uint32_t lastUpdateTime;
 
 extern page_t page_clock;
 
-sw sws[] = {
-	{K1, "有人存在", "Sensor", 1, 2},  //K1作为人体存在传感器状态，同步米家，用于智能联动
-	{K5, "睡眠模式", "K5Short", 1, 1},
-	{K6, "关闭所有灯", "K6Short", 1, 1},
-	{K5, "情景1", "K5Double", 2, 1},
-	{K5, "情景2", "K5Long", 3, 1},
-	{K6, "情景3", "K6Double", 2, 1},
-	{K6, "情景4", "K6Long", 3, 1},
-	{K7, "情景5", "K7Short", 1, 1},
-	{K7, "情景6", "K7Double", 2, 1},
-	{K7, "情景7", "K7Long", 3, 1},
-	{K2, "开关2", "K2Short", 1, 2},
-	{K3, "开关3", "K3Short", 1, 2},
-	{K4, "开关4", "K4Short", 1, 2},
-	// {MIJIAKEY1_PIN, "场景4", "Scene10", 2, 1},
-	// {MIJIAKEY1_PIN, "场景4", "Scene11", 3, 1},
-	// {MIJIAKEY1_PIN, "场景4", "Scene12", 2, 1},
-	// {MIJIAKEY1_PIN, "开关1", "Switch1", 1, 2},
-	// {MIJIAKEY1_PIN, "开关2", "Switch2", 1, 2},
-	// {MIJIAKEY1_PIN, "开关3", "Switch3", 1, 2},
-	// {MIJIAKEY1_PIN, "开关4", "Switch4", 1, 2},
-};
+// MijiaSwitch sws[] = {
+// 	{K1, "有人存在", "Sensor", 1, 2},  //K1作为人体存在传感器状态，同步米家，用于智能联动
+// 	{K5, "睡眠模式", "K5Short", 1, 1},
+// 	{K6, "关闭所有灯", "K6Short", 1, 1},
+// 	{K5, "情景1", "K5Double", 2, 1},
+// 	{K5, "情景2", "K5Long", 3, 1},
+// 	{K6, "情景3", "K6Double", 2, 1},
+// 	{K6, "情景4", "K6Long", 3, 1},
+// 	{K7, "情景5", "K7Short", 1, 1},
+// 	{K7, "情景6", "K7Double", 2, 1},
+// 	{K7, "情景7", "K7Long", 3, 1},
+// 	{K2, "开关2", "K2Short", 1, 2},
+// 	{K3, "开关3", "K3Short", 1, 2},
+// 	{K4, "开关4", "K4Short", 1, 2},
+// };
 
-static const uint8_t maxsw = sizeof(sws) / sizeof(sw);
+// static const uint8_t maxsw = sizeof(sws) / sizeof(MijiaSwitch);
+static uint8_t maxsw = sws.size();
 
 static int8_t firstindex;
 
@@ -48,7 +42,7 @@ static void dispSwitch()
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 
-	for (uint8_t i = 0; i < 3; i++)
+	for (uint8_t i = 0; i < (maxsw < 3 ? maxsw : 3); i++)
 	{
 		if (sws[(firstindex + i) % maxsw].type == 1) // 情景开关
 		{
@@ -113,6 +107,7 @@ void UpdateState()
 
 static void init(void *data)
 {
+	maxsw = sws.size();
 	firstindex = 0;
 	Serial.println(maxsw);
 	lastUpdateTime = millis();
@@ -131,13 +126,6 @@ static void loop(void *data)
 {
 	if (millis() - lastUpdateTime >= 500)
 	{
-	// 	uint8_t tempon=sws[0].on;
-	// 	uint8_t on = app_mijia_get(7);
-	// 	lastUpdateTime = millis();
-	// 	if(on!=tempon){
-	// 		sws[0].on=on;
-	// 		dispUpdateState(0);
-	// 	}
 		UpdateState();
 		lastUpdateTime = millis();
 	}

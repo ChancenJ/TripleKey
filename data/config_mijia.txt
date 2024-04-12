@@ -1,4 +1,3 @@
-K1,有人存在,Sensor,1,2
 K5,睡眠模式,K5Short,1,1
 K6,关闭所有灯,K6Short,1,1
-K2,开关2,K2Short,1,2
+K2,吸顶灯,K2Short,1,2

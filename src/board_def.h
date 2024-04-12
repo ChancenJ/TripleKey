@@ -1,6 +1,8 @@
 #ifndef __BOARD_DEF_H
 #define __BOARD_DEF_H
 
+#include <vector>
+
 #include <WiFi.h>
 #include <BleKeyboard.h>
 #include <U8g2lib.h>
@@ -37,8 +39,9 @@
 #include "fonts/MiSans_Regular45pt_num.h"
 #include "fonts/DouyinSansBoldCN_Weather_38.h"
 
-#include  "app/app_led.h"
+#include "app/app_led.h"
 #include "app/app_humansensor.h"
+#include "app/app_settings.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
 #define VER_SW "0.3.0"
@@ -74,6 +77,11 @@ extern Encoder myEnc;
 
 extern DFRobot_CH423 ch423;
 extern uint8_t HumanState;
+
+struct StockInfo;
+struct MijiaSwitch;
+extern std::vector<StockInfo> stocks;
+extern std::vector<MijiaSwitch> sws;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);
