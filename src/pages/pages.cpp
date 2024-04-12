@@ -95,7 +95,7 @@ static void enter(void *data)
             gfx[i]->printf("%d\r\n", page_index + i);
 
             
-            gfx[i]->setFont(MiSans_Demibold_25);
+            gfx[i]->setFont(Guangliang_Title_26);
             gfx[i]->getTextBounds(pages[page_index + i]->title_cn, 0, 0, &x1, &y1, &w, &h);
             Serial.printf("%d %d %d %d\r\n",x1,y1,w,h);
 	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
@@ -143,7 +143,7 @@ static void switchevent()
             gfx[i]->printf("%d\r\n", page_index + i);
 
              
-            gfx[i]->setFont(MiSans_Demibold_25);
+            gfx[i]->setFont(Guangliang_Title_26);
             gfx[i]->getTextBounds(pages[page_index + i]->title_cn, 0, 0, &x1, &y1, &w, &h);
 	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
             gfx[i]->printf("%s", pages[page_index + i]->title_cn);

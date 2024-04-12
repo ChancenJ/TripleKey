@@ -3,16 +3,27 @@
 #include "app/app_key.h"
 #include "app/app_settings.h"
 
+void dispInfo(){
+	gfx[0]->fillScreen(BLACK);
+	gfx[0]->setFont(u8g2_font_6x10_mr);
+	gfx[0]->setTextColor(QINGSHUILAN);
+	gfx[0]->setCursor(0,10);
+	gfx[0]->println("Enter the URL:");
+	gfx[0]->println(WiFi.localIP());
+}
 
-// 处理根路由，返回配置页面
-
-	// <p>股票: <input type=\"text\" name=\"param1\" class=\"custom-input\" value=\"" +
-	// 			  configData1 + "\"></p>\
-	// <p>米家: <input type=\"text\" name=\"param2\" value=\"" +
-	// 			  configData2 + "\"></p>\
-	// <p>天气: <input type=\"text\" name=\"param3\" value=\"" +
-	// 			  configData3 + "\"></p>\
-
+static void gotoConfig()
+{
+	String url= WiFi.localIP().toString();
+	bleKeyboard.releaseAll();
+	bleKeyboard.write(KEY_MEDIA_WWW_HOME);
+	delay(500);
+	bleKeyboard.println(url);
+	delay(200);
+	bleKeyboard.write(KEY_DELETE);
+	delay(200);
+	bleKeyboard.write(KEY_RETURN); //回车
+}
 
 static void init(void *data)
 {
@@ -25,32 +36,22 @@ static void enter(void *data)
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-	gfx1->setUTF8Print(true);
-	dispProcessing(1);
 	while (WiFi.status() != WL_CONNECTED)
 	{
 		delay(500);
 	}
+	dispInfo();
 	Serial.println("");
 	Serial.print("Connected to WiFi. IP address: ");
 	Serial.println(WiFi.localIP());
 
-	// 挂载LittleFS文件系统
-	if (!LittleFS.begin())
-	{
-		Serial.println("LittleFS mount failed");
-		return;
-	}
-	Serial.println("LittleFS mounted");
-
-	// // 检查配置文件是否存在，如果不存在则创建
-	// File configFile = LittleFS.open(CONFIG_FILE, "r");
-	// if (!configFile)
+	// // 挂载LittleFS文件系统
+	// if (!LittleFS.begin())
 	// {
-	// 	Serial.println("Config file not found, creating new one.");
-	// 	createNewConfigFile();
+	// 	Serial.println("LittleFS mount failed");
+	// 	return;
 	// }
-
+	// Serial.println("LittleFS mounted");
 
 	// 设置Web服务器的路由
 	server.on("/", HTTP_GET, handleRoot);
@@ -72,7 +73,7 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
-
+		gotoConfig();
 		break;
 
 	case KEY4_LONG:				  // 长按
