@@ -22,6 +22,21 @@ String readConfig(const char *config_path)
     return fileContent;
 }
 
+void saveConfig(const char *config_path, String config_content)
+{
+    File configFile = LittleFS.open(config_path, "w");
+    if (configFile)
+    {
+        configFile.print(config_content);
+        configFile.close();
+        Serial.printf("%s保存成功\n", config_path);
+    }
+    else
+    {
+        Serial.printf("%s不存在，写入失败\n", config_path);
+    }
+}
+
 void handleRoot(AsyncWebServerRequest *request)
 {
     // 读取配置文件中的默认值
@@ -65,3 +80,37 @@ void handleRoot(AsyncWebServerRequest *request)
 	</html>";
     request->send(200, "text/html", page);
 }
+
+void handleConfigPost(AsyncWebServerRequest *request)
+{
+	// 从表单中获取输入值
+	String stocksConfig = request->arg("stocksConfig");
+    String mijiaConfig = request->arg("mijiaConfig");
+	Serial.println(stocksConfig);
+    Serial.println(mijiaConfig);
+	// 保存配置
+	saveConfig(stocks_path, stocksConfig);
+    saveConfig(mijia_path, mijiaConfig);
+
+    String page = "<html> \
+	<head>\
+	<meta charset=\"UTF-8\">\
+	<title>TripleKey设置</title>\
+	</head>\
+    <body>\
+    <p>已保存</p> \
+    </body>\
+	</html>";
+
+	// 返回成功消息
+	request->send(200, "text/html", page);
+}
+
+// 处理未找到的路由
+void notFoundHandler(AsyncWebServerRequest *request)
+{
+	request->send(404, "text/html", "404: Page not found");
+}
+
+
+

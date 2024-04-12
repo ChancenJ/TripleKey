@@ -3,55 +3,6 @@
 #include "app/app_key.h"
 #include "app/app_settings.h"
 
-// 定义配置文件名
-const char *CONFIG_FILE = "/configstock.json";
-
-// 定义全局变量用于存储配置参数
-String configData1 = "";
-String configData2 = "";
-String configData3 = "";
-
-void createNewConfigFile()
-{
-	DynamicJsonDocument doc(1024);
-	doc["param1"] = "上证指数";
-	doc["param2"] = "default_value2";
-	doc["param3"] = "default_value3";
-
-	File configFile = LittleFS.open(CONFIG_FILE, "w");
-	if (!configFile)
-	{
-		Serial.println("Failed to open config file for writing.");
-		return;
-	}
-	serializeJson(doc, Serial);
-	serializeJson(doc, configFile);
-	configFile.close();
-	Serial.println("New config file created.");
-}
-
-
-void saveConfig(String param1, String param2, String param3)
-{
-	Serial.println("Saving config file...");
-	File configFile = LittleFS.open(CONFIG_FILE, "w");
-	if (!configFile)
-	{
-		Serial.println("Failed to open config file for writing.");
-		return;
-	}
-
-	DynamicJsonDocument doc(1024);
-	doc["param1"] = param1;
-	doc["param2"] = param2;
-	doc["param3"] = param3;
-	serializeJson(doc, Serial);
-	String jsonStr;
-	serializeJson(doc, jsonStr);
-	configFile.print(jsonStr);
-	configFile.close();
-	Serial.println("Config saved.");
-}
 
 // 处理根路由，返回配置页面
 
@@ -62,27 +13,6 @@ void saveConfig(String param1, String param2, String param3)
 	// <p>天气: <input type=\"text\" name=\"param3\" value=\"" +
 	// 			  configData3 + "\"></p>\
 
-// 处理配置提交
-void handleConfigPost(AsyncWebServerRequest *request)
-{
-	// 从表单中获取输入值
-	String param1 = request->arg("stocksConfig");
-	Serial.println(param1);
-
-
-	
-	// 保存配置
-	//saveConfig(param1, param2, param3);
-
-	// 返回成功消息
-	request->send(200, "text/html", "Configuration saved successfully.");
-}
-
-// 处理未找到的路由
-void notFoundHandler(AsyncWebServerRequest *request)
-{
-	request->send(404, "text/html", "404: Page not found");
-}
 
 static void init(void *data)
 {
@@ -142,8 +72,7 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
-		gfx[0]->setFont(DreamHanSerifCN_W17_21);
-		gfx[0]->println(configData1);
+
 		break;
 
 	case KEY4_LONG:				  // 长按
