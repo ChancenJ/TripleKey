@@ -72,7 +72,12 @@ static void loop(void *data)
 	case KEY3_UP:
 		app_led_off();
 		break;
-
+	case KEY4_SHORT:
+		if (bleKeyboard.isConnected())
+		{
+			bleKeyboard.write(KEY_MEDIA_MUTE);
+		}
+		break;
 	case ENC_NEXT:
 		if (bleKeyboard.isConnected())
 		{

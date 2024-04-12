@@ -43,7 +43,7 @@
 #include "app/app_settings.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
-#define VER_SW "0.3.0"
+#define VER_SW "0.3.15"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"

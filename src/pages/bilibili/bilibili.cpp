@@ -101,7 +101,12 @@ static void loop(void *data)
 			gfx[2]->drawXBitmap(40, 0, quanping_bits,quanping_width, quanping_height, random(0xffff));
 		}
 		break;
-		
+	case KEY4_SHORT:
+		if (bleKeyboard.isConnected())
+		{
+			bleKeyboard.write(KEY_MEDIA_MUTE);
+		}
+		break;
 	case ENC_NEXT:
 		if (bleKeyboard.isConnected())
 		{
