@@ -25,13 +25,10 @@ static void dispWeb()
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-	if ((pageindex * 3 + 0) < maxweb)
-		DrawPNGCentre(webstring[pageindex * 3 + 0][1], 0);
-	if ((pageindex * 3 + 1) < maxweb)
-		DrawPNGCentre(webstring[pageindex * 3 + 1][1], 1);
-	if ((pageindex * 3 + 2) < maxweb)
-		DrawPNGCentre(webstring[pageindex * 3 + 2][1], 2);
-
+	for(uint8_t i =0 ;i<3;i++){
+		if ((pageindex * 3 + i) < maxweb)
+		DrawPNGCentre(webstring[pageindex * 3 + i][1], i);
+	}
 	// gfx[1]->setTextColor(BLUE >> 1);
 	// // gfx[1]->setFont(u8g2_font_10x20_mr);
 	// gfx[1]->setFont(&Orbitron_Medium_12);
