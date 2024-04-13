@@ -196,7 +196,7 @@ void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index)
     {
         gfx[oled_index]->setFont(u8g_font_5x7);
         gfx[oled_index]->setCursor(x, y + 20);
-        gfx[oled_index]->println("png failed!");
+        gfx[oled_index]->printf("Failed to open %s\n",path);
     }
 }
 
@@ -235,8 +235,8 @@ void DrawPNGCentre(const char *path, uint8_t oled_index){
     else
     {
         gfx[oled_index]->setFont(u8g_font_5x7);
-        gfx[oled_index]->setCursor(5, 20);
-        gfx[oled_index]->println("png failed!");
+        gfx[oled_index]->setCursor(5, 10);
+        gfx[oled_index]->printf("Failed to open %s\n",path);
     }
 
 }
