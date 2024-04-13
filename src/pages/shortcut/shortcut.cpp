@@ -1,7 +1,6 @@
 #include "shortcut.h"
 #include "board_def.h"
 #include "app/app_key.h"
-#include "fonts/GillSansEN_Bold_12.h"
 
 typedef struct
 {

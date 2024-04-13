@@ -8,11 +8,40 @@
 void dispInfo()
 {
 	gfx[0]->fillScreen(BLACK);
-	gfx[0]->setFont(u8g2_font_6x10_mr);
 	gfx[0]->setTextColor(QINGSHUILAN);
-	gfx[0]->setCursor(0, 10);
-	gfx[0]->println("Enter the URL:");
+	gfx[0]->setCursor(0, 13);
+	//gfx[0]->setFont(u8g2_font_7x13B_mr);
+	//gfx[0]->println("Enter the URL:");
+	gfx[0]->setUTF8Print(true);
+	gfx[0]->setFont(u8g2_font_wqy13_t_gb2312a);
+	gfx[0]->println("进入网页:");
 	gfx[0]->println(WiFi.localIP());
+	gfx[0]->println("或");
+	gfx[0]->println("扫描右侧二维码");
+	gfx[0]->println(" ");
+	gfx[0]->println("短按左键快捷进入网页");
+	gfx[0]->println("长按中键重启设备");
+
+	gfx[2]->fillScreen(BLACK);
+	gfx[2]->setTextColor(QINGSHUILAN);
+	gfx[2]->setCursor(0, 13);
+	gfx[2]->setUTF8Print(true);
+	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312a);
+	gfx[2]->print("软件版本: V");
+	gfx[2]->println(VER_SW);
+	gfx[2]->println(" ");
+	gfx[2]->println("项目地址:");
+	gfx[2]->println("https://github.com/ChancenJ/TripleKey");
+	gfx[2]->println(" ");
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	gfx[2]->setFont(&GillSansEN_Bold_12);
+	gfx[2]->setTextColor(WHITE);
+	gfx[2]->getTextBounds("@ChancenJ", 0, 0, &x1, &y1, &w, &h);
+	gfx[2]->setCursor((OLED_WIDTH - w) / 2,120);
+	gfx[2]->println("@ChancenJ");
 }
 void drawQRCode(QRCode qrcode, uint8_t magnification /*放大倍数*/, uint8_t xpos /*左上角x坐标*/, uint8_t ypos /*左上角y坐标*/,uint8_t screen/*屏幕*/)
 {
@@ -36,10 +65,10 @@ void dispQRCode()
 	QRCode qrcode;
 	char ip[20];
 	WiFi.localIP().toString().toCharArray(ip, 20);
-	uint8_t qrcodeBytes[qrcode_getBufferSize(3)];
-	qrcode_initText(&qrcode, qrcodeBytes, 3, ECC_LOW, ip);
+	uint8_t qrcodeBytes[qrcode_getBufferSize(2)];
+	qrcode_initText(&qrcode, qrcodeBytes, 2, ECC_MEDIUM, ip);
 	Serial.println(qrcode.size);
-	drawQRCode(qrcode,3,(OLED_WIDTH-qrcode.size*3)/2,5,1);
+	drawQRCode(qrcode,4,(OLED_WIDTH-qrcode.size*4)/2,(OLED_HEIGHT-qrcode.size*4)/2,1);
 }
 
 
@@ -104,10 +133,11 @@ static void loop(void *data)
 	switch (key)
 	{
 
-	case KEY1_DOWN:
+	case KEY1_SHORT:
 		gotoConfig();
 		break;
-	case KEY3_DOWN:
+	case KEY2_LONG:
+		ESP.restart();
 		break;
 
 	case KEY4_LONG:				  // 长按

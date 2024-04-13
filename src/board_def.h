@@ -36,6 +36,7 @@
 #include "fonts/DreamHanSerifCN_W17_Processing_24.h"
 #include "fonts/MiSans_Regular45pt_num.h"
 #include "fonts/DouyinSansBoldCN_Weather_38.h"
+#include "fonts/GillSansEN_Bold_12.h"
 #include "fonts/Guangliang_Title_26.h"
 
 #include "app/app_led.h"
