@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>TripleKey设置</title>
+</head>
+
+<body>
+    <h1>TripleKey 设置</h1>
+    <form accept-charset="UTF-8" method="post" action="/config">
+        <div>
+            <h2>实时股票配置：</h2>
+            <p>每行格式：名称,ID</p>
+            <p>例：上证指数,sh000001（沪市加sh，深市加sz）</p>
+            <textarea name="stocksConfig" rows="12" cols="50">{{stocksConfig}}</textarea>
+        </div>
+        <div>
+            <h2>米家配置：</h2>
+            <p>每行格式：开关编号,中文名称,英文名称,操作类型,开关类型</p>
+            <p>操作类型：1单击2双击3长按；开关类型：1无线开关2普通开关（可显示开关状态）</p>
+            <p>※开关K1用于显示人体存在传感器状态，可用于米家联动，请勿在下方添加K1</p>
+            <p>※K2-4为普通开关，只能单击；K5-8为无线开关，可单击双击长按</p>
+            <p>例：K5,睡眠模式,K5Short,1,1</p>
+            <p>例：K2,吸顶灯,K2Short,1,2</p>
+            <textarea name="mijiaConfig" rows="16" cols="50">{{mijiaConfig}}</textarea>
+        </div>
+        <div>
+            <input type="submit" value="保存">
+        </div>
+    </form>
+</body>
+
+</html>
