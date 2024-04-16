@@ -1,12 +1,14 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>TripleKey设置</title>
 </head>
 
 <body>
     <h1>TripleKey 设置</h1>
+    <a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a>
     <form accept-charset="UTF-8" method="post" action="/config">
         <div>
             <h2>实时股票配置：</h2>
@@ -24,10 +26,16 @@
             <p>例：K2,吸顶灯,K2Short,1,2</p>
             <textarea name="mijiaConfig" rows="16" cols="50">{{mijiaConfig}}</textarea>
         </div>
+
         <div>
             <input type="submit" value="保存">
         </div>
+        <div>
+            <h2>网页配置：</h2>
+            <p>{{FILELIST}}</p>
+        </div>
     </form>
+    <input type="button" value="上传图片" onclick="location.href='/uploadpng';">
 </body>
 
 </html>

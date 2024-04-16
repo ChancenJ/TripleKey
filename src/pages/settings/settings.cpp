@@ -117,8 +117,13 @@ static void enter(void *data)
 	// 设置Web服务器的路由
 	server.on("/", HTTP_GET, handleRoot);
 	server.on("/config", HTTP_POST, handleConfigPost);
-	server.on("/web",HTTP_GET,handleWeb);
+	server.on("/uploadpng",HTTP_GET, handleUploadPNG);
+	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
+	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request){
+    request->send(200);
+  }, handleUpload);
 	server.onNotFound(notFoundHandler);
+	server.onFileUpload(handleUpload);
 
 	// 启动Web服务器
 	server.begin();

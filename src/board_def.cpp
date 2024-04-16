@@ -446,7 +446,7 @@ void board_init()
     gfx1->setCursor(0, 7);
     gfx1->printf("HW: %s\r\n", VER_HW);
     gfx1->printf("SW: %s\r\n", VER_SW);
-
+    
     gfx1->printf("Free rom: %dKB\r\n", (LittleFS.totalBytes() - LittleFS.usedBytes()) / 1024);
     // gfx3->printf("Free rom: %dKB\r\n", (SPIFFS.totalBytes() - SPIFFS.usedBytes()) / 1024);
 

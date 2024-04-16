@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>上传网页图标</title>
+</head>
+
+<body>
+    <h1>TripleKey上传网页图标</h1>
+    <p>剩余ROM: {{FREEROM}} | 已用ROM: {{USEDROM}} | ROM总量: {{TOTALROM}}</p>
+    <form method="POST" action="/uploadtest" enctype="multipart/form-data">
+        <input type="file" name="data" />
+        <input type="submit" name="upload" value="Upload" title="Upload File">
+    </form>
+    <p>{{FILELIST}}</p>
+</body>
+
+</html>

@@ -1,4 +1,5 @@
 #include "app_settings.h"
+#include <esp_littlefs.h>
 
 const char *stocks_path = "/config_stocks.txt";
 const char *mijia_path = "/config_mijia.txt";
@@ -29,6 +30,7 @@ String readHTML(const char *html_path)
     if (configFile)
     {
         page = configFile.readString();
+        Serial.println("成功读取HTML");
         configFile.close();
     }
     else
@@ -65,6 +67,7 @@ void handleRoot(AsyncWebServerRequest *request)
 
     page.replace("{{stocksConfig}}", stocksConfig);
     page.replace("{{mijiaConfig}}", mijiaConfig);
+    page.replace("{{FILELIST}}",listFiles(true));
 
     request->send(200, "text/html", page);
 }
@@ -88,23 +91,45 @@ void handleConfigPost(AsyncWebServerRequest *request)
     request->send(200, "text/html", page);
 }
 
-void handleWeb(AsyncWebServerRequest *request)
+
+void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
+    String logmessage = "Client:" + request->client()->remoteIP().toString() + " " + request->url();
+    Serial.println(logmessage);
+    if (!index) {
+    logmessage = "Upload Start: " + String(filename);
+    // open the file on first call and store the file handle in the request object
+    request->_tempFile = LittleFS.open("/" + filename, "w");
+    Serial.println(logmessage);
+  }
+
+  if (len) {
+    // stream the incoming chunk to the opened file
+    request->_tempFile.write(data, len);
+    logmessage = "Writing file: " + String(filename) + " index=" + String(index) + " len=" + String(len);
+    Serial.println(logmessage);
+  }
+
+  if (final) {
+    logmessage = "Upload Complete: " + String(filename) + ",size: " + String(index + len);
+    // close the file handle as the upload is now done
+    request->_tempFile.close();
+    Serial.println(logmessage);
+    request->redirect("/");
+  }
+}
+
+
+
+void handleUploadPNG(AsyncWebServerRequest *request)
 {
-    String page = "<html> \
-	<head>\
-	<meta charset=\"UTF-8\">\
-	<title>TripleKey设置web</title>\
-	</head>\
-	<body>\
-	<h1>TripleKey 设置</h1>\
-	<form accept-charset=\"UTF-8\" method=\"post\" action=\"/\"> \
-    <div> \
-	<input type=\"file\" name=\"file\" id=\"file\">\
-    <input type=\"submit\" value=\"Upload Image\" name=\"submit\">\
-    </div> \
-	</form>\
-	</body>\
-	</html>";
+    String page = readHTML("/webserver/uploadpng.html");
+    size_t total,used;
+    esp_littlefs_info("spiffs", &total, &used);
+    page.replace("{{FREEROM}}", humanReadableSize(total-used));
+    page.replace("{{USEDROM}}", humanReadableSize(used));
+    page.replace("{{TOTALROM}}", humanReadableSize(total));
+    page.replace("{{FILELIST}}",listFiles(true));
+    //Serial.println(page);
     request->send(200, "text/html", page);
 }
 
@@ -181,4 +206,55 @@ void AnalyzeMijiaConfig()
         sws.push_back(MijiaSwitch(pin, name_cn, name_en, optype, type));
     }
     Serial.printf("米家开关数量:%d\n", sws.size());
+}
+
+String humanReadableSize(const size_t bytes) {
+  if (bytes < 1024) return String(bytes) + " B";
+  else if (bytes < (1024 * 1024)) return String(bytes / 1024.0) + " KB";
+  else if (bytes < (1024 * 1024 * 1024)) return String(bytes / 1024.0 / 1024.0) + " MB";
+  else return String(bytes / 1024.0 / 1024.0 / 1024.0) + " GB";
+}
+
+String listFiles(bool ishtml) {
+  String returnText = "";
+  Serial.println("Listing files stored on LittleFS");
+  File root = LittleFS.open("/web");
+  File foundfile = root.openNextFile();
+  if (ishtml) {
+    returnText += "<table><tr><th align='left'>文件名</th><th align='left'>大小</th></tr>";
+  }
+  while (foundfile) {
+    if (ishtml) {
+      returnText += "<tr align='left'><td>" + String(foundfile.name()) + "</td><td>" + humanReadableSize(foundfile.size()) + "</td></tr>";
+    } else {
+      returnText += "File: " + String(foundfile.name()) + "\n";
+    }
+    foundfile = root.openNextFile();
+  }
+  if (ishtml) {
+    returnText += "</table>";
+  }
+  root.close();
+  foundfile.close();
+  Serial.println(returnText);
+  return returnText;
+}
+
+String processor(const String& var) {
+  if (var == "FILELIST") {
+    return listFiles(true);
+  }
+  if (var == "FREEROM") {
+    return humanReadableSize((LittleFS.totalBytes() - LittleFS.usedBytes()));
+  }
+
+  if (var == "USEDROM") {
+    return humanReadableSize(LittleFS.usedBytes());
+  }
+
+  if (var == "TOTALROM") {
+    return humanReadableSize(LittleFS.totalBytes());
+  }
+
+  return String();
 }
