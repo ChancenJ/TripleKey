@@ -303,6 +303,7 @@ void dispProcessing(uint8_t screen){
 	uint16_t w;
 	uint16_t h;
 	String processing = "正在查询…";
+    gfx[screen]->fillScreen(BLACK);
 	gfx[screen]->setTextColor(QINGSHUILAN);
 	gfx[screen]->setUTF8Print(TRUE);
 	gfx[screen]->setFont(DreamHanSerifCN_W17_Processing_24);

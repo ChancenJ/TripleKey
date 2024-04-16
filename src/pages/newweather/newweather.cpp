@@ -192,6 +192,24 @@ void dispToday()
 	dispMtempAndSun();
 }
 
+void dispCity(){
+	int16_t x1;
+	int16_t y1;
+	uint16_t w;
+	uint16_t h;
+	String processing = "正在查询…";
+    gfx[2]->fillScreen(BLACK);
+	gfx[2]->setTextColor(QINGSHUILAN);
+	gfx[2]->setUTF8Print(TRUE);
+	gfx[2]->setFont(u8g2_font_wqy12_t_gb2312a);
+	gfx[2]->getTextBounds(weather.cityname_cn, 0, 0, &x1, &y1, &w, &h);
+	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 60);
+	gfx[2]->print(weather.cityname_cn);
+	gfx[2]->getTextBounds(weather.citycode, 0, 0, &x1, &y1, &w, &h);
+	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 75);
+	gfx[2]->print(weather.citycode);
+}
+
 typedef void (*dispContent)();
 dispContent disp[] = {
 	dispToday,
@@ -213,6 +231,7 @@ static void enter(void *data)
 	gfx3->fillScreen(BLACK);
 	dispProcessing(1);
 	getCity(&weather);
+	dispCity();
 	getNowWeather(&weather);
 	dispNowTemp();
 	dispHumidity();
