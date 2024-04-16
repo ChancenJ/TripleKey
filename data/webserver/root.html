@@ -9,6 +9,16 @@
 <body>
     <h1>TripleKey 设置</h1>
     <a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a>
+    <form accept-charset="UTF-8" method="post" action="/weather">
+        <div>
+            <h2>天气配置：</h2>
+            <label for="city">城市:</label>
+            <input type="text" id="city" value="{{CITY}}" name="city" required>
+            <label for="key">密钥:</label>
+            <input type="text" id="key" value="{{KEY}}" name="key" required>
+            <input type="submit" value="保存天气配置">
+        </div>
+    </form>
     <form accept-charset="UTF-8" method="post" action="/config">
         <div>
             <h2>实时股票配置：</h2>

@@ -12,6 +12,7 @@ String readHTML(const char *html_path);
 void saveConfig(const char *config_path, String config_content);
 void handleRoot(AsyncWebServerRequest *request);
 void handleConfigPost(AsyncWebServerRequest *request);
+void handleWeather(AsyncWebServerRequest *request);
 void notFoundHandler(AsyncWebServerRequest *request);
 void handleUploadPNG(AsyncWebServerRequest *request);
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final);
