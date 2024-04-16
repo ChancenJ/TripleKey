@@ -7,11 +7,12 @@
 </head>
 
 <body>
-    <h1>TripleKey上传网页图标</h1>
+    <h1>TripleKey设置</h1>
+    <h2>上传网页图标</h2>
     <p>剩余ROM: {{FREEROM}} | 已用ROM: {{USEDROM}} | ROM总量: {{TOTALROM}}</p>
-    <form method="POST" action="/uploadtest" enctype="multipart/form-data">
+    <form method="POST" action="/upload" enctype="multipart/form-data">
         <input type="file" name="data" />
-        <input type="submit" name="upload" value="Upload" title="Upload File">
+        <input type="submit" name="Upload" value="上传" title="上传文件">
     </form>
     <p>{{FILELIST}}</p>
 </body>

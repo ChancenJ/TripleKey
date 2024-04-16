@@ -119,9 +119,9 @@ static void enter(void *data)
 	server.on("/config", HTTP_POST, handleConfigPost);
 	server.on("/uploadpng",HTTP_GET, handleUploadPNG);
 	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
-	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request){
-    request->send(200);
-  }, handleUpload);
+	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {
+        request->send(200);
+      }, handleUpload);
 	server.onNotFound(notFoundHandler);
 	server.onFileUpload(handleUpload);
 

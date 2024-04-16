@@ -10,6 +10,7 @@ static const char *webstring[][2] = {
 	{"https://gitee.com/chancenj","/web/gitee.png"},
 	{"https://www.szlcsc.com/", "/web/lcsc.png"},
 	{"https://oshwhub.com/", "/web/oshwhub.png"},
+	{"https://github.com/", "/web/github.png"},
 	
 	// {"https://www.mouser.cn/", "/web/mouser.png"},
 

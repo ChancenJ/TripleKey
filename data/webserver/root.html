@@ -22,20 +22,27 @@
             <p>操作类型：1单击2双击3长按；开关类型：1无线开关2普通开关（可显示开关状态）</p>
             <p>※开关K1用于显示人体存在传感器状态，可用于米家联动，请勿在下方添加K1</p>
             <p>※K2-4为普通开关，只能单击；K5-8为无线开关，可单击双击长按</p>
-            <p>例：K5,睡眠模式,K5Short,1,1</p>
-            <p>例：K2,吸顶灯,K2Short,1,2</p>
+            <p>例：K5,睡眠模式,K5Short,1,1<br>
+                例：K2,吸顶灯,K2Short,1,2</p>
             <textarea name="mijiaConfig" rows="16" cols="50">{{mijiaConfig}}</textarea>
-        </div>
-
-        <div>
-            <input type="submit" value="保存">
         </div>
         <div>
             <h2>网页配置：</h2>
+            <p>每行格式：URL,图标路径</p>
+            <p>※网页图标需自行点击下方按钮上传，图标格式为png，图标名称不能使用特殊符号，使用英文字符，如oshwhub.png</p>
+            <p>例：https://oshwhub.com/,/web/oshwhub.png</p>
+            <p>已保存图标：</p>
             <p>{{FILELIST}}</p>
+            <input type="button" value="上传图片（点击后等待2秒跳转）" onclick="location.href='/uploadpng';">
+            <p></p>
+            <textarea name="webConfig" rows="8" cols="50">{{webConfig}}</textarea>
+        </div>
+        <div>
+            <p></p>
+            <input type="submit" value="保存">
         </div>
     </form>
-    <input type="button" value="上传图片" onclick="location.href='/uploadpng';">
+
 </body>
 
 </html>

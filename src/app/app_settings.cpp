@@ -92,13 +92,14 @@ void handleConfigPost(AsyncWebServerRequest *request)
 }
 
 
-void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final){
-    String logmessage = "Client:" + request->client()->remoteIP().toString() + " " + request->url();
-    Serial.println(logmessage);
-    if (!index) {
+void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {
+  String logmessage = "Client:" + request->client()->remoteIP().toString() + " " + request->url();
+  Serial.println(logmessage);
+
+  if (!index) {
     logmessage = "Upload Start: " + String(filename);
     // open the file on first call and store the file handle in the request object
-    request->_tempFile = LittleFS.open("/" + filename, "w");
+    request->_tempFile = LittleFS.open("/web/" + filename, "w");
     Serial.println(logmessage);
   }
 
@@ -114,7 +115,7 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
     // close the file handle as the upload is now done
     request->_tempFile.close();
     Serial.println(logmessage);
-    request->redirect("/");
+    request->redirect("/uploadpng");
   }
 }
 
