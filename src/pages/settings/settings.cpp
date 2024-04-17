@@ -119,6 +119,8 @@ static void enter(void *data)
 	server.on("/config", HTTP_POST, handleConfigPost);
 	server.on("/uploadpng",HTTP_GET, handleUploadPNG);
 	server.on("/weather",HTTP_POST, handleWeather);
+	server.on("/listfiles",HTTP_GET, handleListFile);
+	server.on("/delete",HTTP_GET,handleDelete);
 	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
 	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {
         request->send(200);

@@ -57,9 +57,9 @@
             <p>每行格式：URL,图标文件名</p>
             <p>※网页图标需自行点击下方按钮上传，图标格式为png，图标名称不能使用特殊符号，使用英文字符，如oshwhub.png</p>
             <p>例：https://oshwhub.com/,oshwhub.png</p>
-            <p>已保存图标：</p>
-            <p>{{FILELIST}}</p>
-            <input type="button" value="上传图片（点击后等待2秒跳转）" onclick="location.href='/uploadpng';">
+            <p id="filelist"></p>
+            <input type="button" value="文件列表" onclick="listFilesButton()">
+            <input type="button" value="上传/删除图标（点击后等待2秒跳转）" onclick="location.href='/uploadpng';">
             <p></p>
             <textarea name="webConfig" rows="8" cols="50">{{webConfig}}</textarea>
         </div>
@@ -68,7 +68,15 @@
             <input type="submit" value="保存">
         </div>
     </form>
-
+    <script>
+        function listFilesButton() {
+            var urltocall = "/listfiles?deletebutton=0";
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", urltocall, false);
+            xmlhttp.send();
+            document.getElementById("filelist").innerHTML = xmlhttp.responseText;
+        }
+    </script>
 </body>
 
 </html>

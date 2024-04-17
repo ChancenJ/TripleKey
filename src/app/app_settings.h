@@ -15,6 +15,8 @@ void handleConfigPost(AsyncWebServerRequest *request);
 void handleWeather(AsyncWebServerRequest *request);
 void notFoundHandler(AsyncWebServerRequest *request);
 void handleUploadPNG(AsyncWebServerRequest *request);
+void handleListFile(AsyncWebServerRequest *request);
+void handleDelete(AsyncWebServerRequest *request);
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final);
 
 std::vector<String> SplitString(String origin, char flag);
@@ -23,5 +25,5 @@ void AnalyzeMijiaConfig();
 void AnalyzeWebConfig();
 
 String humanReadableSize(const size_t bytes);
-String listFiles(bool ishtml = false);
+String listFiles(bool DeleteButton);
 #endif

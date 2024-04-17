@@ -71,7 +71,6 @@ void handleRoot(AsyncWebServerRequest *request)
 	page.replace("{{KEY}}", stored_weather_key);
 	page.replace("{{stocksConfig}}", stocksConfig);
 	page.replace("{{mijiaConfig}}", mijiaConfig);
-	page.replace("{{FILELIST}}", listFiles(true));
 	page.replace("{{webConfig}}", webConfig);
 
 	request->send(200, "text/html", page);
@@ -162,6 +161,40 @@ void handleUploadPNG(AsyncWebServerRequest *request)
 	request->send(200, "text/html", page);
 }
 
+void handleListFile(AsyncWebServerRequest *request)
+{
+	if (request->hasParam("deletebutton")){
+		uint8_t deletebutton = request->getParam("deletebutton")->value().toInt();
+		if(deletebutton==0){
+			request->send(200, "text/plain", listFiles(false));
+		}else{
+			request->send(200, "text/plain", listFiles(true));
+		}
+	}else{
+		request->send(400, "text/plain", "ERROR: deletebutton params required");
+	}
+}
+
+void handleDelete(AsyncWebServerRequest *request)
+{
+	if (request->hasParam("name"))
+	{
+		String fileName = "/web/" + request->getParam("name")->value();
+		if (LittleFS.exists(fileName))
+		{
+			LittleFS.remove(fileName);
+			request->send(200, "text/plain", "Deleted File: " + String(fileName));
+		}
+		else
+		{
+			Serial.println("ERROR: file does not exist");
+			request->send(400, "text/plain", "ERROR: file does not exist");
+		}
+	}else {
+        request->send(400, "text/plain", "ERROR: name params required");
+    }
+}
+
 // 处理未找到的路由
 void notFoundHandler(AsyncWebServerRequest *request)
 {
@@ -245,8 +278,8 @@ void AnalyzeWebConfig()
 	for (int i = 0; i < lines.size(); i++)
 	{
 		std::vector<String> line = SplitString(lines[i], ',');
-		//Serial.println(line[0]);
-		//Serial.println(line[1]);
+		// Serial.println(line[0]);
+		// Serial.println(line[1]);
 		webstring.push_back(line);
 	}
 	Serial.printf("网页数量:%d\n", webstring.size());
@@ -264,32 +297,27 @@ String humanReadableSize(const size_t bytes)
 		return String(bytes / 1024.0 / 1024.0 / 1024.0) + " GB";
 }
 
-String listFiles(bool ishtml)
+String listFiles(bool DeleteButton)
 {
 	String returnText = "";
 	Serial.println("Listing files stored on LittleFS");
 	File root = LittleFS.open("/web");
 	File foundfile = root.openNextFile();
-	if (ishtml)
-	{
-		returnText += "<table><tr><th align='left'>文件名</th><th align='left'>大小</th></tr>";
-	}
+	returnText += "<table><tr><th align='left'>文件名</th><th align='left'>大小</th></tr>";
 	while (foundfile)
 	{
-		if (ishtml)
+		returnText += "<tr align='left'><td>" + String(foundfile.name()) + "</td><td>" + humanReadableSize(foundfile.size()) + "</td>";
+		if (DeleteButton)
 		{
-			returnText += "<tr align='left'><td>" + String(foundfile.name()) + "</td><td>" + humanReadableSize(foundfile.size()) + "</td></tr>";
+			returnText += "<td><button onclick=\"DeleteButton(\'" + String(foundfile.name()) + "\', \'delete\')\">删除</button></tr>";
 		}
 		else
 		{
-			returnText += "File: " + String(foundfile.name()) + "\n";
+			returnText += "</tr>";
 		}
 		foundfile = root.openNextFile();
 	}
-	if (ishtml)
-	{
-		returnText += "</table>";
-	}
+	returnText += "</table>";
 	root.close();
 	foundfile.close();
 	Serial.println(returnText);
