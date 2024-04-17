@@ -82,6 +82,7 @@ struct StockInfo;
 struct MijiaSwitch;
 extern std::vector<StockInfo> stocks;
 extern std::vector<MijiaSwitch> sws;
+extern std::vector<std::vector<String>> webstring;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);

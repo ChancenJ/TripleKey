@@ -10,6 +10,7 @@ char stored_weather_key[40];
 char stored_weather_city[40];
 std::vector<StockInfo> stocks;
 std::vector<MijiaSwitch> sws;
+std::vector<std::vector<String>> webstring;
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
@@ -567,6 +568,7 @@ void board_init()
     AnalyzeStocksConfig();
     sws.push_back(MijiaSwitch(K1,"有人存在","Sensor",1,2));  //固定KEY1用于人在传感器显示有人无人
     AnalyzeMijiaConfig();
+    AnalyzeWebConfig();
 
     gfx3->print("time updating");
     configTime(8 * 3600, 0, NTP1, NTP2, NTP3);

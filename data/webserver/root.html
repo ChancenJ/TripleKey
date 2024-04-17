@@ -1,22 +1,38 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>TripleKey设置</title>
+    <style>
+        .input-text {
+            border: 1px solid #000000;
+            padding: 3px;
+            width: 250px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 
 <body>
     <h1>TripleKey 设置</h1>
-    <a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a>
+    <p><a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a></p>
+    <p>软件版本：V{{SWVERSION}}</p>
     <form accept-charset="UTF-8" method="post" action="/weather">
         <div>
             <h2>天气配置：</h2>
-            <label for="city">城市:</label>
-            <input type="text" id="city" value="{{CITY}}" name="city" required>
-            <label for="key">密钥:</label>
-            <input type="text" id="key" value="{{KEY}}" name="key" required>
-            <input type="submit" value="保存天气配置">
+            <p>
+                <label for="city">城市（拼音）：</label>
+                <input type="text" id="city" value="{{CITY}}" name="city" class="input-text" required>
+            </p>
+            <p>
+                <label for="key">和风天气密钥：</label>
+                <input type="text" id="key" value="{{KEY}}" name="key" class="input-text" required>
+            </p>
+            <p>
+                <input type="submit" value="保存天气配置">
+            </p>
         </div>
     </form>
     <form accept-charset="UTF-8" method="post" action="/config">
@@ -38,9 +54,9 @@
         </div>
         <div>
             <h2>网页配置：</h2>
-            <p>每行格式：URL,图标路径</p>
+            <p>每行格式：URL,图标文件名</p>
             <p>※网页图标需自行点击下方按钮上传，图标格式为png，图标名称不能使用特殊符号，使用英文字符，如oshwhub.png</p>
-            <p>例：https://oshwhub.com/,/web/oshwhub.png</p>
+            <p>例：https://oshwhub.com/,oshwhub.png</p>
             <p>已保存图标：</p>
             <p>{{FILELIST}}</p>
             <input type="button" value="上传图片（点击后等待2秒跳转）" onclick="location.href='/uploadpng';">

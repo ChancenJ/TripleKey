@@ -20,9 +20,8 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 std::vector<String> SplitString(String origin, char flag);
 void AnalyzeStocksConfig();
 void AnalyzeMijiaConfig();
-
+void AnalyzeWebConfig();
 
 String humanReadableSize(const size_t bytes);
 String listFiles(bool ishtml = false);
-String processor(const String& var);
 #endif

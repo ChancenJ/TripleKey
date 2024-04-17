@@ -64,12 +64,15 @@ void handleRoot(AsyncWebServerRequest *request)
 	// 读取配置文件中的默认值
 	String stocksConfig = readConfig(stocks_path);
 	String mijiaConfig = readConfig(mijia_path);
+	String webConfig = readConfig(web_path);
 
+	page.replace("{{SWVERSION}}", VER_SW);
 	page.replace("{{CITY}}", stored_weather_city);
 	page.replace("{{KEY}}", stored_weather_key);
 	page.replace("{{stocksConfig}}", stocksConfig);
 	page.replace("{{mijiaConfig}}", mijiaConfig);
 	page.replace("{{FILELIST}}", listFiles(true));
+	page.replace("{{webConfig}}", webConfig);
 
 	request->send(200, "text/html", page);
 }
@@ -79,13 +82,17 @@ void handleConfigPost(AsyncWebServerRequest *request)
 	// 从表单中获取输入值
 	String stocksConfig = request->arg("stocksConfig");
 	String mijiaConfig = request->arg("mijiaConfig");
+	String webConfig = request->arg("webConfig");
 	Serial.println(stocksConfig);
 	Serial.println(mijiaConfig);
+	Serial.println(webConfig);
 	// 保存配置
 	saveConfig(stocks_path, stocksConfig);
 	saveConfig(mijia_path, mijiaConfig);
+	saveConfig(web_path, webConfig);
 	AnalyzeStocksConfig();
 	AnalyzeMijiaConfig();
+	AnalyzeWebConfig();
 
 	String page = readHTML("/webserver/config.html");
 
@@ -93,21 +100,22 @@ void handleConfigPost(AsyncWebServerRequest *request)
 	request->send(200, "text/html", page);
 }
 
-void handleWeather(AsyncWebServerRequest *request){
-	    DynamicJsonDocument json(1024);
-        json["weather_city"] = request->arg("city");
-        json["weather_key"] = request->arg("key");
-		strcpy(stored_weather_city, request->arg("city").c_str());
-    	strcpy(stored_weather_key, request->arg("key").c_str());
-        File configFile = LittleFS.open("/config.json", "w");
-        if (!configFile)
-        {
-            Serial.println("failed to open config file for writing");
-        }
-        serializeJson(json, Serial);
-        serializeJson(json, configFile);
-        configFile.close();
-		request->redirect("/");
+void handleWeather(AsyncWebServerRequest *request)
+{
+	DynamicJsonDocument json(1024);
+	json["weather_city"] = request->arg("city");
+	json["weather_key"] = request->arg("key");
+	strcpy(stored_weather_city, request->arg("city").c_str());
+	strcpy(stored_weather_key, request->arg("key").c_str());
+	File configFile = LittleFS.open("/config.json", "w");
+	if (!configFile)
+	{
+		Serial.println("failed to open config file for writing");
+	}
+	serializeJson(json, Serial);
+	serializeJson(json, configFile);
+	configFile.close();
+	request->redirect("/");
 }
 
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
@@ -229,6 +237,21 @@ void AnalyzeMijiaConfig()
 	Serial.printf("米家开关数量:%d\n", sws.size());
 }
 
+void AnalyzeWebConfig()
+{
+	String webConfig = readConfig(web_path);
+	webstring.clear();
+	std::vector<String> lines = SplitString(webConfig, '\n');
+	for (int i = 0; i < lines.size(); i++)
+	{
+		std::vector<String> line = SplitString(lines[i], ',');
+		//Serial.println(line[0]);
+		//Serial.println(line[1]);
+		webstring.push_back(line);
+	}
+	Serial.printf("网页数量:%d\n", webstring.size());
+}
+
 String humanReadableSize(const size_t bytes)
 {
 	if (bytes < 1024)
@@ -271,28 +294,4 @@ String listFiles(bool ishtml)
 	foundfile.close();
 	Serial.println(returnText);
 	return returnText;
-}
-
-String processor(const String &var)
-{
-	if (var == "FILELIST")
-	{
-		return listFiles(true);
-	}
-	if (var == "FREEROM")
-	{
-		return humanReadableSize((LittleFS.totalBytes() - LittleFS.usedBytes()));
-	}
-
-	if (var == "USEDROM")
-	{
-		return humanReadableSize(LittleFS.usedBytes());
-	}
-
-	if (var == "TOTALROM")
-	{
-		return humanReadableSize(LittleFS.totalBytes());
-	}
-
-	return String();
 }

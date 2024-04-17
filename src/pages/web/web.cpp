@@ -1,22 +1,22 @@
 #include "web.h"
 #include "board_def.h"
 #include "app/app_key.h"
-static const char *webstring[][2] = {
-	//{"https://www.mouser.cn/", "/web/mouser.png"},
-	{"https://www.bilibili.com/", "/web/bili.png"},
-	//{"https://hackaday.io/projects", "/web/hackaday.png"},
-	//{"http://bbs.eeworld.com.cn/", "/web/eeworld.png"},
-	//{"https://www.digikey.cn/", "/web/digikey.png"},
-	{"https://gitee.com/chancenj","/web/gitee.png"},
-	{"https://www.szlcsc.com/", "/web/lcsc.png"},
-	{"https://oshwhub.com/", "/web/oshwhub.png"},
-	{"https://github.com/", "/web/github.png"},
+// static const char *webstring[][2] = {
+// 	//{"https://www.mouser.cn/", "/web/mouser.png"},
+// 	{"https://www.bilibili.com/", "/web/bili.png"},
+// 	//{"https://hackaday.io/projects", "/web/hackaday.png"},
+// 	//{"http://bbs.eeworld.com.cn/", "/web/eeworld.png"},
+// 	//{"https://www.digikey.cn/", "/web/digikey.png"},
+// 	{"https://gitee.com/chancenj","/web/gitee.png"},
+// 	{"https://www.szlcsc.com/", "/web/lcsc.png"},
+// 	{"https://oshwhub.com/", "/web/oshwhub.png"},
+// 	{"https://github.com/", "/web/github.png"},
 	
-	// {"https://www.mouser.cn/", "/web/mouser.png"},
+// 	// {"https://www.mouser.cn/", "/web/mouser.png"},
 
-};
+// };
 
-static const uint8_t maxweb = sizeof(webstring) / 2 / 4;
+static uint8_t maxweb = webstring.size();
 
 static int8_t pageindex;
 static int8_t index_num;
@@ -28,7 +28,7 @@ static void dispWeb()
 	gfx3->fillScreen(BLACK);
 	for(uint8_t i =0 ;i<3;i++){
 		if ((pageindex * 3 + i) < maxweb)
-		DrawPNGCentre(webstring[pageindex * 3 + i][1], i);
+		DrawPNGCentre(("/web/"+webstring[pageindex * 3 + i][1]).c_str(), i);
 	}
 	// gfx[1]->setTextColor(BLUE >> 1);
 	// // gfx[1]->setFont(u8g2_font_10x20_mr);
@@ -36,7 +36,7 @@ static void dispWeb()
 	// gfx[1]->setCursor(0, 63);
 	// gfx[1]->printf("%d %d %d",maxweb,pageindex,index_num);
 }
-static void gotoWeb(const char *web)
+static void gotoWeb(String web)
 {
  
 	bleKeyboard.releaseAll();
@@ -53,9 +53,9 @@ static void gotoWeb(const char *web)
 static void init(void *data)
 {
 	// bleKeyboard.begin();
+	maxweb = webstring.size();
 	pageindex = 0;
 	index_num = (maxweb % 3 == 0) ? (maxweb / 3) : (maxweb / 3 + 1);
-
 	Serial.println(sizeof(webstring));
 }
 
