@@ -201,7 +201,7 @@ void dispCity(){
     gfx[2]->fillScreen(BLACK);
 	gfx[2]->setTextColor(QINGSHUILAN);
 	gfx[2]->setUTF8Print(TRUE);
-	gfx[2]->setFont(u8g2_font_wqy12_t_gb2312a);
+	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312a);
 	gfx[2]->getTextBounds(weather.cityname_cn, 0, 0, &x1, &y1, &w, &h);
 	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 60);
 	gfx[2]->print(weather.cityname_cn);
