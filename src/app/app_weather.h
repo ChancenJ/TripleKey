@@ -1,37 +1,53 @@
+#ifndef __APP_WEATHER_H
+#define __APP_WEATHER_H
 #include <Arduino.h>
-
-/*
-JSON格式
-deserializeJson()NotSupported当输入包含Unicode转义序列（如）时返回\u2665。
-
-ArduinoJson可以解码Unicode转义序列，但是默认情况下此功能是禁用的，因为它会使代码更大。要启用它，必须将ARDUINOJSON_DECODE_UNICODE定义为1，如下所示：
-
-#define ARDUINOJSON_DECODE_UNICODE 1
 #include <ArduinoJson.h>
-*/
-#define UNIT_LEN 32
-typedef struct
+#include <HTTPClient.h>
+#include <WiFi.h>
+#include "board_def.h"
+#include <ArduinoUZlib.h>
+
+struct NowWeather
 {
-    char text_day[UNIT_LEN];   //白天天气
-    char text_night[UNIT_LEN]; //夜晚
-    char text_now[UNIT_LEN];   //现在
+    String temp;        // 温度
+    String weathertext; // 天气状况
+    String weathercode; //图标代码
+    String winddir;     // 风向
+    String windscale;   // 风力等级
+    String humidity;    // 相对湿度
+    String aqi;        // 空气质量指数
+    String aircategory; // 空气质量等级
+    NowWeather() : temp("88"), weathertext("NA"), weathercode("NA"),winddir("NA"), windscale("-1"), humidity("-1"), aqi("-1"), aircategory("NA") {}
+};
 
-    char code_now[UNIT_LEN]; //现在天气图标代码
-    char code_day[UNIT_LEN];
-    char code_night[UNIT_LEN];
+struct DayWeather
+{
+    String tempmax;      // 最高温度
+    String tempmin;      // 最低温度
+    String sunrise;      // 日出时间
+    String sunset;       // 日落时间
+    String weatherday;   // 白天天气状况
+    String daycode;   // 白天天气代码
+    String weathernight; // 夜间天气状况
+    String nightcode;   // 夜间天气代码
+    DayWeather() : tempmax("88"), tempmin("88"), sunrise("NA"), sunset("NA"), weatherday("NA"), weathernight("NA"),daycode("NA"),nightcode("NA") {}
+};
 
-    char temperature_now[UNIT_LEN]; //现在温度
-    char temperature_low[UNIT_LEN];
-    char temperature_high[UNIT_LEN];
+struct Weather
+{
+    String cityname_cn;
+    String citycode;
+    NowWeather nowweather;
+    DayWeather day3weather[3];
+    Weather():cityname_cn("NA"),citycode("NA"){}
+};
 
-    char humidity_now[UNIT_LEN];
+void getCity(Weather *weather);
+void getNowWeather(Weather *weather);
+void getNowAir(Weather *weather);
+void getDay3Weather(Weather *weather);
 
-    char last_update[UNIT_LEN * 2];
-    char date[UNIT_LEN];
-} weather_t;
- 
 
-weather_t *app_weather_init();
+String ProcessGzip(HTTPClient &httpClient);
 
-int app_weather_get_now(weather_t *now);
-int app_weather_get_3(weather_t *day_1, weather_t *day_2, weather_t *day_3);
+#endif

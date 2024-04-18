@@ -15,7 +15,7 @@ static uint8_t num_old[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 static uint8_t xpos = 64;
 
-extern page_t page_newweather;
+extern page_t page_weather;
 extern page_t page_mijia;
 
 void dispTime(uint8_t hour, uint8_t min, uint8_t sec)
@@ -366,7 +366,7 @@ static void loop(void *data)
 	switch (key)
 	{
 	case KEY1_DOUBLE:
-		manager_switchToPage(&page_newweather);
+		manager_switchToPage(&page_weather);
 		break;
 	case KEY1_LONG:
 		manager_switchToPage(&page_mijia);

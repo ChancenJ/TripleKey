@@ -10,13 +10,12 @@
 #include "pages/media/media.h"
 #include "pages/web/web.h"
 #include "pages/pcstate/pcstate.h"
-//#include "pages/weather/weather.h"
+#include "pages/weather/weather.h"
 #include "pages/pomodoro/pomodoro.h"
 #include "pages/keyboard/keyboard.h"
 #include "pages/bilibili/bilibili.h"
 #include "pages/stocks/stocks.h"
 #include "pages/mijia/mijia.h"
-#include "pages/newweather/newweather.h"
 #include "pages/settings/settings.h"
 
 
@@ -24,11 +23,10 @@
 page_t *pages[] = {
     &page_main,
     &page_clock,
-    &page_newweather,
+    &page_weather,
     &page_stocks,
     &page_mijia,
     // &page_pcstate,
-    // &page_weather,
     &page_keyboard,
     &page_shortcut,
     &page_web,
@@ -36,7 +34,6 @@ page_t *pages[] = {
     &page_bilibili,
     &page_pomodoro,
     &page_settings,
-    
     
     
 };
