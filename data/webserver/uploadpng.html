@@ -9,6 +9,7 @@
 <body>
     <h1>TripleKey设置</h1>
     <h2>上传网页图标</h2>
+    <p></p><input type="button" value="返回" onclick="location.href='/';"></p>
     <p>剩余ROM: {{FREEROM}} | 已用ROM: {{USEDROM}} | ROM总量: {{TOTALROM}}</p>
     <form method="POST" action="/upload" enctype="multipart/form-data">
         <input type="file" name="data" />

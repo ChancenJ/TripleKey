@@ -121,7 +121,6 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 {
 	String logmessage = "Client:" + request->client()->remoteIP().toString() + " " + request->url();
 	Serial.println(logmessage);
-
 	if (!index)
 	{
 		logmessage = "Upload Start: " + String(filename);
@@ -129,7 +128,6 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 		request->_tempFile = LittleFS.open("/web/" + filename, "w");
 		Serial.println(logmessage);
 	}
-
 	if (len)
 	{
 		// stream the incoming chunk to the opened file
@@ -137,7 +135,6 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 		logmessage = "Writing file: " + String(filename) + " index=" + String(index) + " len=" + String(len);
 		Serial.println(logmessage);
 	}
-
 	if (final)
 	{
 		logmessage = "Upload Complete: " + String(filename) + ",size: " + String(index + len);
@@ -163,15 +160,21 @@ void handleUploadPNG(AsyncWebServerRequest *request)
 
 void handleListFile(AsyncWebServerRequest *request)
 {
-	if (request->hasParam("deletebutton")){
+	if (request->hasParam("deletebutton"))
+	{
 		uint8_t deletebutton = request->getParam("deletebutton")->value().toInt();
-		if(deletebutton==0){
+		if (deletebutton == 0)
+		{
 			request->send(200, "text/plain", listFiles(false));
-		}else{
+		}
+		else
+		{
 			request->send(200, "text/plain", listFiles(true));
 		}
-	}else{
-		request->send(400, "text/plain", "ERROR: deletebutton params required");
+	}
+	else
+	{
+		request->send(400, "text/plain", "ERROR: deletebutton param required");
 	}
 }
 
@@ -190,9 +193,11 @@ void handleDelete(AsyncWebServerRequest *request)
 			Serial.println("ERROR: file does not exist");
 			request->send(400, "text/plain", "ERROR: file does not exist");
 		}
-	}else {
-        request->send(400, "text/plain", "ERROR: name params required");
-    }
+	}
+	else
+	{
+		request->send(400, "text/plain", "ERROR: name param required");
+	}
 }
 
 // 处理未找到的路由

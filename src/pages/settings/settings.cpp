@@ -32,16 +32,17 @@ void dispInfo()
 	gfx[2]->println(" ");
 	gfx[2]->println("项目地址:");
 	gfx[2]->println("https://github.com/ChancenJ/TripleKey");
-	gfx[2]->println(" ");
-	int16_t x1;
-	int16_t y1;
-	uint16_t w;
-	uint16_t h;
-	gfx[2]->setFont(&GillSansEN_Bold_12);
-	gfx[2]->setTextColor(WHITE);
-	gfx[2]->getTextBounds("@ChancenJ", 0, 0, &x1, &y1, &w, &h);
-	gfx[2]->setCursor((OLED_WIDTH - w) / 2,120);
-	gfx[2]->println("@ChancenJ");
+	
+	myDrawPNG(0,100,"/Copyright.png",2);
+	// int16_t x1;
+	// int16_t y1;
+	// uint16_t w;
+	// uint16_t h;
+	// gfx[2]->setFont(&GillSansEN_Bold_12);
+	// gfx[2]->setTextColor(WHITE);
+	// gfx[2]->getTextBounds("©ChancenJ", 0, 0, &x1, &y1, &w, &h);
+	// gfx[2]->setCursor((OLED_WIDTH - w) / 2,120);
+	// gfx[2]->println("©ChancenJ");
 }
 void drawQRCode(QRCode qrcode, uint8_t magnification /*放大倍数*/, uint8_t xpos /*左上角x坐标*/, uint8_t ypos /*左上角y坐标*/,uint8_t screen/*屏幕*/)
 {

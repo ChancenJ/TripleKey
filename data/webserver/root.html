@@ -17,11 +17,17 @@
 
 <body>
     <h1>TripleKey 设置</h1>
-    <p><a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a></p>
+    <p>
+        <a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a><br>
+        <a href="https://gitee.com/chancenj/triple-key" target="_blank">Gitee项目地址</a><br>
+        Copyright &copy 2024 ChancenJ
+    </p>
     <p>软件版本：V{{SWVERSION}}</p>
     <form accept-charset="UTF-8" method="post" action="/weather">
         <div>
             <h2>天气配置：</h2>
+            <p>※需前往和风天气开发服务官网获取密钥（KEY）：<a href="https://dev.qweather.com/" target="_blank">https://dev.qweather.com/</a>
+            </p>
             <p>
                 <label for="city">城市（拼音）：</label>
                 <input type="text" id="city" value="{{CITY}}" name="city" class="input-text" required>
@@ -40,7 +46,7 @@
             <h2>实时股票配置：</h2>
             <p>每行格式：名称,ID</p>
             <p>例：上证指数,sh000001（沪市加sh，深市加sz）</p>
-            <textarea name="stocksConfig" rows="12" cols="50">{{stocksConfig}}</textarea>
+            <textarea name="stocksConfig" rows="12" cols="45">{{stocksConfig}}</textarea>
         </div>
         <div>
             <h2>米家配置：</h2>
@@ -50,7 +56,7 @@
             <p>※K2-4为普通开关，只能单击；K5-8为无线开关，可单击双击长按</p>
             <p>例：K5,睡眠模式,K5Short,1,1<br>
                 例：K2,吸顶灯,K2Short,1,2</p>
-            <textarea name="mijiaConfig" rows="16" cols="50">{{mijiaConfig}}</textarea>
+            <textarea name="mijiaConfig" rows="10" cols="45">{{mijiaConfig}}</textarea>
         </div>
         <div>
             <h2>网页配置：</h2>
@@ -61,11 +67,12 @@
             <input type="button" value="文件列表" onclick="listFilesButton()">
             <input type="button" value="上传/删除图标（点击后等待2秒跳转）" onclick="location.href='/uploadpng';">
             <p></p>
-            <textarea name="webConfig" rows="8" cols="50">{{webConfig}}</textarea>
+            <textarea name="webConfig" rows="8" cols="45">{{webConfig}}</textarea>
         </div>
         <div>
             <p></p>
             <input type="submit" value="保存">
+            <p></p>
         </div>
     </form>
     <script>
