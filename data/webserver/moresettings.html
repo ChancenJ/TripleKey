@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>TripleKey更多设置</title>
+</head>
+
+<body>
+    <h1>TripleKey 设置</h1>
+    <h2>更多设置</h2>
+    <form action="/clockaudio" method="post">
+        <P>整点报时：
+            <label for="yes">
+                <input type="radio" id="yes" name="clockaudio" value="yes" {{YESCHECKED}}>
+                是
+            </label>
+            <label for="no">
+                <input type="radio" id="no" name="clockaudio" value="no" {{NOCHECKED}}>
+                否
+            </label>
+            <input type="submit" value="保存">
+        </p>
+    </form>
+</body>
+
+</html>

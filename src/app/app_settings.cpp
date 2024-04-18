@@ -4,6 +4,7 @@
 const char *stocks_path = "/config_stocks.txt";
 const char *mijia_path = "/config_mijia.txt";
 const char *web_path = "/config_web.txt";
+const char *more_path = "/config_moresettings.json";
 
 String readConfig(const char *config_path)
 {
@@ -46,7 +47,7 @@ void saveConfig(const char *config_path, String config_content)
 	File configFile = LittleFS.open(config_path, "w");
 	if (configFile)
 	{
-		configFile.print(config_content);
+		configFile.println(config_content);
 		configFile.close();
 		Serial.printf("%s保存成功\n", config_path);
 	}
@@ -106,7 +107,7 @@ void handleWeather(AsyncWebServerRequest *request)
 	json["weather_key"] = request->arg("key");
 	strcpy(stored_weather_city, request->arg("city").c_str());
 	strcpy(stored_weather_key, request->arg("key").c_str());
-	File configFile = LittleFS.open("/config.json", "w");
+	File configFile = LittleFS.open("/config_weather.json", "w");
 	if (!configFile)
 	{
 		Serial.println("failed to open config file for writing");
@@ -200,6 +201,39 @@ void handleDelete(AsyncWebServerRequest *request)
 	}
 }
 
+void handleMoreSettings(AsyncWebServerRequest *request){
+	String page = readHTML("/webserver/moresettings.html");
+	if(clockaudio==true){
+		page.replace("{{YESCHECKED}}","checked");
+		page.replace("{{NOCHECKED}}","");
+	}else{
+		page.replace("{{YESCHECKED}}","");
+		page.replace("{{NOCHECKED}}","checked");
+	}
+	request->send(200, "text/html", page);
+}
+
+void handleClockAudio(AsyncWebServerRequest *request){
+	String value = request->arg("clockaudio");
+	DynamicJsonDocument json(1024);
+	if(value=="yes"){
+		clockaudio=true;
+		json["clockaudio"] = true;
+	}else if(value=="no"){
+		clockaudio=false;
+		json["clockaudio"] = false;
+	}
+	File configFile = LittleFS.open("/config_moresettings.json", "w");
+	if (!configFile)
+	{
+		Serial.println("failed to open config file for writing");
+	}
+	serializeJson(json, Serial);
+	serializeJson(json, configFile);
+	configFile.close();
+	request->redirect("/moresettings");
+}
+
 // 处理未找到的路由
 void notFoundHandler(AsyncWebServerRequest *request)
 {
@@ -288,6 +322,14 @@ void AnalyzeWebConfig()
 		webstring.push_back(line);
 	}
 	Serial.printf("网页数量:%d\n", webstring.size());
+}
+
+void AnalyzeMoreSettings(){
+	String moreConfig = readConfig(more_path);
+	DynamicJsonDocument json(1024);
+	deserializeJson(json, moreConfig);
+	clockaudio = json["clockaudio"];
+	Serial.printf("整点报时:%d\n", clockaudio);
 }
 
 String humanReadableSize(const size_t bytes)

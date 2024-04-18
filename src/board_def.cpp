@@ -11,6 +11,7 @@ char stored_weather_city[40];
 std::vector<StockInfo> stocks;
 std::vector<MijiaSwitch> sws;
 std::vector<std::vector<String>> webstring;
+bool clockaudio;  //是否整点报时
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
@@ -375,11 +376,11 @@ void board_init()
     if (LittleFS.begin(true))
     {
         Serial.println("mounted file system");
-        if (LittleFS.exists("/config.json"))
+        if (LittleFS.exists("/config_weather.json"))
         {
             // file exists, reading and loading
             Serial.println("reading config file");
-            File configFile = LittleFS.open("/config.json", "r");
+            File configFile = LittleFS.open("/config_weather.json", "r");
             if (configFile)
             {
                 Serial.println("opened config file");
@@ -514,7 +515,7 @@ void board_init()
         json["weather_city"] = stored_weather_city;
         json["weather_key"] = stored_weather_key;
 
-        File configFile = LittleFS.open("/config.json", "w");
+        File configFile = LittleFS.open("/config_weather.json", "w");
         if (!configFile)
         {
             Serial.println("failed to open config file for writing");
@@ -569,6 +570,7 @@ void board_init()
     sws.push_back(MijiaSwitch(K1,"有人存在","Sensor",1,2));  //固定KEY1用于人在传感器显示有人无人
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
+    AnalyzeMoreSettings();
 
     gfx3->print("time updating");
     configTime(8 * 3600, 0, NTP1, NTP2, NTP3);

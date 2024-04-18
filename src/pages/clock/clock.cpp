@@ -355,7 +355,9 @@ static void loop(void *data)
 
 			if (timeInfo.tm_min == 0 && timeInfo.tm_sec == 0 && timeInfo.tm_hour > 7 && timeInfo.tm_hour < 23)
 			{
-				app_audio_sayTimeCN(timeInfo.tm_hour, timeInfo.tm_min);
+				if(clockaudio==true){
+					app_audio_sayTimeCN(timeInfo.tm_hour, timeInfo.tm_min);
+				}
 			}
 
 			// Serial.printf("%02d:%02d:%02d\r\n", timeInfo.tm_hour, timeInfo.tm_min, timeInfo.tm_sec);
