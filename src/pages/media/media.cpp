@@ -16,9 +16,9 @@ static void enter(void *data)
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 
-	myDrawPNG(32, 32, "/media/prev.png", 0);
-	myDrawPNG(32, 32, "/media/play.png", 1);
-	myDrawPNG(32, 32, "/media/next.png", 2);
+	DrawPNGCentre("/media/prev.png", 0);
+	DrawPNGCentre("/media/play.png", 1);
+	DrawPNGCentre("/media/next.png", 2);
 
 	// while (bleKeyboard.isConnected() == false)
 	// {
