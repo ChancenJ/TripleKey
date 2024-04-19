@@ -44,7 +44,7 @@
 #include "app/app_settings.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
-#define VER_SW "0.4.0"
+#define VER_SW "0.4.4"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"

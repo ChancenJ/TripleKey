@@ -38,13 +38,11 @@ static void dispWeb()
 }
 static void gotoWeb(String web)
 {
- 
 	bleKeyboard.releaseAll();
 	bleKeyboard.write(KEY_MEDIA_WWW_HOME);
 	delay(800);
 	bleKeyboard.println(web);
 	delay(200);
-
 	bleKeyboard.write(KEY_DELETE);
 	delay(200);
 	bleKeyboard.write(KEY_RETURN); //回车

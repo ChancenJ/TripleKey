@@ -17,7 +17,8 @@ static uint8_t xpos = 64;
 extern page_t page_weather;
 extern page_t page_mijia;
 
-bool autotheme = true;
+bool autotheme = true;  //是否时钟主题自动切换
+bool clockaudio;  //是否整点报时
 
 void dispTime(uint8_t hour, uint8_t min, uint8_t sec)
 {

@@ -80,10 +80,6 @@ static void gotoConfig()
 	bleKeyboard.write(KEY_MEDIA_WWW_HOME);
 	delay(800);
 	bleKeyboard.println(url);
-	delay(200);
-	bleKeyboard.write(KEY_DELETE);
-	delay(200);
-	bleKeyboard.write(KEY_RETURN); // 回车
 }
 
 static void init(void *data)

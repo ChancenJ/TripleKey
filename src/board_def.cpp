@@ -11,7 +11,6 @@ char stored_weather_city[40];
 std::vector<StockInfo> stocks;
 std::vector<MijiaSwitch> sws;
 std::vector<std::vector<String>> webstring;
-bool clockaudio;  //是否整点报时
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
