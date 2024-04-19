@@ -18,7 +18,7 @@ void handleUploadPNG(AsyncWebServerRequest *request);
 void handleListFile(AsyncWebServerRequest *request);
 void handleDelete(AsyncWebServerRequest *request);
 void handleMoreSettings(AsyncWebServerRequest *request);
-void handleClockAudio(AsyncWebServerRequest *request);
+void handleClock(AsyncWebServerRequest *request);
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final);
 
 std::vector<String> SplitString(String origin, char flag);

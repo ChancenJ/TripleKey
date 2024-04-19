@@ -84,6 +84,7 @@ extern std::vector<StockInfo> stocks;
 extern std::vector<MijiaSwitch> sws;
 extern std::vector<std::vector<String>> webstring;
 extern bool clockaudio;
+extern bool autotheme;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);

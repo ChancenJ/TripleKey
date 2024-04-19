@@ -123,7 +123,7 @@ static void enter(void *data)
 	server.on("/listfiles",HTTP_GET, handleListFile);
 	server.on("/delete",HTTP_GET,handleDelete);
 	server.on("/moresettings",HTTP_GET,handleMoreSettings);
-	server.on("/clockaudio",HTTP_POST,handleClockAudio);
+	server.on("/clock",HTTP_POST,handleClock);
 	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
 	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {
         request->send(200);

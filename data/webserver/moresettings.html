@@ -9,18 +9,28 @@
 <body>
     <h1>TripleKey 设置</h1>
     <h2>更多设置</h2>
-    <form action="/clockaudio" method="post">
+    <form action="/clock" method="post">
         <P>整点报时：
-            <label for="yes">
-                <input type="radio" id="yes" name="clockaudio" value="yes" {{YESCHECKED}}>
+            <label for="audioyes">
+                <input type="radio" id="audioyes" name="clockaudio" value="yes" {{YESCHECKED_AUDIO}}>
                 是
             </label>
-            <label for="no">
-                <input type="radio" id="no" name="clockaudio" value="no" {{NOCHECKED}}>
+            <label for="audiono">
+                <input type="radio" id="audiono" name="clockaudio" value="no" {{NOCHECKED_AUDIO}}>
                 否
             </label>
-            <input type="submit" value="保存">
         </p>
+        <P>时钟主题自动切换：
+            <label for="themeyes">
+                <input type="radio" id="themeyes" name="clocktheme" value="yes" {{YESCHECKED_THEME}}>
+                是
+            </label>
+            <label for="themeno">
+                <input type="radio" id="themeno" name="clocktheme" value="no" {{NOCHECKED_THEME}}>
+                否
+            </label>
+        </p>
+        <P><input type="submit" value="保存"></P>
     </form>
 </body>
 

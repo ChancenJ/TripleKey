@@ -1,1 +1,4 @@
-{"clockaudio":true}
+{
+    "clockaudio": true,
+    "clocktheme": true
+}

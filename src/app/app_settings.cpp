@@ -204,24 +204,39 @@ void handleDelete(AsyncWebServerRequest *request)
 void handleMoreSettings(AsyncWebServerRequest *request){
 	String page = readHTML("/webserver/moresettings.html");
 	if(clockaudio==true){
-		page.replace("{{YESCHECKED}}","checked");
-		page.replace("{{NOCHECKED}}","");
+		page.replace("{{YESCHECKED_AUDIO}}","checked");
+		page.replace("{{NOCHECKED_AUDIO}}","");
 	}else{
-		page.replace("{{YESCHECKED}}","");
-		page.replace("{{NOCHECKED}}","checked");
+		page.replace("{{YESCHECKED_AUDIO}}","");
+		page.replace("{{NOCHECKED_AUDIO}}","checked");
+	}
+	if(autotheme==true){
+		page.replace("{{YESCHECKED_THEME}}","checked");
+		page.replace("{{NOCHECKED_THEME}}","");
+	}else{
+		page.replace("{{YESCHECKED_THEME}}","");
+		page.replace("{{NOCHECKED_THEME}}","checked");
 	}
 	request->send(200, "text/html", page);
 }
 
-void handleClockAudio(AsyncWebServerRequest *request){
-	String value = request->arg("clockaudio");
+void handleClock(AsyncWebServerRequest *request){
+	String value_clockaudio = request->arg("clockaudio");
+	String value_clocktheme = request->arg("clocktheme");
 	DynamicJsonDocument json(1024);
-	if(value=="yes"){
+	if(value_clockaudio=="yes"){
 		clockaudio=true;
 		json["clockaudio"] = true;
-	}else if(value=="no"){
+	}else if(value_clockaudio=="no"){
 		clockaudio=false;
 		json["clockaudio"] = false;
+	}
+	if(value_clocktheme=="yes"){
+		autotheme=true;
+		json["clocktheme"] = true;
+	}else if(value_clocktheme=="no"){
+		autotheme=false;
+		json["clocktheme"] = false;
 	}
 	File configFile = LittleFS.open("/config_moresettings.json", "w");
 	if (!configFile)
@@ -329,7 +344,9 @@ void AnalyzeMoreSettings(){
 	DynamicJsonDocument json(1024);
 	deserializeJson(json, moreConfig);
 	clockaudio = json["clockaudio"];
+	autotheme = json["clocktheme"];
 	Serial.printf("整点报时:%d\n", clockaudio);
+	Serial.printf("时钟主题自动切换:%d\n", autotheme);
 }
 
 String humanReadableSize(const size_t bytes)
