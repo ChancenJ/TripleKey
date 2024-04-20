@@ -18,6 +18,7 @@
 */
 
 static const char *key[] = {"Q", "W", "E", "F", "M", "D"};
+static const int16_t xpos = 40, ypos = 40;
 
 static void init(void *data)
 {
@@ -36,9 +37,9 @@ static void enter(void *data)
 	gfx3->fillScreen(BLACK);
 
  
-	gfx[0]->drawXBitmap(40, 0, yijiansanlian_bits,yijiansanlian_width, yijiansanlian_height, random(0xffff));
-	gfx[1]->drawXBitmap(40, 0, danmu_bits,danmu_width, danmu_height, random(0xffff));
-	gfx[2]->drawXBitmap(40, 0, quanping_bits,quanping_width, quanping_height, random(0xffff));
+	gfx[0]->drawXBitmap(xpos, ypos, yijiansanlian_bits, yijiansanlian_width, yijiansanlian_height, random(0xffff));
+	gfx[1]->drawXBitmap(xpos, ypos, danmu_bits, danmu_width, danmu_height, random(0xffff));
+	gfx[2]->drawXBitmap(xpos, ypos, quanping_bits, quanping_width, quanping_height, random(0xffff));
 
 
  
@@ -54,20 +55,22 @@ static void loop(void *data)
 	{
 
 	case KEY1_DOWN:
+		app_led_set(LED1, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 			// bleKeyboard.releaseAll();
 			// bleKeyboard.release(KEY_LEFT_SHIFT);
 			uint16_t color = random(0xffff);
 			bleKeyboard.press('q');
-			gfx[0]->drawRoundRect(37,50,54,10,3,color<<1);
-			gfx[0]->fillRoundRect(40,52,50,6,2,BLACK);
+			gfx[0]->drawRoundRect(xpos - 3, 50 + ypos, 54, 10, 3, color << 1);
+			gfx[0]->fillRoundRect(xpos, 52 + ypos, 50, 6, 2, BLACK);
 			int x=50;
 			while(x)
 			{
-				gfx[0]->drawXBitmap(40, 0, yijiansanlian_bits,yijiansanlian_width, yijiansanlian_height,color );
-				gfx[0]->drawRoundRect(37,50,54,10,3,color<<1);
-				gfx[0]->fillRoundRect(40,52,50-x,6,2,color);
+				gfx[0]->drawXBitmap(xpos, ypos, yijiansanlian_bits, yijiansanlian_width, yijiansanlian_height, color);
+				gfx[0]->drawRoundRect(xpos - 3, 50 + ypos, 54, 10, 3, color << 1);
+				gfx[0]->fillRoundRect(xpos, 52 + ypos, 50 - x, 6, 2, color);
 
 
 				delay(40);
@@ -79,6 +82,8 @@ static void loop(void *data)
 		}
 		break;
 	case KEY2_DOWN:
+		app_led_set(LED2, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 
@@ -86,11 +91,13 @@ static void loop(void *data)
 			// bleKeyboard.release(KEY_LEFT_SHIFT);
 			
 			bleKeyboard.write('d');
-			gfx[1]->drawXBitmap(40, 0, danmu_bits,danmu_width, danmu_height, random(0xffff));
+			gfx[1]->drawXBitmap(xpos, ypos, danmu_bits, danmu_width, danmu_height, random(0xffff));
 	
 		}
 		break;
 	case KEY3_DOWN:
+		app_led_set(LED3, app_led_color(random(10, 255), random(10, 255), random(10, 255)));
+		app_led_update();
 		if (bleKeyboard.isConnected())
 		{
 			// bleKeyboard.releaseAll();
@@ -98,8 +105,13 @@ static void loop(void *data)
 			// bleKeyboard.release(KEY_LEFT_SHIFT);
 
 			bleKeyboard.write('f');
-			gfx[2]->drawXBitmap(40, 0, quanping_bits,quanping_width, quanping_height, random(0xffff));
+			gfx[2]->drawXBitmap(xpos, ypos, quanping_bits, quanping_width, quanping_height, random(0xffff));
 		}
+		break;
+	case KEY1_UP:
+	case KEY2_UP:
+	case KEY3_UP:
+		app_led_off();
 		break;
 	case KEY4_SHORT:
 		if (bleKeyboard.isConnected())

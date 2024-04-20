@@ -10,10 +10,6 @@ int8_t clock_type_index;
 bool f_updateall = false;
 static uint8_t num_old[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-#define POS_Y 0
-
-static uint8_t xpos = 64;
-
 extern page_t page_weather;
 extern page_t page_mijia;
 
@@ -37,39 +33,39 @@ void dispTime(uint8_t hour, uint8_t min, uint8_t sec)
 	{
 		num_old[0] = hour / 10;
 		sprintf(path, "/clock_theme/%s/%s.png", clock_name[clock_type_index], number_name[hour / 10]);
-		myDrawPNG(0, POS_Y, path, 0);
+		myDrawPNG(0, 0, path, 0);
 	}
 	if (num_old[1] != hour % 10 || f_updateall)
 	{
 		num_old[1] = hour % 10;
 		sprintf(path, "/clock_theme/%s/%s.png", clock_name[clock_type_index], number_name[hour % 10]);
-		myDrawPNG(xpos, POS_Y, path, 0);
+		myDrawPNG(64, 0, path, 0);
 	}
 
 	if (num_old[2] != min / 10 || f_updateall)
 	{
 		num_old[2] = min / 10;
 		sprintf(path, "/clock_theme/%s/%s.png", clock_name[clock_type_index], number_name[min / 10]);
-		myDrawPNG(0, POS_Y, path, 1);
+		myDrawPNG(0, 0, path, 1);
 	}
 	if (num_old[3] != min % 10 || f_updateall)
 	{
 		num_old[3] = min % 10;
 		sprintf(path, "/clock_theme/%s/%s.png", clock_name[clock_type_index], number_name[min % 10]);
-		myDrawPNG(xpos, POS_Y, path, 1);
+		myDrawPNG(64, 0, path, 1);
 	}
 
 	if (num_old[4] != sec / 10 || f_updateall)
 	{
 		num_old[4] = sec / 10;
 		sprintf(path, "/clock_theme/%s/%s.png", clock_name[clock_type_index], number_name[sec / 10]);
-		myDrawPNG(0, POS_Y, path, 2);
+		myDrawPNG(0, 0, path, 2);
 	}
 	if (num_old[5] != sec % 10 || f_updateall)
 	{
 		num_old[5] = sec % 10;
 		sprintf(path, "/clock_theme/%s/%s.png", clock_name[clock_type_index], number_name[sec % 10]);
-		myDrawPNG(xpos, POS_Y, path, 2);
+		myDrawPNG(64, 0, path, 2);
 	}
 
 	f_updateall = false;
