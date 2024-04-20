@@ -6,11 +6,15 @@ WiFiManager wm;
 #include <ElegantOTA.h>
 AsyncWebServer server(80);
 
+
 char stored_weather_key[40];
 char stored_weather_city[40];
 std::vector<StockInfo> stocks;
 std::vector<MijiaSwitch> sws;
 std::vector<std::vector<String>> webstring;
+uint8_t rotary=4;  //旋转编码器限位值（2或4）
+bool enc_reverse=false; //旋转编码器是否反向
+
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
@@ -408,19 +412,11 @@ void board_init()
 
                 configFile.readBytes(buf.get(), size);
 
-#if defined(ARDUINOJSON_VERSION_MAJOR) && ARDUINOJSON_VERSION_MAJOR >= 6
                 DynamicJsonDocument json(1024);
                 auto deserializeError = deserializeJson(json, buf.get());
                 serializeJson(json, Serial);
                 if (!deserializeError)
                 {
-#else
-                DynamicJsonBuffer jsonBuffer;
-                JsonObject &json = jsonBuffer.parseObject(buf.get());
-                json.printTo(Serial);
-                if (json.success())
-                {
-#endif
                     Serial.println("\nparsed json");
                     strcpy(stored_weather_city, json["weather_city"]);
                     strcpy(stored_weather_key, json["weather_key"]);
@@ -432,12 +428,13 @@ void board_init()
                 configFile.close();
             }
         }
+        AnalyzeEncoderConfig();
     }
     else
     {
         Serial.println("failed to mount FS");
     }
-
+    
     Mijia_UpdateHumanState();
 
     myDrawPNG(0, 0, "/TRI.png", 0);
@@ -588,7 +585,7 @@ void board_init()
     sws.push_back(MijiaSwitch(K1, "有人存在", "Sensor", 1, 2)); // 固定KEY1用于人在传感器显示有人无人
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
-    AnalyzeMoreSettings();
+    AnalyzeClockConfig();
 
     gfx3->print("time updating");
     configTime(8 * 3600, 0, NTP1, NTP2, NTP3);

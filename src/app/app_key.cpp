@@ -187,14 +187,14 @@ static void key_timer_callback(TimerHandle_t xTimerID)
     button3.loop();
     button4.loop();
 
-    long newPosition = myEnc.read() / 4;
+    long newPosition = myEnc.read() / rotary;
     if (newPosition != oldPosition)
     {
         if (newPosition < oldPosition)
         {
             if (Key_Queue != 0)
             {
-                key_type = ENC_NEXT;
+                key_type = enc_reverse ? ENC_PREV : ENC_NEXT;
                 err = xQueueSend(Key_Queue, &key_type, 10);
                 if (err == errQUEUE_FULL)
                 {
@@ -206,7 +206,7 @@ static void key_timer_callback(TimerHandle_t xTimerID)
         {
             if (Key_Queue != 0)
             {
-                key_type = ENC_PREV;
+                key_type = enc_reverse ? ENC_NEXT : ENC_PREV;
                 err = xQueueSend(Key_Queue, &key_type, 10);
                 if (err == errQUEUE_FULL)
                 {

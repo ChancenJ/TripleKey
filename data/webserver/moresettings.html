@@ -32,6 +32,29 @@
         </p>
         <P><input type="submit" value="保存"></P>
     </form>
+    <form action="/encoder" method="post">
+        <P>旋转编码器限位值：
+            <label for="four">
+                <input type="radio" id="four" name="rotary" value="4" {{FOUR}}>
+                4
+            </label>
+            <label for="two">
+                <input type="radio" id="two" name="rotary" value="2" {{TWO}}>
+                2
+            </label>
+        </p>
+        <P>旋转编码器是否反向：
+            <label for="reverseyes">
+                <input type="radio" id="reverseyes" name="reverse" value="yes" {{YESCHECKED_REVERSE}}>
+                是
+            </label>
+            <label for="reverseno">
+                <input type="radio" id="reverseno" name="reverse" value="no" {{NOCHECKED_REVERSE}}>
+                否
+            </label>
+        </p>
+        <P><input type="submit" value="保存"></P>
+    </form>
     <input type="button" value="返回主页" onclick="location.href='/';">
 </body>
 

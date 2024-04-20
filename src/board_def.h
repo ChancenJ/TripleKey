@@ -85,6 +85,8 @@ extern std::vector<MijiaSwitch> sws;
 extern std::vector<std::vector<String>> webstring;
 extern bool clockaudio;
 extern bool autotheme;
+extern uint8_t rotary;
+extern bool enc_reverse;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);

@@ -4,7 +4,8 @@
 const char *stocks_path = "/config_stocks.txt";
 const char *mijia_path = "/config_mijia.txt";
 const char *web_path = "/config_web.txt";
-const char *more_path = "/config_moresettings.json";
+const char *clock_path = "/config_clock.json";
+const char *enc_path = "/config_encoder.json";
 
 String readConfig(const char *config_path)
 {
@@ -217,6 +218,20 @@ void handleMoreSettings(AsyncWebServerRequest *request){
 		page.replace("{{YESCHECKED_THEME}}","");
 		page.replace("{{NOCHECKED_THEME}}","checked");
 	}
+	if(rotary==4){
+		page.replace("{{FOUR}}","checked");
+		page.replace("{{TWO}}","");
+	}else if(rotary==2){
+		page.replace("{{FOUR}}","");
+		page.replace("{{TWO}}","checked");
+	}
+	if(enc_reverse==true){
+		page.replace("{{YESCHECKED_REVERSE}}","checked");
+		page.replace("{{NOCHECKED_REVERSE}}","");
+	}else{
+		page.replace("{{YESCHECKED_REVERSE}}","");
+		page.replace("{{NOCHECKED_REVERSE}}","checked");
+	}
 	request->send(200, "text/html", page);
 }
 
@@ -238,7 +253,31 @@ void handleClock(AsyncWebServerRequest *request){
 		autotheme=false;
 		json["clocktheme"] = false;
 	}
-	File configFile = LittleFS.open("/config_moresettings.json", "w");
+	File configFile = LittleFS.open(clock_path, "w");
+	if (!configFile)
+	{
+		Serial.println("failed to open config file for writing");
+	}
+	serializeJson(json, Serial);
+	serializeJson(json, configFile);
+	configFile.close();
+	request->redirect("/moresettings");
+}
+
+void handleEncoder(AsyncWebServerRequest *request){
+	uint8_t value_rotary = request->arg("rotary").toInt();
+	String value_reverse = request->arg("reverse");
+	DynamicJsonDocument json(1024);
+	rotary = value_rotary;
+	json["rotary"] = value_rotary;
+	if(value_reverse=="yes"){
+		enc_reverse=true;
+		json["encreverse"] = true;
+	}else if(value_reverse=="no"){
+		enc_reverse=false;
+		json["encreverse"] = false;
+	}
+	File configFile = LittleFS.open("/config_encoder.json", "w");
 	if (!configFile)
 	{
 		Serial.println("failed to open config file for writing");
@@ -339,14 +378,24 @@ void AnalyzeWebConfig()
 	Serial.printf("网页数量:%d\n", webstring.size());
 }
 
-void AnalyzeMoreSettings(){
-	String moreConfig = readConfig(more_path);
+void AnalyzeClockConfig(){
+	String moreConfig = readConfig(clock_path);
 	DynamicJsonDocument json(1024);
 	deserializeJson(json, moreConfig);
 	clockaudio = json["clockaudio"];
 	autotheme = json["clocktheme"];
 	Serial.printf("整点报时:%d\n", clockaudio);
 	Serial.printf("时钟主题自动切换:%d\n", autotheme);
+}
+
+void AnalyzeEncoderConfig(){
+	String moreConfig = readConfig(enc_path);
+	DynamicJsonDocument json(1024);
+	deserializeJson(json, moreConfig);
+	rotary = json["rotary"];
+	enc_reverse = json["encreverse"];
+	Serial.printf("旋转编码器限位:%d\n", rotary);
+	Serial.printf("是否反向:%d\n", enc_reverse);
 }
 
 String humanReadableSize(const size_t bytes)

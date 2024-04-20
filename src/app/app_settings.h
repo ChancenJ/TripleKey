@@ -19,13 +19,15 @@ void handleListFile(AsyncWebServerRequest *request);
 void handleDelete(AsyncWebServerRequest *request);
 void handleMoreSettings(AsyncWebServerRequest *request);
 void handleClock(AsyncWebServerRequest *request);
+void handleEncoder(AsyncWebServerRequest *request);
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final);
 
 std::vector<String> SplitString(String origin, char flag);
 void AnalyzeStocksConfig();
 void AnalyzeMijiaConfig();
 void AnalyzeWebConfig();
-void AnalyzeMoreSettings();
+void AnalyzeClockConfig();
+void AnalyzeEncoderConfig();
 
 String humanReadableSize(const size_t bytes);
 String listFiles(bool DeleteButton);
