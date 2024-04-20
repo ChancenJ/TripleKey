@@ -10,7 +10,7 @@
     <h1>TripleKey 设置</h1>
     <h2>更多设置</h2>
     <form action="/clock" method="post">
-        <P>整点报时：
+        <p>整点报时：
             <label for="audioyes">
                 <input type="radio" id="audioyes" name="clockaudio" value="yes" {{YESCHECKED_AUDIO}}>
                 是
@@ -20,7 +20,7 @@
                 否
             </label>
         </p>
-        <P>时钟主题自动切换：
+        <p>时钟主题自动切换：
             <label for="themeyes">
                 <input type="radio" id="themeyes" name="clocktheme" value="yes" {{YESCHECKED_THEME}}>
                 是
@@ -30,10 +30,10 @@
                 否
             </label>
         </p>
-        <P><input type="submit" value="保存"></P>
+        <p><input type="submit" value="保存"></p>
     </form>
     <form action="/encoder" method="post">
-        <P>旋转编码器限位值：
+        <p>旋转编码器限位值：
             <label for="four">
                 <input type="radio" id="four" name="rotary" value="4" {{FOUR}}>
                 4
@@ -43,7 +43,7 @@
                 2
             </label>
         </p>
-        <P>旋转编码器是否反向：
+        <p>旋转编码器是否反向：
             <label for="reverseyes">
                 <input type="radio" id="reverseyes" name="reverse" value="yes" {{YESCHECKED_REVERSE}}>
                 是
@@ -53,7 +53,7 @@
                 否
             </label>
         </p>
-        <P><input type="submit" value="保存"></P>
+        <p><input type="submit" value="保存"></p>
     </form>
     <input type="button" value="返回主页" onclick="location.href='/';">
 </body>

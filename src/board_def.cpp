@@ -6,15 +6,13 @@ WiFiManager wm;
 #include <ElegantOTA.h>
 AsyncWebServer server(80);
 
-
 char stored_weather_key[40];
 char stored_weather_city[40];
 std::vector<StockInfo> stocks;
 std::vector<MijiaSwitch> sws;
 std::vector<std::vector<String>> webstring;
-uint8_t rotary=4;  //旋转编码器限位值（2或4）
-bool enc_reverse=false; //旋转编码器是否反向
-
+uint8_t rotary = 4;       // 旋转编码器限位值（2或4）
+bool enc_reverse = false; // 旋转编码器是否反向
 
 BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
@@ -279,8 +277,8 @@ void onOTAStart()
     gfx3->setFont(&GillSansEN_Bold_12);
     gfx3->setTextColor(GREEN, BLACK);
     gfx3->print("START");
-    gfx3->drawRoundRect(12,105,104,10,5,ORANGE);
-    gfx3->fillRoundRect(14,107,100,6,3,BLACK);
+    gfx3->drawRoundRect(12, 105, 104, 10, 5, ORANGE);
+    gfx3->fillRoundRect(14, 107, 100, 6, 3, BLACK);
 
     // <Add your own code here>
 }
@@ -296,8 +294,8 @@ void onOTAProgress(size_t current, size_t final)
         gfx3->setFont(&GillSansEN_Bold_12);
         gfx3->setTextColor(ORANGE, BLACK);
         gfx3->printf(" %03d %%  ", current * 100 / final);
-        gfx3->drawRoundRect(12,105,104,10,5,ORANGE);
-        gfx3->fillRoundRect(14,107,current * 100 / final,6,3,ORANGE);
+        gfx3->drawRoundRect(12, 105, 104, 10, 5, ORANGE);
+        gfx3->fillRoundRect(14, 107, current * 100 / final, 6, 3, ORANGE);
     }
 }
 
@@ -311,8 +309,8 @@ void onOTAEnd(bool success)
         gfx3->setFont(&GillSansEN_Bold_12);
         gfx3->setTextColor(GREEN, BLACK);
         gfx3->print(" 100 %  ");
-        gfx3->drawRoundRect(12,105,104,10,5,GREEN);
-        gfx3->fillRoundRect(14,107,100,6,3,GREEN);
+        gfx3->drawRoundRect(12, 105, 104, 10, 5, GREEN);
+        gfx3->fillRoundRect(14, 107, 100, 6, 3, GREEN);
     }
     else
     {
@@ -321,8 +319,8 @@ void onOTAEnd(bool success)
         gfx3->setFont(&GillSansEN_Bold_12);
         gfx3->setTextColor(RED, BLACK);
         gfx3->print("ERROR");
-        gfx3->drawRoundRect(12,105,104,10,5,RED);
-        gfx3->fillRoundRect(14,107,100,6,3,RED);
+        gfx3->drawRoundRect(12, 105, 104, 10, 5, RED);
+        gfx3->fillRoundRect(14, 107, 100, 6, 3, RED);
     }
     // <Add your own code here>
 }
@@ -434,7 +432,7 @@ void board_init()
     {
         Serial.println("failed to mount FS");
     }
-    
+
     Mijia_UpdateHumanState();
 
     myDrawPNG(0, 0, "/TRI.png", 0);
@@ -474,11 +472,17 @@ void board_init()
     // set config save notify callback
     wm.setSaveConfigCallback(saveConfigCallback);
 
+    WiFiManagerParameter custom_text1("<H1><font color=\"blue\">旋转编码器</font></H1>");
+    wm.addParameter(&custom_text1);
+    WiFiManagerParameter custom_rotary("rotary", "限位值（2或4）", String(rotary).c_str(), 2);
+    WiFiManagerParameter custom_reverse("reverse", "是否反向（1或0）", String(enc_reverse).c_str(), 2);
+    wm.addParameter(&custom_rotary);
+    wm.addParameter(&custom_reverse);
+
     WiFiManagerParameter custom_text("<H1><font color=\"blue\">和风天气</font></H1>");
     wm.addParameter(&custom_text);
     WiFiManagerParameter custom_weather_city("weather_city", "城市拼音", stored_weather_city, 40);
     WiFiManagerParameter custom_weather_key("weather_key", "私钥", stored_weather_key, 40);
-
     wm.addParameter(&custom_weather_city);
     wm.addParameter(&custom_weather_key);
 
@@ -512,6 +516,18 @@ void board_init()
     // read updated parameters
     strcpy(stored_weather_city, custom_weather_city.getValue());
     strcpy(stored_weather_key, custom_weather_key.getValue());
+    uint8_t value_custom_rotary = String(custom_rotary.getValue()).toInt();
+    if (value_custom_rotary == 4 || value_custom_rotary == 2)
+    {
+        rotary = value_custom_rotary;
+        Serial.println("限位值：" + rotary);
+    }
+    else
+    {
+        Serial.println("限位值错误");
+    }
+    enc_reverse = String(custom_reverse.getValue()).toInt();
+    Serial.printf("反向：%d\n", enc_reverse);
 
     Serial.println("The values in the file are: ");
     Serial.println("\tweather_city : " + String(stored_weather_city));
@@ -521,12 +537,9 @@ void board_init()
     if (shouldSaveConfig)
     {
         Serial.println("saving config");
-#if defined(ARDUINOJSON_VERSION_MAJOR) && ARDUINOJSON_VERSION_MAJOR >= 6
+
         DynamicJsonDocument json(1024);
-#else
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject &json = jsonBuffer.createObject();
-#endif
+
         json["weather_city"] = stored_weather_city;
         json["weather_key"] = stored_weather_key;
 
@@ -536,14 +549,21 @@ void board_init()
             Serial.println("failed to open config file for writing");
         }
 
-#if defined(ARDUINOJSON_VERSION_MAJOR) && ARDUINOJSON_VERSION_MAJOR >= 6
         serializeJson(json, Serial);
         serializeJson(json, configFile);
-#else
-        json.printTo(Serial);
-        json.printTo(configFile);
-#endif
         configFile.close();
+        json.clear();
+        json["rotary"] = rotary;
+        json["encreverse"] = enc_reverse;
+
+        File configFile1 = LittleFS.open("/config_encoder.json", "w");
+        if (!configFile1)
+        {
+            Serial.println("failed to open config file for writing");
+        }
+        serializeJson(json, Serial);
+        serializeJson(json, configFile1);
+        configFile1.close();
         // end save
     }
 
