@@ -51,21 +51,21 @@ int cs3 = PIN_CS3;
 Arduino_DataBus *bus1 = new Arduino_ESP32SPI(dc /*dc*/, cs1 /*cs*/, sclk /*sclk*/, mosi /*mosi*/);
 // Arduino_DataBus *bus1 = new Arduino_SWSPI(dc /*dc*/, cs1 /*cs*/, sclk /*sclk*/, mosi /*mosi*/,GFX_NOT_DEFINED /*miso*/);
 /* More display class: https://github.com/moononournation/Arduino_GFX/wiki/Display-Class */
-Arduino_GFX *gfx1 = new Arduino_NV3023(bus1, -1, 2 /* rotation */,false,128,128);
+Arduino_GFX *gfx1 = new Arduino_NV3023(bus1, -1, 2 /* rotation */, false, 128, 128);
 
 /* More data bus class: https://github.com/moononournation/Arduino_GFX/wiki/Data-Bus-Class */
 Arduino_DataBus *bus2 = new Arduino_ESP32SPI(dc /*dc*/, cs2 /*cs*/, sclk /*sclk*/, mosi /*mosi*/);
 // Arduino_DataBus *bus2 = new Arduino_SWSPI(dc /*dc*/, cs2 /*cs*/, sclk /*sclk*/, mosi /*mosi*/,GFX_NOT_DEFINED /*miso*/);
 
 /* More display class: https://github.com/moononournation/Arduino_GFX/wiki/Display-Class */
-Arduino_GFX *gfx2 = new Arduino_NV3023(bus2, -1, 2 /* rotation */,false,128,128);
+Arduino_GFX *gfx2 = new Arduino_NV3023(bus2, -1, 2 /* rotation */, false, 128, 128);
 
 /* More data bus class: https://github.com/moononournation/Arduino_GFX/wiki/Data-Bus-Class */
 Arduino_DataBus *bus3 = new Arduino_ESP32SPI(dc /*dc*/, cs3 /*cs*/, sclk /*sclk*/, mosi /*mosi*/);
 // Arduino_DataBus *bus3 = new Arduino_SWSPI(dc /*dc*/, cs3 /*cs*/, sclk /*sclk*/, mosi /*mosi*/,GFX_NOT_DEFINED /*miso*/);
 
 /* More display class: https://github.com/moononournation/Arduino_GFX/wiki/Display-Class */
-Arduino_GFX *gfx3 = new Arduino_NV3023(bus3, -1, 2 /* rotation */,false,128,128);
+Arduino_GFX *gfx3 = new Arduino_NV3023(bus3, -1, 2 /* rotation */, false, 128, 128);
 
 /*******************************************************************************
  * End of Arduino_GFX setting
@@ -131,7 +131,7 @@ void PNGDraw1(PNGDRAW *pDraw)
     // Serial.printf("Draw pos = 0,%d. size = %d x 1\n", pDraw->y, pDraw->iWidth);
     png.getLineAsRGB565(pDraw, usPixels, PNG_RGB565_LITTLE_ENDIAN, 0x00000000);
     png.getAlphaMask(pDraw, usMask, 1);
-    gfx1->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels,  pDraw->iWidth, 1);
+    gfx1->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels, pDraw->iWidth, 1);
 }
 
 void PNGDraw2(PNGDRAW *pDraw)
@@ -142,7 +142,7 @@ void PNGDraw2(PNGDRAW *pDraw)
     // Serial.printf("Draw pos = 0,%d. size = %d x 1\n", pDraw->y, pDraw->iWidth);
     png.getLineAsRGB565(pDraw, usPixels, PNG_RGB565_LITTLE_ENDIAN, 0x00000000);
     png.getAlphaMask(pDraw, usMask, 1);
-    gfx2->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels,  pDraw->iWidth, 1);
+    gfx2->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels, pDraw->iWidth, 1);
 }
 
 void PNGDraw3(PNGDRAW *pDraw)
@@ -153,9 +153,8 @@ void PNGDraw3(PNGDRAW *pDraw)
     // Serial.printf("Draw pos = 0,%d. size = %d x 1\n", pDraw->y, pDraw->iWidth);
     png.getLineAsRGB565(pDraw, usPixels, PNG_RGB565_LITTLE_ENDIAN, 0x00000000);
     png.getAlphaMask(pDraw, usMask, 1);
-    gfx3->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels,  pDraw->iWidth, 1);
+    gfx3->draw16bitRGBBitmap(xOffset, yOffset + pDraw->y, usPixels, pDraw->iWidth, 1);
 }
-
 
 void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index)
 {
@@ -197,11 +196,12 @@ void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index)
     {
         gfx[oled_index]->setFont(u8g_font_5x7);
         gfx[oled_index]->setCursor(x, y + 20);
-        gfx[oled_index]->printf("Failed to open %s\n",path);
+        gfx[oled_index]->printf("Failed to open %s\n", path);
     }
 }
 
-void DrawPNGCentre(const char *path, uint8_t oled_index){
+void DrawPNGCentre(const char *path, uint8_t oled_index)
+{
     unsigned long start = millis();
     int rc;
     PNG_DRAW_CALLBACK *pfnDraw = NULL;
@@ -224,8 +224,8 @@ void DrawPNGCentre(const char *path, uint8_t oled_index){
     {
         int16_t pw = png.getWidth();
         int16_t ph = png.getHeight();
-        xOffset =(OLED_WIDTH - pw) / 2;
-        yOffset =(OLED_HEIGHT - ph) / 2;
+        xOffset = (OLED_WIDTH - pw) / 2;
+        yOffset = (OLED_HEIGHT - ph) / 2;
         rc = png.decode(NULL, 0);
 
         // Serial.printf("Draw offset: (%d, %d), time used: %lu\r\n", xOffset, yOffset, millis() - start);
@@ -237,9 +237,8 @@ void DrawPNGCentre(const char *path, uint8_t oled_index){
     {
         gfx[oled_index]->setFont(u8g_font_5x7);
         gfx[oled_index]->setCursor(5, 10);
-        gfx[oled_index]->printf("Failed to open %s\n",path);
+        gfx[oled_index]->printf("Failed to open %s\n", path);
     }
-
 }
 
 void configModeCallback(WiFiManager *myWiFiManager)
@@ -254,69 +253,91 @@ void configModeCallback(WiFiManager *myWiFiManager)
     gfx2->setTextColor(QINGSHUILAN);
 }
 
-
 void audio_poweroff()
 {
-    pinMode(PIN_AUDIO_SD,OUTPUT);
-    digitalWrite(PIN_AUDIO_SD,LOW);
- 
+    pinMode(PIN_AUDIO_SD, OUTPUT);
+    digitalWrite(PIN_AUDIO_SD, LOW);
 }
 
 void audio_poweron()
 {
-    pinMode(PIN_AUDIO_SD,OUTPUT);
-    digitalWrite(PIN_AUDIO_SD,HIGH);
- 
+    pinMode(PIN_AUDIO_SD, OUTPUT);
+    digitalWrite(PIN_AUDIO_SD, HIGH);
 }
-
-
-
 
 unsigned long ota_progress_millis = 0;
 
-void onOTAStart() {
-  // Log when OTA has started
-  Serial.println("OTA update started!");
-  // <Add your own code here>
+void onOTAStart()
+{
+    // Log when OTA has started
+    Serial.println("OTA update started!");
+    gfx3->setCursor(38, 100);
+    gfx3->setFont(&GillSansEN_Bold_12);
+    gfx3->setTextColor(GREEN, BLACK);
+    gfx3->print("START");
+    gfx3->drawRoundRect(12,105,104,10,5,ORANGE);
+    gfx3->fillRoundRect(14,107,100,6,3,BLACK);
+
+    // <Add your own code here>
 }
 
-void onOTAProgress(size_t current, size_t final) {
-  // Log every 1 second
-  if (millis() - ota_progress_millis > 1000) {
-    ota_progress_millis = millis();
-    Serial.printf("OTA Progress Current: %u bytes, Final: %u bytes\n", current, final);
-  }
+void onOTAProgress(size_t current, size_t final)
+{
+    // Log every 1 second
+    if (millis() - ota_progress_millis > 1000)
+    {
+        ota_progress_millis = millis();
+        Serial.printf("OTA Progress Current: %u bytes, Final: %u bytes\n", current, final);
+        gfx3->setCursor(38, 100);
+        gfx3->setFont(&GillSansEN_Bold_12);
+        gfx3->setTextColor(ORANGE, BLACK);
+        gfx3->printf(" %03d %%  ", current * 100 / final);
+        gfx3->drawRoundRect(12,105,104,10,5,ORANGE);
+        gfx3->fillRoundRect(14,107,current * 100 / final,6,3,ORANGE);
+    }
 }
 
-void onOTAEnd(bool success) {
-  // Log when OTA has finished
-  if (success) {
-    Serial.println("OTA update finished successfully!");
-  } else {
-    Serial.println("There was an error during OTA update!");
-  }
-  // <Add your own code here>
+void onOTAEnd(bool success)
+{
+    // Log when OTA has finished
+    if (success)
+    {
+        Serial.println("OTA update finished successfully!");
+        gfx3->setCursor(38, 100);
+        gfx3->setFont(&GillSansEN_Bold_12);
+        gfx3->setTextColor(GREEN, BLACK);
+        gfx3->print(" 100 %  ");
+        gfx3->drawRoundRect(12,105,104,10,5,GREEN);
+        gfx3->fillRoundRect(14,107,100,6,3,GREEN);
+    }
+    else
+    {
+        Serial.println("There was an error during OTA update!");
+        gfx3->setCursor(38, 100);
+        gfx3->setFont(&GillSansEN_Bold_12);
+        gfx3->setTextColor(RED, BLACK);
+        gfx3->print("ERROR");
+        gfx3->drawRoundRect(12,105,104,10,5,RED);
+        gfx3->fillRoundRect(14,107,100,6,3,RED);
+    }
+    // <Add your own code here>
 }
 
-void dispProcessing(uint8_t screen){
-	int16_t x1;
-	int16_t y1;
-	uint16_t w;
-	uint16_t h;
-	String processing = "正在查询…";
+void dispProcessing(uint8_t screen)
+{
+    int16_t x1;
+    int16_t y1;
+    uint16_t w;
+    uint16_t h;
+    String processing = "正在查询…";
     gfx[screen]->fillScreen(BLACK);
-	gfx[screen]->setTextColor(QINGSHUILAN);
-	gfx[screen]->setUTF8Print(TRUE);
-	gfx[screen]->setFont(DreamHanSerifCN_W17_Processing_24);
-	gfx[screen]->getTextBounds(processing, 0, 0, &x1, &y1, &w, &h);
-	gfx[screen]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
-	gfx[screen]->print(processing);
+    gfx[screen]->setTextColor(QINGSHUILAN);
+    gfx[screen]->setUTF8Print(TRUE);
+    gfx[screen]->setFont(DreamHanSerifCN_W17_Processing_24);
+    gfx[screen]->getTextBounds(processing, 0, 0, &x1, &y1, &w, &h);
+    gfx[screen]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
+    gfx[screen]->print(processing);
 }
-
-
-
-
-
 
 void board_init()
 {
@@ -338,29 +359,27 @@ void board_init()
     digitalWrite(rst, 1);
     delay(100);
 
+    HumanState = 1;
 
-    
+#ifdef SUPPORT_PCF8574
+    Wire.begin(SDA_PIN, SCL_PIN);            // 初始化I2C总线，指定SDA和SCL引脚
+    Wire.setClock(400000);                   // 设置I2C时钟频率为400kHz
+    Wire.beginTransmission(PCF8574_ADDRESS); // 开始I2C传输
+    Wire.write(0xff);                        // 初始化所有引脚为高电平
+    Wire.endTransmission();                  // 结束I2C传输
+#endif
+#ifdef SUPPORT_CH423S
+    Wire.begin(SDA_PIN, SCL_PIN);
+    ch423.begin();
+    ch423.pinMode(ch423.eGPO, ch423.ePUSH_PULL);
+    delay(100);
+    ch423.digitalWrite(ch423.eGPO, 0xFFFF);
+#endif
+
     pinMode(backlight, OUTPUT);
     digitalWrite(backlight, 1);
 
     pinMode(BUTTON3_PIN, INPUT);
-
-    HumanState=1;
-
-#ifdef SUPPORT_PCF8574
-    Wire.begin(SDA_PIN, SCL_PIN);  // 初始化I2C总线，指定SDA和SCL引脚
-    Wire.setClock(400000); // 设置I2C时钟频率为400kHz
-    Wire.beginTransmission(PCF8574_ADDRESS); // 开始I2C传输
-    Wire.write(0xff); // 初始化所有引脚为高电平
-    Wire.endTransmission(); // 结束I2C传输
-#endif
-#ifdef SUPPORT_CH423S
-    Wire.begin(SDA_PIN, SCL_PIN); 
-    ch423.begin();
-    ch423.pinMode(ch423.eGPO, ch423.ePUSH_PULL);
-    delay(100);
-    ch423.digitalWrite(ch423.eGPO, 0xFFFF); 
-#endif
 
     gfx1->begin(40000000);
     gfx1->fillScreen(BLACK);
@@ -448,7 +467,7 @@ void board_init()
     gfx1->setCursor(0, 7);
     gfx1->printf("HW: %s\r\n", VER_HW);
     gfx1->printf("SW: %s\r\n", VER_SW);
-    
+
     gfx1->printf("Free rom: %dKB\r\n", (LittleFS.totalBytes() - LittleFS.usedBytes()) / 1024);
     // gfx3->printf("Free rom: %dKB\r\n", (SPIFFS.totalBytes() - SPIFFS.usedBytes()) / 1024);
 
@@ -553,7 +572,7 @@ void board_init()
                   { request->send(200, "text/plain", "http://<IPAddress>/update"); });
 
         ElegantOTA.begin(&server); // Start ElegantOTA
-          // ElegantOTA callbacks
+                                   // ElegantOTA callbacks
         ElegantOTA.onStart(onOTAStart);
         ElegantOTA.onProgress(onOTAProgress);
         ElegantOTA.onEnd(onOTAEnd);
@@ -566,7 +585,7 @@ void board_init()
 
     gfx3->println("Config reading");
     AnalyzeStocksConfig();
-    sws.push_back(MijiaSwitch(K1,"有人存在","Sensor",1,2));  //固定KEY1用于人在传感器显示有人无人
+    sws.push_back(MijiaSwitch(K1, "有人存在", "Sensor", 1, 2)); // 固定KEY1用于人在传感器显示有人无人
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
     AnalyzeMoreSettings();
