@@ -48,7 +48,7 @@ void saveConfig(const char *config_path, String config_content)
 	File configFile = LittleFS.open(config_path, "w");
 	if (configFile)
 	{
-		configFile.println(config_content);
+		configFile.print(config_content);
 		configFile.close();
 		Serial.printf("%s保存成功\n", config_path);
 	}
