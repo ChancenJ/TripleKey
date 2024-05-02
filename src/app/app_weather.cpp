@@ -13,16 +13,8 @@ const String citycodeapi = "https://geoapi.qweather.com/v2/city/lookup?location=
 void getCity(Weather *weather)
 {
     String city, apikey;
-    if (stored_weather_city[0] == '\0')
-    {
-        city = "yixing";
-        apikey = "6c643fe9ed644de789830619cbea6a95";
-    }
-    else
-    {
-        city = stored_weather_city;
-        apikey = stored_weather_key;
-    }
+    city = stored_weather_city;
+    apikey = stored_weather_key;
     String URL = citycodeapi + city + "&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
@@ -62,16 +54,8 @@ void getCity(Weather *weather)
 void getNowWeather(Weather *weather)
 {
     String apikey;
-    if (stored_weather_key[0] == '\0')
-    {
-        apikey = "6c643fe9ed644de789830619cbea6a95";
-    }
-    else
-    {
-        apikey = stored_weather_key;
-    }
+    apikey = stored_weather_key;
     String URL = weatherapi + NOWWEATHER + "?location=" + weather->citycode + "&key=" + apikey;
-    // String URL = "http://chenyuebo.cn:8080/hello240/api/weather?cityCode=" + cityCode; // 原来
     //  创建 HTTPClient 对象
     HTTPClient httpClient;
     httpClient.begin(URL);
@@ -117,14 +101,7 @@ void getNowWeather(Weather *weather)
 void getNowAir(Weather *weather)
 {
     String apikey;
-    if (stored_weather_key[0] == '\0')
-    {
-        apikey = "6c643fe9ed644de789830619cbea6a95";
-    }
-    else
-    {
-        apikey = stored_weather_key;
-    }
+    apikey = stored_weather_key;
     String URL = weatherapi + NOWAIR + "?location=" + weather->citycode + "&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
@@ -165,14 +142,7 @@ void getNowAir(Weather *weather)
 void getDay3Weather(Weather *weather)
 {
     String apikey;
-    if (stored_weather_key[0] == '\0')
-    {
-        apikey = "6c643fe9ed644de789830619cbea6a95";
-    }
-    else
-    {
-        apikey = stored_weather_key;
-    }
+    apikey = stored_weather_key;
     String URL = weatherapi + DAY3WEATHER + "?location=" + weather->citycode + "&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
@@ -233,23 +203,3 @@ String ProcessGzip(HTTPClient &httpClient)
     stream->stop();
     return payload;
 }
-
-// cityName = data["cityName"].as<String>();
-// temp = data["temp"].as<String>();
-// humidity = data["SD"].as<String>();
-// weather = data["weather"].as<String>();
-// weatherCode = data["weatherCode"].as<String>();
-// String aqi_pm25 = data["aqi_pm25"].as<String>();
-// pm25 = atoi(aqi_pm25.c_str());
-
-// scrollText[0] = "实时天气 " + weather;
-// scrollText[1] = "空气质量 " + aqi_pm25;
-// scrollText[2] = "风向 " + data["WD"].as<String>() + data["WS"].as<String>();
-// scrollText[3] = "今日 " + weather;
-// scrollText[4] = "最高温度" + data["tempH"].as<String>() + "℃";
-// scrollText[5] = "最低温度" + data["tempL"].as<String>() + "℃";
-
-// Serial.printf("cityName=%s\n", cityName.c_str());
-// Serial.printf("temp=%s\n", temp.c_str());
-// Serial.printf("date=%s\n", date.c_str());
-// Serial.printf("week=%s\n", week.c_str());

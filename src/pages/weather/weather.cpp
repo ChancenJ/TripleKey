@@ -197,7 +197,6 @@ void dispCity(){
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
-	String processing = "正在查询…";
     gfx[2]->fillScreen(BLACK);
 	gfx[2]->setTextColor(QINGSHUILAN);
 	gfx[2]->setUTF8Print(TRUE);
@@ -230,7 +229,9 @@ static void enter(void *data)
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 	dispProcessing(1);
-	getCity(&weather);
+	if(weather.citycode == "NA"){
+		getCity(&weather);
+	}
 	dispCity();
 	getNowWeather(&weather);
 	dispNowTemp();
