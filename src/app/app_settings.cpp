@@ -150,14 +150,17 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 void handleUploadPNG(AsyncWebServerRequest *request)
 {
 	String page = readHTML("/webserver/uploadpng.html");
-	size_t total, used;
-	esp_littlefs_info("spiffs", &total, &used);
-	page.replace("{{FREEROM}}", humanReadableSize(total - used));
-	page.replace("{{USEDROM}}", humanReadableSize(used));
-	page.replace("{{TOTALROM}}", humanReadableSize(total));
 	page.replace("{{FILELIST}}", listFiles(true));
 	// Serial.println(page);
 	request->send(200, "text/html", page);
+}
+
+void handleROM(AsyncWebServerRequest *request)
+{
+	size_t total, used;
+	esp_littlefs_info("spiffs", &total, &used);
+	String text = "剩余ROM: " + humanReadableSize(total - used) + " | 已用ROM: " + humanReadableSize(used) + " | ROM总量: " + humanReadableSize(total);
+	request->send(200, "text/plain", text);
 }
 
 void handleListFile(AsyncWebServerRequest *request)

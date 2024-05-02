@@ -115,6 +115,7 @@ static void enter(void *data)
 	server.on("/", HTTP_GET, handleRoot);
 	server.on("/config", HTTP_POST, handleConfigPost);
 	server.on("/uploadpng",HTTP_GET, handleUploadPNG);
+	server.on("/rom",HTTP_GET, handleROM);
 	server.on("/weather",HTTP_POST, handleWeather);
 	server.on("/listfiles",HTTP_GET, handleListFile);
 	server.on("/delete",HTTP_GET,handleDelete);

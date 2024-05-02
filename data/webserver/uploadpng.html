@@ -9,8 +9,9 @@
 <body>
     <h1>TripleKey设置</h1>
     <h2>上传网页图标</h2>
-    <p></p><input type="button" value="返回" onclick="location.href='/';"></p>
-    <p>剩余ROM: {{FREEROM}} | 已用ROM: {{USEDROM}} | ROM总量: {{TOTALROM}}</p>
+    <p><input type="button" value="返回" onclick="location.href='/';"></p>
+    <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
+    <p id="rom"></p>
     <form method="POST" action="/upload" enctype="multipart/form-data">
         <input type="file" name="data" />
         <input type="submit" name="Upload" value="上传" title="上传文件">
@@ -27,6 +28,13 @@
             xmlhttp.open("GET", "/listfiles?deletebutton=1", false);
             xmlhttp.send();
             document.getElementById("filelist").innerHTML = xmlhttp.responseText;
+        }
+        function ListROM() {
+            var urltocall = "/rom";
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", urltocall, false);
+            xmlhttp.send();
+            document.getElementById("rom").innerHTML = xmlhttp.responseText;
         }
     </script>
 </body>

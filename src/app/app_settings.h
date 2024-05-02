@@ -15,6 +15,7 @@ void handleConfigPost(AsyncWebServerRequest *request);
 void handleWeather(AsyncWebServerRequest *request);
 void notFoundHandler(AsyncWebServerRequest *request);
 void handleUploadPNG(AsyncWebServerRequest *request);
+void handleROM(AsyncWebServerRequest *request);
 void handleListFile(AsyncWebServerRequest *request);
 void handleDelete(AsyncWebServerRequest *request);
 void handleMoreSettings(AsyncWebServerRequest *request);
