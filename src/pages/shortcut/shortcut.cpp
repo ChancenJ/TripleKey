@@ -87,7 +87,7 @@ static void init(void *data)
 	pageindex = 0;
 	index_num = (maxsc % 3 == 0) ? (maxsc / 3) : (maxsc / 3 + 1);
 
-	Serial.println(sizeof(maxsc));
+	Serial.println(maxsc);
 }
 
 static void enter(void *data)
