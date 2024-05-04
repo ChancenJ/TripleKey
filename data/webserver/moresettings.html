@@ -10,6 +10,7 @@
     <h1>TripleKey 设置</h1>
     <h2>更多设置</h2>
     <form action="/clock" method="post">
+        <h3>时钟设置：</h3>
         <p>整点报时：
             <label for="audioyes">
                 <input type="radio" id="audioyes" name="clockaudio" value="yes" {{YESCHECKED_AUDIO}}>
@@ -33,6 +34,7 @@
         <p><input type="submit" value="保存"></p>
     </form>
     <form action="/encoder" method="post">
+        <h3>旋转编码器设置：</h3>
         <p>旋转编码器限位值：
             <label for="four">
                 <input type="radio" id="four" name="rotary" value="4" {{FOUR}}>
@@ -53,6 +55,21 @@
                 否
             </label>
         </p>
+        <p><input type="submit" value="保存"></p>
+    </form>
+    <form action="/photo" method="post">
+        <h3>照片设置：</h3>
+        <p>自动轮播：
+            <label for="scrollyes">
+                <input type="radio" id="scrollyes" name="photoscroll" value="1" {{YESCHECKED_SCROLL}}>
+                是
+            </label>
+            <label for="scrollno">
+                <input type="radio" id="scrollno" name="photoscroll" value="0" {{NOCHECKED_SCROLL}}>
+                否
+            </label>
+        </p>
+        <P><input type="button" value="上传/删除照片" onclick="location.href='/uploadphoto';"></P>
         <p><input type="submit" value="保存"></p>
     </form>
     <input type="button" value="返回主页" onclick="location.href='/';">

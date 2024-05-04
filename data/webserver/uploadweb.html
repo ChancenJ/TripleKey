@@ -9,7 +9,6 @@
 <body>
     <h1>TripleKey 设置</h1>
     <h2>上传网页图标</h2>
-    <p><input type="button" value="返回" onclick="location.href='/';"></p>
     <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
     <p id="rom"></p>
     <form method="POST" action="/upload?dir=web" enctype="multipart/form-data">
@@ -18,6 +17,7 @@
     </form>
     <p id="status"></p>
     <p id="filelist">{{FILELIST}}</p>
+    <p><input type="button" value="返回" onclick="location.href='/';"></p>
     <script>
         function DeleteButton(filename) {
             var urltocall = "/delete?dir=web&name=" + filename;

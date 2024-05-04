@@ -6,6 +6,7 @@ const char *mijia_path = "/config_mijia.txt";
 const char *web_path = "/config_web.txt";
 const char *clock_path = "/config_clock.json";
 const char *enc_path = "/config_encoder.json";
+const char *photo_path = "/config_photo.json";
 
 String readConfig(const char *config_path)
 {
@@ -122,8 +123,11 @@ void handleWeather(AsyncWebServerRequest *request)
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
 {
 	String path = "/";
-	if(request->hasParam("dir")){
-		path = "/" + request->getParam("dir")->value() + "/";
+	String dir;
+	if (request->hasParam("dir"))
+	{
+		dir = request->getParam("dir")->value();
+		path = "/" + dir + "/";
 		Serial.println(path);
 	}
 	String logmessage = "Client:" + request->client()->remoteIP().toString() + " " + request->url();
@@ -148,14 +152,22 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 		// close the file handle as the upload is now done
 		request->_tempFile.close();
 		Serial.println(logmessage);
-		request->redirect("/uploadpng");
+		request->redirect("/upload" + dir);
 	}
 }
 
-void handleUploadPNG(AsyncWebServerRequest *request)
+void handleUploadWeb(AsyncWebServerRequest *request)
 {
-	String page = readHTML("/webserver/uploadpng.html");
+	String page = readHTML("/webserver/uploadweb.html");
 	page.replace("{{FILELIST}}", listFiles("/web", true));
+	// Serial.println(page);
+	request->send(200, "text/html", page);
+}
+
+void handleUploadPhoto(AsyncWebServerRequest *request)
+{
+	String page = readHTML("/webserver/uploadphoto.html");
+	page.replace("{{FILELIST}}", listFiles("/photo", true));
 	// Serial.println(page);
 	request->send(200, "text/html", page);
 }
@@ -170,9 +182,13 @@ void handleROM(AsyncWebServerRequest *request)
 
 void handleListFile(AsyncWebServerRequest *request)
 {
-	if (request->hasParam("deletebutton") && request->hasParam("dir"))
+	String path = "/";
+	if (request->hasParam("dir"))
 	{
-		String path = "/" + request->getParam("dir")->value();
+		path = "/" + request->getParam("dir")->value();
+	}
+	if (request->hasParam("deletebutton"))
+	{
 		uint8_t deletebutton = request->getParam("deletebutton")->value().toInt();
 		if (deletebutton == 0)
 		{
@@ -211,55 +227,85 @@ void handleDelete(AsyncWebServerRequest *request)
 	}
 }
 
-void handleMoreSettings(AsyncWebServerRequest *request){
+void handleMoreSettings(AsyncWebServerRequest *request)
+{
 	String page = readHTML("/webserver/moresettings.html");
-	if(clockaudio==true){
-		page.replace("{{YESCHECKED_AUDIO}}","checked");
-		page.replace("{{NOCHECKED_AUDIO}}","");
-	}else{
-		page.replace("{{YESCHECKED_AUDIO}}","");
-		page.replace("{{NOCHECKED_AUDIO}}","checked");
+	if (clockaudio == true)
+	{
+		page.replace("{{YESCHECKED_AUDIO}}", "checked");
+		page.replace("{{NOCHECKED_AUDIO}}", "");
 	}
-	if(autotheme==true){
-		page.replace("{{YESCHECKED_THEME}}","checked");
-		page.replace("{{NOCHECKED_THEME}}","");
-	}else{
-		page.replace("{{YESCHECKED_THEME}}","");
-		page.replace("{{NOCHECKED_THEME}}","checked");
+	else
+	{
+		page.replace("{{YESCHECKED_AUDIO}}", "");
+		page.replace("{{NOCHECKED_AUDIO}}", "checked");
 	}
-	if(rotary==4){
-		page.replace("{{FOUR}}","checked");
-		page.replace("{{TWO}}","");
-	}else if(rotary==2){
-		page.replace("{{FOUR}}","");
-		page.replace("{{TWO}}","checked");
+	if (autotheme == true)
+	{
+		page.replace("{{YESCHECKED_THEME}}", "checked");
+		page.replace("{{NOCHECKED_THEME}}", "");
 	}
-	if(enc_reverse==true){
-		page.replace("{{YESCHECKED_REVERSE}}","checked");
-		page.replace("{{NOCHECKED_REVERSE}}","");
-	}else{
-		page.replace("{{YESCHECKED_REVERSE}}","");
-		page.replace("{{NOCHECKED_REVERSE}}","checked");
+	else
+	{
+		page.replace("{{YESCHECKED_THEME}}", "");
+		page.replace("{{NOCHECKED_THEME}}", "checked");
+	}
+	if (rotary == 4)
+	{
+		page.replace("{{FOUR}}", "checked");
+		page.replace("{{TWO}}", "");
+	}
+	else if (rotary == 2)
+	{
+		page.replace("{{FOUR}}", "");
+		page.replace("{{TWO}}", "checked");
+	}
+	if (enc_reverse == true)
+	{
+		page.replace("{{YESCHECKED_REVERSE}}", "checked");
+		page.replace("{{NOCHECKED_REVERSE}}", "");
+	}
+	else
+	{
+		page.replace("{{YESCHECKED_REVERSE}}", "");
+		page.replace("{{NOCHECKED_REVERSE}}", "checked");
+	}
+	if (photoscroll == true)
+	{
+		page.replace("{{YESCHECKED_SCROLL}}", "checked");
+		page.replace("{{NOCHECKED_SCROLL}}", "");
+	}
+	else
+	{
+		page.replace("{{YESCHECKED_SCROLL}}", "");
+		page.replace("{{NOCHECKED_SCROLL}}", "checked");
 	}
 	request->send(200, "text/html", page);
 }
 
-void handleClock(AsyncWebServerRequest *request){
+void handleClock(AsyncWebServerRequest *request)
+{
 	String value_clockaudio = request->arg("clockaudio");
 	String value_clocktheme = request->arg("clocktheme");
 	DynamicJsonDocument json(1024);
-	if(value_clockaudio=="yes"){
-		clockaudio=true;
+	if (value_clockaudio == "yes")
+	{
+		clockaudio = true;
 		json["clockaudio"] = true;
-	}else if(value_clockaudio=="no"){
-		clockaudio=false;
+	}
+	else if (value_clockaudio == "no")
+	{
+		clockaudio = false;
 		json["clockaudio"] = false;
 	}
-	if(value_clocktheme=="yes"){
-		autotheme=true;
+	if (value_clocktheme == "yes")
+	{
+		autotheme = true;
 		json["clocktheme"] = true;
-	}else if(value_clocktheme=="no"){
-		autotheme=false;
+	}
+	else if (value_clocktheme == "no")
+	{
+		autotheme = false;
 		json["clocktheme"] = false;
 	}
 	File configFile = LittleFS.open(clock_path, "w");
@@ -273,17 +319,21 @@ void handleClock(AsyncWebServerRequest *request){
 	request->redirect("/moresettings");
 }
 
-void handleEncoder(AsyncWebServerRequest *request){
+void handleEncoder(AsyncWebServerRequest *request)
+{
 	uint8_t value_rotary = request->arg("rotary").toInt();
 	String value_reverse = request->arg("reverse");
 	DynamicJsonDocument json(1024);
 	rotary = value_rotary;
 	json["rotary"] = value_rotary;
-	if(value_reverse=="yes"){
-		enc_reverse=true;
+	if (value_reverse == "yes")
+	{
+		enc_reverse = true;
 		json["encreverse"] = true;
-	}else if(value_reverse=="no"){
-		enc_reverse=false;
+	}
+	else if (value_reverse == "no")
+	{
+		enc_reverse = false;
 		json["encreverse"] = false;
 	}
 	File configFile = LittleFS.open("/config_encoder.json", "w");
@@ -294,6 +344,32 @@ void handleEncoder(AsyncWebServerRequest *request){
 	serializeJson(json, Serial);
 	serializeJson(json, configFile);
 	configFile.close();
+	request->redirect("/moresettings");
+}
+
+void handlePhoto(AsyncWebServerRequest *request)
+{
+	uint8_t value_scroll = request->arg("photoscroll").toInt();
+	DynamicJsonDocument json(512);
+	if (value_scroll)
+	{
+		photoscroll = true;
+		json["photoscroll"] = true;
+	}
+	else
+	{
+		photoscroll = false;
+		json["photoscroll"] = false;
+	}
+	File configFile = LittleFS.open(photo_path, "w");
+	if (!configFile)
+	{
+		Serial.println("failed to open config file for writing");
+	}
+	serializeJson(json, Serial);
+	serializeJson(json, configFile);
+	configFile.close();
+	photonum = 0;
 	request->redirect("/moresettings");
 }
 
@@ -387,7 +463,8 @@ void AnalyzeWebConfig()
 	Serial.printf("网页数量:%d\n", webstring.size());
 }
 
-void AnalyzeClockConfig(){
+void AnalyzeClockConfig()
+{
 	String moreConfig = readConfig(clock_path);
 	DynamicJsonDocument json(1024);
 	deserializeJson(json, moreConfig);
@@ -397,7 +474,8 @@ void AnalyzeClockConfig(){
 	Serial.printf("时钟主题自动切换:%d\n", autotheme);
 }
 
-void AnalyzeEncoderConfig(){
+void AnalyzeEncoderConfig()
+{
 	String moreConfig = readConfig(enc_path);
 	DynamicJsonDocument json(1024);
 	deserializeJson(json, moreConfig);
@@ -405,6 +483,15 @@ void AnalyzeEncoderConfig(){
 	enc_reverse = json["encreverse"];
 	Serial.printf("旋转编码器限位:%d\n", rotary);
 	Serial.printf("是否反向:%d\n", enc_reverse);
+}
+
+void AnalyzePhotoConfig()
+{
+	String moreConfig = readConfig(photo_path);
+	DynamicJsonDocument json(512);
+	deserializeJson(json, moreConfig);
+	photoscroll = json["photoscroll"];
+	Serial.printf("照片自动轮播:%d\n", photoscroll);
 }
 
 String humanReadableSize(const size_t bytes)

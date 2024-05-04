@@ -44,7 +44,7 @@
 #include "app/app_settings.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
-#define VER_SW "0.4.13"
+#define VER_SW "0.5.0"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
@@ -87,6 +87,7 @@ extern bool clockaudio;
 extern bool autotheme;
 extern uint8_t rotary;
 extern bool enc_reverse;
+extern bool photoscroll;
 
 void PNGDraw1(PNGDRAW *pDraw);
 void PNGDraw2(PNGDRAW *pDraw);

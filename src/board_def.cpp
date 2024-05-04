@@ -606,6 +606,7 @@ void board_init()
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
     AnalyzeClockConfig();
+    AnalyzePhotoConfig();
 
     gfx3->print("time updating");
     configTime(8 * 3600, 0, NTP1, NTP2, NTP3);

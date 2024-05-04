@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>上传照片</title>
+</head>
+
+<body>
+    <h1>TripleKey 设置</h1>
+    <h2>上传照片</h2>
+    <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
+    <p id="rom"></p>
+    <p>※照片格式为png，长宽均小于等于128像素，最大128×128，尽量避免中文与特殊符号命名</p>
+    <p>※上传后点击返回，对照片设置保存或重启设备，照片页将会刷新</p>
+    <form method="POST" action="/upload?dir=photo" enctype="multipart/form-data">
+        <input type="file" name="data" />
+        <input type="submit" name="Upload" value="上传" title="上传文件">
+    </form>
+    <p id="status"></p>
+    <p id="filelist">{{FILELIST}}</p>
+    <p><input type="button" value="返回" onclick="location.href='/moresettings';"></p>
+    <script>
+        function DeleteButton(filename) {
+            var urltocall = "/delete?dir=photo&name=" + filename;
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", urltocall, false);
+            xmlhttp.send();
+            document.getElementById("status").innerHTML = xmlhttp.responseText;
+            xmlhttp.open("GET", "/listfiles?dir=photo&deletebutton=1", false);
+            xmlhttp.send();
+            document.getElementById("filelist").innerHTML = xmlhttp.responseText;
+        }
+        function ListROM() {
+            var urltocall = "/rom";
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", urltocall, false);
+            xmlhttp.send();
+            document.getElementById("rom").innerHTML = xmlhttp.responseText;
+        }
+    </script>
+</body>
+
+</html>

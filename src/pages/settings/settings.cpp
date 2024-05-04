@@ -114,7 +114,8 @@ static void enter(void *data)
 	// 设置Web服务器的路由
 	server.on("/", HTTP_GET, handleRoot);
 	server.on("/config", HTTP_POST, handleConfigPost);
-	server.on("/uploadpng",HTTP_GET, handleUploadPNG);
+	server.on("/uploadweb",HTTP_GET, handleUploadWeb);
+	server.on("/uploadphoto",HTTP_GET, handleUploadPhoto);
 	server.on("/rom",HTTP_GET, handleROM);
 	server.on("/weather",HTTP_POST, handleWeather);
 	server.on("/listfiles",HTTP_GET, handleListFile);
@@ -122,6 +123,7 @@ static void enter(void *data)
 	server.on("/moresettings",HTTP_GET,handleMoreSettings);
 	server.on("/clock",HTTP_POST,handleClock);
 	server.on("/encoder",HTTP_POST,handleEncoder);
+	server.on("/photo",HTTP_POST,handlePhoto);
 	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
 	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {
         request->send(200);
