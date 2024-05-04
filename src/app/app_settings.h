@@ -31,5 +31,5 @@ void AnalyzeClockConfig();
 void AnalyzeEncoderConfig();
 
 String humanReadableSize(const size_t bytes);
-String listFiles(bool DeleteButton);
+String listFiles(String path, bool DeleteButton);
 #endif

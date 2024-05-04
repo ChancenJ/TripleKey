@@ -78,7 +78,7 @@
     <P><input type="button" value="更多设置" onclick="location.href='/moresettings';"></P>
     <script>
         function listFilesButton() {
-            var urltocall = "/listfiles?deletebutton=0";
+            var urltocall = "/listfiles?dir=web&deletebutton=0";
             xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", urltocall, false);
             xmlhttp.send();

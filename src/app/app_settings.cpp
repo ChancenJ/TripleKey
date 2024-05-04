@@ -121,13 +121,18 @@ void handleWeather(AsyncWebServerRequest *request)
 
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final)
 {
+	String path = "/";
+	if(request->hasParam("dir")){
+		path = "/" + request->getParam("dir")->value() + "/";
+		Serial.println(path);
+	}
 	String logmessage = "Client:" + request->client()->remoteIP().toString() + " " + request->url();
 	Serial.println(logmessage);
 	if (!index)
 	{
 		logmessage = "Upload Start: " + String(filename);
 		// open the file on first call and store the file handle in the request object
-		request->_tempFile = LittleFS.open("/web/" + filename, "w");
+		request->_tempFile = LittleFS.open(path + filename, "w");
 		Serial.println(logmessage);
 	}
 	if (len)
@@ -150,7 +155,7 @@ void handleUpload(AsyncWebServerRequest *request, String filename, size_t index,
 void handleUploadPNG(AsyncWebServerRequest *request)
 {
 	String page = readHTML("/webserver/uploadpng.html");
-	page.replace("{{FILELIST}}", listFiles(true));
+	page.replace("{{FILELIST}}", listFiles("/web", true));
 	// Serial.println(page);
 	request->send(200, "text/html", page);
 }
@@ -165,16 +170,17 @@ void handleROM(AsyncWebServerRequest *request)
 
 void handleListFile(AsyncWebServerRequest *request)
 {
-	if (request->hasParam("deletebutton"))
+	if (request->hasParam("deletebutton") && request->hasParam("dir"))
 	{
+		String path = "/" + request->getParam("dir")->value();
 		uint8_t deletebutton = request->getParam("deletebutton")->value().toInt();
 		if (deletebutton == 0)
 		{
-			request->send(200, "text/plain", listFiles(false));
+			request->send(200, "text/plain", listFiles(path, false));
 		}
 		else
 		{
-			request->send(200, "text/plain", listFiles(true));
+			request->send(200, "text/plain", listFiles(path, true));
 		}
 	}
 	else
@@ -185,9 +191,9 @@ void handleListFile(AsyncWebServerRequest *request)
 
 void handleDelete(AsyncWebServerRequest *request)
 {
-	if (request->hasParam("name"))
+	if (request->hasParam("name") && request->hasParam("dir"))
 	{
-		String fileName = "/web/" + request->getParam("name")->value();
+		String fileName = "/" + request->getParam("dir")->value() + "/" + request->getParam("name")->value();
 		if (LittleFS.exists(fileName))
 		{
 			LittleFS.remove(fileName);
@@ -413,11 +419,11 @@ String humanReadableSize(const size_t bytes)
 		return String(bytes / 1024.0 / 1024.0 / 1024.0) + " GB";
 }
 
-String listFiles(bool DeleteButton)
+String listFiles(String path, bool DeleteButton)
 {
 	String returnText = "";
 	Serial.println("Listing files stored on LittleFS");
-	File root = LittleFS.open("/web");
+	File root = LittleFS.open(path);
 	File foundfile = root.openNextFile();
 	returnText += "<table><tr><th align='left'>文件名</th><th align='left'>大小</th></tr>";
 	while (foundfile)
