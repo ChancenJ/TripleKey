@@ -11,7 +11,11 @@
     <h2>上传照片</h2>
     <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
     <p id="rom"></p>
-    <p>※照片格式为png，长宽均小于等于128像素，最大128×128，尽量避免中文与特殊符号命名</p>
+    <p>
+        ※照片格式:<br>
+        png————宽高均小于等于128像素，最大128×128，尽量避免中文与特殊符号命名<br>
+        jpg————宽高比例尽量接近1:1，高边像素应接近128整数倍，最大1024×1024（最佳大小128×128，更大尺寸徒增空间），尽量避免中文与特殊符号命名
+    </p>
     <p>※上传后点击返回，对照片设置保存或重启设备，照片页将会刷新</p>
     <form method="POST" action="/upload?dir=photo" enctype="multipart/form-data">
         <input type="file" name="data" />

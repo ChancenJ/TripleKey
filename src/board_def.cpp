@@ -243,6 +243,170 @@ void DrawPNGCentre(const char *path, uint8_t oled_index)
     }
 }
 
+static int jpegDrawCallback1(JPEGDRAW *pDraw)
+{
+    // Serial.printf("Draw pos = %d,%d. size = %d x %d\n", pDraw->x, pDraw->y, pDraw->iWidth, pDraw->iHeight);
+    gfx1->draw16bitBeRGBBitmap(pDraw->x, pDraw->y, pDraw->pPixels, pDraw->iWidth, pDraw->iHeight);
+    return 1;
+}
+static int jpegDrawCallback2(JPEGDRAW *pDraw)
+{
+    // Serial.printf("Draw pos = %d,%d. size = %d x %d\n", pDraw->x, pDraw->y, pDraw->iWidth, pDraw->iHeight);
+    gfx2->draw16bitBeRGBBitmap(pDraw->x, pDraw->y, pDraw->pPixels, pDraw->iWidth, pDraw->iHeight);
+    return 1;
+}
+static int jpegDrawCallback3(JPEGDRAW *pDraw)
+{
+    // Serial.printf("Draw pos = %d,%d. size = %d x %d\n", pDraw->x, pDraw->y, pDraw->iWidth, pDraw->iHeight);
+    gfx3->draw16bitBeRGBBitmap(pDraw->x, pDraw->y, pDraw->pPixels, pDraw->iWidth, pDraw->iHeight);
+    return 1;
+}
+
+void DrawJPEG(int16_t x, int16_t y, const char *path, uint8_t oled_index)
+{
+    JPEG_DRAW_CALLBACK *jpegDrawCallback = NULL;
+    switch (oled_index)
+    {
+    case 0:
+        jpegDrawCallback = jpegDrawCallback1;
+        break;
+    case 1:
+        jpegDrawCallback = jpegDrawCallback2;
+        break;
+    case 2:
+        jpegDrawCallback = jpegDrawCallback3;
+        break;
+    default:
+        break;
+    }
+    // jpegDraw(path, jpegDrawCallback, true /* useBigEndian */,
+    //          x /* x */, y /* y */, 128 /* widthLimit */, 128 /* heightLimit */);
+    _x = x;
+    _y = y;
+    uint8_t widthLimit = OLED_WIDTH;
+    uint8_t heightLimit = OLED_HEIGHT;
+    _x_bound = _x + widthLimit - 1;
+    _y_bound = _y + heightLimit - 1;
+    int8_t rc;
+    rc = _jpeg.open(path, jpegOpenFile, jpegCloseFile, jpegReadFile, jpegSeekFile, jpegDrawCallback);
+    if (rc == 1)
+    {
+        // scale to fit height
+        int _scale;
+        int iMaxMCUs;
+        float ratio = (float)_jpeg.getHeight() / heightLimit;
+        if (ratio <= 1)
+        {
+            _scale = 0;
+            iMaxMCUs = widthLimit / 16;
+        }
+        else if (ratio <= 2)
+        {
+            _scale = JPEG_SCALE_HALF;
+            iMaxMCUs = widthLimit / 8;
+        }
+        else if (ratio <= 4)
+        {
+            _scale = JPEG_SCALE_QUARTER;
+            iMaxMCUs = widthLimit / 4;
+        }
+        else
+        {
+            _scale = JPEG_SCALE_EIGHTH;
+            iMaxMCUs = widthLimit / 2;
+        }
+        _jpeg.setMaxOutputSize(iMaxMCUs);
+
+        _jpeg.setPixelType(RGB565_BIG_ENDIAN);
+
+        _jpeg.decode(x, y, _scale);
+        _jpeg.close();
+    }
+    else
+    {
+        gfx[oled_index]->setFont(u8g_font_5x7);
+        gfx[oled_index]->setCursor(5, 10);
+        gfx[oled_index]->printf("Failed to open %s\n", path);
+    }
+}
+
+void DrawJPEGCentre(const char *path, uint8_t oled_index)
+{
+    JPEG_DRAW_CALLBACK *jpegDrawCallback = NULL;
+    switch (oled_index)
+    {
+    case 0:
+        jpegDrawCallback = jpegDrawCallback1;
+        break;
+    case 1:
+        jpegDrawCallback = jpegDrawCallback2;
+        break;
+    case 2:
+        jpegDrawCallback = jpegDrawCallback3;
+        break;
+    default:
+        break;
+    }
+    uint8_t widthLimit = OLED_WIDTH;
+    uint8_t heightLimit = OLED_HEIGHT;
+    int8_t rc;
+    rc = _jpeg.open(path, jpegOpenFile, jpegCloseFile, jpegReadFile, jpegSeekFile, jpegDrawCallback);
+    if (rc == 1)
+    {
+        // scale to fit height
+        int _scale;
+        int iMaxMCUs;
+        float ratio = (float)_jpeg.getHeight() / heightLimit;
+        if (ratio <= 1)
+        {
+            _scale = 0;
+            iMaxMCUs = widthLimit / 16;
+        }
+        else if (ratio <= 2)
+        {
+            _scale = JPEG_SCALE_HALF;
+            iMaxMCUs = widthLimit / 8;
+        }
+        else if (ratio <= 4)
+        {
+            _scale = JPEG_SCALE_QUARTER;
+            iMaxMCUs = widthLimit / 4;
+        }
+        else
+        {
+            _scale = JPEG_SCALE_EIGHTH;
+            iMaxMCUs = widthLimit / 2;
+        }
+        _jpeg.setMaxOutputSize(iMaxMCUs);
+
+        _jpeg.setPixelType(RGB565_BIG_ENDIAN);
+
+        int pw = _jpeg.getWidth();
+        int ph = _jpeg.getHeight();
+        if (ph <= 128)
+        {
+            _x = (OLED_WIDTH - pw) / 2;
+            _y = (OLED_HEIGHT - ph) / 2;
+        }
+        else
+        {
+            _x = (OLED_WIDTH - pw / _scale) / 2;
+            _y = (OLED_HEIGHT - ph / _scale) / 2;
+        }
+        _x_bound = _x + widthLimit - 1;
+        _y_bound = _y + heightLimit - 1;
+
+        _jpeg.decode(_x, _y, _scale);
+        _jpeg.close();
+    }
+    else
+    {
+        gfx[oled_index]->setFont(u8g_font_5x7);
+        gfx[oled_index]->setCursor(5, 10);
+        gfx[oled_index]->printf("Failed to open %s\n", path);
+    }
+}
+
 void configModeCallback(WiFiManager *myWiFiManager)
 {
     gfx2->setTextColor(RED);

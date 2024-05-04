@@ -15,6 +15,7 @@
 #include <LittleFS.h>
 // https://github.com/bitbank2/PNGdec.git
 #include <PNGdec.h>
+#include "JpegFunc.h"
 #include <ESPAsyncWebServer.h>
 
 #include "Button2.h"
@@ -94,6 +95,8 @@ void PNGDraw2(PNGDRAW *pDraw);
 void PNGDraw3(PNGDRAW *pDraw);
 void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
 void DrawPNGCentre(const char *path, uint8_t oled_index);
+void DrawJPEG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
+void DrawJPEGCentre(const char *path, uint8_t oled_index);
 void dispProcessing(uint8_t screen);
 
 void board_init();

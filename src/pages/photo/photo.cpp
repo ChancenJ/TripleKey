@@ -23,7 +23,14 @@ static void dispPhotos()
 		if ((pageindex * 3 + i) < photonum)
 		{
 			String path = "/photo/" + photos[pageindex * 3 + i];
-			DrawPNGCentre(path.c_str(), i);
+			if (path.endsWith(".png"))
+			{
+				DrawPNGCentre(path.c_str(), i);
+			}
+			if (path.endsWith(".jpg"))
+			{
+				DrawJPEGCentre(path.c_str(), i);
+			}
 		}
 	}
 }
@@ -46,7 +53,7 @@ static void listPhotos()
 	while (file)
 	{
 		String filename = file.name();
-		if (filename.endsWith(".png"))
+		if (filename.endsWith(".png") || filename.endsWith(".jpg"))
 		{
 			Serial.println(filename);
 			photos.push_back(filename);
@@ -102,7 +109,6 @@ static void loop(void *data)
 	key = app_key_get();
 	switch (key)
 	{
-
 	case ENC_NEXT:
 		pageindex++;
 		if (pageindex >= index_num)
@@ -110,6 +116,7 @@ static void loop(void *data)
 			pageindex = 0;
 		}
 		dispPhotos();
+		lastScrollTime = millis();
 		break;
 	case ENC_PREV:
 		pageindex--;
@@ -118,6 +125,7 @@ static void loop(void *data)
 			pageindex = index_num - 1;
 		}
 		dispPhotos();
+		lastScrollTime = millis();
 		break;
 	case KEY4_LONG:				  // 长按
 		manager_switchToParent(); // 进入父项目 //退出
