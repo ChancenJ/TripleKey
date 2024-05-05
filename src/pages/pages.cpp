@@ -26,7 +26,7 @@ page_t *pages[] = {
     &page_weather,
     &page_stocks,
     &page_mijia,
-    &page_photo,
+    // &page_photo,
     // &page_pcstate,
     &page_keyboard,
     &page_shortcut,
