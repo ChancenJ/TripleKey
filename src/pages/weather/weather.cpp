@@ -228,7 +228,7 @@ void dispWarning()
 			}
 			else if (weather.warnings[i].color == "Orange")
 			{
-				color = ORANGE;
+				color = RGB565(255, 120, 0);
 			}
 			else if (weather.warnings[i].color == "Red")
 			{

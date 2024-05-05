@@ -157,6 +157,19 @@ static void doubleClick(Button2 &btn)
     {
         key_type = KEY1_DOUBLE;
     }
+    else if (btn == button2)
+    {
+        key_type = KEY2_DOUBLE;
+    }
+    else if (btn == button3)
+    {
+        key_type = KEY3_DOUBLE;
+    }
+    else if (btn == button4)
+    {
+        key_type = KEY4_DOUBLE;
+    }
+
 
     if (Key_Queue != 0)
     {
