@@ -18,6 +18,7 @@
 #include "pages/mijia/mijia.h"
 #include "pages/settings/settings.h"
 #include "pages/photo/photo.h"
+#include "pages/countdown/countdown.h"
 
 //需要添加自己的功能页面
 page_t *pages[] = {
@@ -33,6 +34,7 @@ page_t *pages[] = {
     &page_web,
     &page_media,
     &page_bilibili,
+    &page_countdown,
     &page_pomodoro,
     &page_settings,
     
