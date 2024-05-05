@@ -4,9 +4,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>上传照片</title>
+    <style>
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+        }
+
+        @media (max-width: 767px) {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <img src="https://vip.helloimg.com/i/2024/05/05/66374d0f8cb0e.png" alt="TripleKey">
     <h1>TripleKey 设置</h1>
     <h2>上传照片</h2>
     <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
