@@ -3,6 +3,7 @@
 #define NOWWEATHER "weather/now"
 #define DAY3WEATHER "weather/3d"
 #define NOWAIR "air/now"
+#define WARNING "warning/now"
 
 const String weatherapi = "https://devapi.qweather.com/v7/";
 const String citycodeapi = "https://geoapi.qweather.com/v2/city/lookup?location=";
@@ -185,6 +186,98 @@ void getDay3Weather(Weather *weather)
     else
     {
         Serial.println("请求三天预报错误：");
+        Serial.print(httpCode);
+    }
+    httpClient.end();
+}
+
+void getWarning(Weather *weather)
+{
+    String apikey;
+    apikey = stored_weather_key;
+    String URL = weatherapi + WARNING + "?location=" + weather->citycode + "&lang=en&key=" + apikey;
+    HTTPClient httpClient;
+    httpClient.begin(URL);
+    int httpCode = httpClient.GET();
+    Serial.println("正在气象灾害预警：");
+    Serial.println(URL);
+    if (httpCode == HTTP_CODE_OK)
+    {
+        String payload = ProcessGzip(httpClient);
+        Serial.println(payload);
+        weather->warnings.clear();
+        DynamicJsonDocument doc(2048);
+        deserializeJson(doc, payload);
+        JsonObject json = doc.as<JsonObject>();
+        int16_t hefengcode = json["code"].as<int16_t>();
+        if (hefengcode == HTTP_CODE_OK)
+        {
+            JsonArray warnings = json["warning"].as<JsonArray>();
+            for (int i = 0; i < warnings.size(); i++)
+            {
+                JsonObject warningjson = warnings[i].as<JsonObject>();
+                Warning warning;
+                warning.color = warningjson["severityColor"].as<String>();
+                warning.type = warningjson["typeName"].as<String>();
+                String stime = warningjson["startTime"].as<String>();
+                uint8_t index_1 = stime.indexOf('T');
+                uint8_t index_2 = stime.indexOf('+');
+                warning.starttime = stime.substring(0, index_1) + " " + stime.substring(index_1 + 1, index_2);
+                warning.title = warningjson["title"].as<String>();
+                weather->warnings.push_back(warning);
+            }
+            Serial.println("获取成功");
+        }
+        else
+        {
+            Serial.println("请求预警信息错误：");
+            Serial.print(hefengcode);
+        }
+    }
+    else
+    {
+        Serial.println("请求预警信息错误：");
+        Serial.print(httpCode);
+    }
+    httpClient.end();
+}
+
+void getCNWarningTitle(Weather *weather){
+    String apikey;
+    apikey = stored_weather_key;
+    String URL = weatherapi + WARNING + "?location=" + weather->citycode + "&lang=cn&key=" + apikey;
+    HTTPClient httpClient;
+    httpClient.begin(URL);
+    int httpCode = httpClient.GET();
+    Serial.println("正在气象灾害预警名称：");
+    Serial.println(URL);
+    if (httpCode == HTTP_CODE_OK)
+    {
+        String payload = ProcessGzip(httpClient);
+        Serial.println(payload);
+        DynamicJsonDocument doc(2048);
+        deserializeJson(doc, payload);
+        JsonObject json = doc.as<JsonObject>();
+        int16_t hefengcode = json["code"].as<int16_t>();
+        if (hefengcode == HTTP_CODE_OK)
+        {
+            JsonArray warnings = json["warning"].as<JsonArray>();
+            for (int i = 0; i < warnings.size(); i++)
+            {
+                JsonObject warningjson = warnings[i].as<JsonObject>();
+                weather->warnings[i].title = warningjson["title"].as<String>();
+            }
+            Serial.println("获取成功");
+        }
+        else
+        {
+            Serial.println("请求预警名称错误：");
+            Serial.print(hefengcode);
+        }
+    }
+    else
+    {
+        Serial.println("请求预警名称错误：");
         Serial.print(httpCode);
     }
     httpClient.end();

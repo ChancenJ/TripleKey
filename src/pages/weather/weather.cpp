@@ -4,6 +4,7 @@
 #include "app/app_weather.h"
 #include <ArduinoJson.h>
 #include "fonts/MiSans_LightCN_Weather_20.h"
+#include "fonts/DreamHanSerifCN_W17_NoWarning_24.h"
 
 Weather weather;
 String day[3] = {"今天", "明天", "后天"};
@@ -192,15 +193,87 @@ void dispToday()
 	dispMtempAndSun();
 }
 
-void dispCity(){
+void dispWarning()
+{
+	gfx1->fillScreen(BLACK);
+	gfx2->fillScreen(BLACK);
+	gfx3->fillScreen(BLACK);
+	uint8_t num = weather.warnings.size() <= 3 ? weather.warnings.size() : 3;
+	if (num == 0)
+	{
+		int16_t x1;
+		int16_t y1;
+		uint16_t w;
+		uint16_t h;
+		String text = "无预警信息";
+		gfx[1]->setTextColor(QINGSHUILAN);
+		gfx[1]->setUTF8Print(TRUE);
+		gfx[1]->setFont(DreamHanSerifCN_W17_NoWarning_24);
+		gfx[1]->getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+		gfx[1]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
+		gfx[1]->print(text);
+	}
+	else
+	{
+		for (int i = 0; i < num; i++)
+		{
+			uint16_t color;
+			if (weather.warnings[i].color == "Blue")
+			{
+				color = RGB565(50, 101, 254);
+			}
+			else if (weather.warnings[i].color == "Yellow")
+			{
+				color = YELLOW;
+			}
+			else if (weather.warnings[i].color == "Orange")
+			{
+				color = ORANGE;
+			}
+			else if (weather.warnings[i].color == "Red")
+			{
+				color = RED;
+			}
+			String path = "/weather/warning/" + weather.warnings[i].type + weather.warnings[i].color + ".png";
+			File file = LittleFS.open(path);
+			if (file)
+			{
+				myDrawPNG(32, 0, path.c_str(), i);
+				gfx[i]->setTextColor(color);
+				gfx[i]->setUTF8Print(TRUE);
+				gfx[i]->setFont(u8g2_font_wqy13_t_gb2312);
+				gfx[i]->setCursor(0, 65);
+				gfx[i]->println(weather.warnings[i].title);
+				gfx[i]->println(weather.warnings[i].starttime);
+			}
+			else{
+				String unipath = "/weather/warning/Uni" + weather.warnings[i].color + ".png";
+				myDrawPNG(32, 0, unipath.c_str(), i);
+				gfx[i]->setTextColor(BLACK);
+				// gfx[i]->fillRoundRect(32,0,64,30,3,color);
+				// gfx[i]->setUTF8Print(TRUE);
+				// gfx[i]->setFont(DreamHanSerifCN_W17_NoWarning_24);
+				// gfx[i]->setCursor(40, 26);
+				// gfx[i]->print("预警");
+				gfx[i]->setFont(u8g2_font_wqy13_t_gb2312);
+				gfx[i]->setTextColor(color);
+				gfx[i]->setCursor(0, 65);
+				gfx[i]->println(weather.warnings[i].title);
+				gfx[i]->println(weather.warnings[i].starttime);
+			}
+		}
+	}
+}
+void dispCity()
+{
 	int16_t x1;
 	int16_t y1;
 	uint16_t w;
 	uint16_t h;
-    gfx[2]->fillScreen(BLACK);
+	gfx[2]->fillScreen(BLACK);
 	gfx[2]->setTextColor(QINGSHUILAN);
 	gfx[2]->setUTF8Print(TRUE);
-	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312a);
+	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312);
 	gfx[2]->getTextBounds(weather.cityname_cn, 0, 0, &x1, &y1, &w, &h);
 	gfx[2]->setCursor((OLED_WIDTH - w) / 2, 60);
 	gfx[2]->print(weather.cityname_cn);
@@ -213,6 +286,7 @@ typedef void (*dispContent)();
 dispContent disp[] = {
 	dispToday,
 	dispPredict,
+	dispWarning,
 };
 const uint8_t Indexnum = ARRAY_SIZE(disp);
 
@@ -229,7 +303,8 @@ static void enter(void *data)
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
 	dispProcessing(1);
-	if(weather.citycode == "NA"){
+	if (weather.citycode == "NA")
+	{
 		getCity(&weather);
 	}
 	dispCity();
@@ -243,6 +318,8 @@ static void enter(void *data)
 	dispAir();
 	getDay3Weather(&weather);
 	dispMtempAndSun();
+	getWarning(&weather);
+	getCNWarningTitle(&weather);
 	//
 	manager_setBusy(false);
 }

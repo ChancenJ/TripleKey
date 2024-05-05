@@ -13,7 +13,7 @@ void dispInfo()
 	//gfx[0]->setFont(u8g2_font_7x13B_mr);
 	//gfx[0]->println("Enter the URL:");
 	gfx[0]->setUTF8Print(true);
-	gfx[0]->setFont(u8g2_font_wqy13_t_gb2312a);
+	gfx[0]->setFont(u8g2_font_wqy13_t_gb2312);
 	gfx[0]->println("进入网页:");
 	gfx[0]->println(WiFi.localIP());
 	gfx[0]->println("或");
@@ -26,7 +26,7 @@ void dispInfo()
 	gfx[2]->setTextColor(QINGSHUILAN);
 	gfx[2]->setCursor(0, 13);
 	gfx[2]->setUTF8Print(true);
-	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312a);
+	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312);
 	gfx[2]->print("软件版本: V");
 	gfx[2]->println(VER_SW);
 	gfx[2]->println(" ");
