@@ -1,6 +1,7 @@
 #include "countdown.h" //修改
 #include "board_def.h"
 #include "app/app_key.h"
+#include "app/app_audio.h"
 
 typedef enum
 {
@@ -94,6 +95,7 @@ void CountDown()
 						app_led_update();
 					}
 					dispHMS();
+					app_audio_play_wav("/end.wav");
 				}
 			}
 		}
