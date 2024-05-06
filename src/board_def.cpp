@@ -53,21 +53,21 @@ int cs3 = PIN_CS3;
 Arduino_DataBus *bus1 = new Arduino_ESP32SPI(dc /*dc*/, cs1 /*cs*/, sclk /*sclk*/, mosi /*mosi*/);
 // Arduino_DataBus *bus1 = new Arduino_SWSPI(dc /*dc*/, cs1 /*cs*/, sclk /*sclk*/, mosi /*mosi*/,GFX_NOT_DEFINED /*miso*/);
 /* More display class: https://github.com/moononournation/Arduino_GFX/wiki/Display-Class */
-Arduino_GFX *gfx1 = new Arduino_NV3023(bus1, -1, 2 /* rotation */, false, 128, 128);
+Arduino_GFX *gfx1 = new Arduino_GC9107(bus1, -1, 0 /* rotation */, true, 128, 128);
 
 /* More data bus class: https://github.com/moononournation/Arduino_GFX/wiki/Data-Bus-Class */
 Arduino_DataBus *bus2 = new Arduino_ESP32SPI(dc /*dc*/, cs2 /*cs*/, sclk /*sclk*/, mosi /*mosi*/);
 // Arduino_DataBus *bus2 = new Arduino_SWSPI(dc /*dc*/, cs2 /*cs*/, sclk /*sclk*/, mosi /*mosi*/,GFX_NOT_DEFINED /*miso*/);
 
 /* More display class: https://github.com/moononournation/Arduino_GFX/wiki/Display-Class */
-Arduino_GFX *gfx2 = new Arduino_NV3023(bus2, -1, 2 /* rotation */, false, 128, 128);
+Arduino_GFX *gfx2 = new Arduino_GC9107(bus2, -1, 0 /* rotation */, true, 128, 128);
 
 /* More data bus class: https://github.com/moononournation/Arduino_GFX/wiki/Data-Bus-Class */
 Arduino_DataBus *bus3 = new Arduino_ESP32SPI(dc /*dc*/, cs3 /*cs*/, sclk /*sclk*/, mosi /*mosi*/);
 // Arduino_DataBus *bus3 = new Arduino_SWSPI(dc /*dc*/, cs3 /*cs*/, sclk /*sclk*/, mosi /*mosi*/,GFX_NOT_DEFINED /*miso*/);
 
 /* More display class: https://github.com/moononournation/Arduino_GFX/wiki/Display-Class */
-Arduino_GFX *gfx3 = new Arduino_NV3023(bus3, -1, 2 /* rotation */, false, 128, 128);
+Arduino_GFX *gfx3 = new Arduino_GC9107(bus3, -1, 0 /* rotation */, true, 128, 128);
 
 /*******************************************************************************
  * End of Arduino_GFX setting
