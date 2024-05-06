@@ -40,7 +40,7 @@ static void disp_char(const char *letter, uint8_t id)
 		// Serial.print("  ");
 
 		gfx[i]->setTextColor(letter_color[random(9)]);
-		gfx[i]->setFont(&Orbitron_Medium_48);
+		gfx[i]->setFont(Chillax_MediumEN_50);
 		gfx[i]->getTextBounds(&data, 0, 0, &x1, &y1, &w, &h);
 		gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
 		gfx[i]->write(letter[id + i]);

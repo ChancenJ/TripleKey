@@ -39,6 +39,7 @@
 #include "fonts/DouyinSansBoldCN_Weather_38.h"
 #include "fonts/GillSansEN_Bold_12.h"
 #include "fonts/Guangliang_Title_26.h"
+#include "fonts/Chillax_MediumEN_50.h"
 
 #include "app/app_led.h"
 #include "app/app_humansensor.h"
