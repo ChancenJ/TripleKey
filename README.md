@@ -32,7 +32,7 @@ CC BY-NC-SA 4.0（署名-非商业性使用-相同方式共享 4.0 国际）
 
 #### 主控
 
-ESP32-S3-WROOM-1-N8R2或ESP32-S3-WROOM-1-N16R2。区别在于后者拥有更多ROM，可实现更多功能。当前N16R2对应固件额外支持照片轮播，可自行上传照片在屏幕上显示。后续可能有更多额外功能支持。
+ESP32-S3-WROOM-1-N8R2或ESP32-S3-WROOM-1-N16R2。区别在于后者拥有更多ROM，可实现更多功能。当前N16R2对应固件额外支持照片轮播，可自行上传照片在屏幕上显示。建议使用成本略高的N16R2，8MB版本受限于其空间，可能不再更新固件。
 
 #### 旋转编码器
 
@@ -126,16 +126,12 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 使用乐鑫的[flash download tool](https://www.espressif.com.cn/sites/default/files/tools/flash_download_tool_3.9.5_0.zip)工具，固件有多个版本，根据自身硬件自行选择适配版本。
 
-| 主控                   | 屏幕   | 是否接入米家 | 固件                       |
-| ---------------------- | ------ | ------------ | -------------------------- |
-| ESP32-S3-WROOM-1-N16R2 | NV3023 | 接入米家     | firmware_full.bin          |
-| ESP32-S3-WROOM-1-N16R2 | GC9107 | 接入米家     | firmware_GC9107_16MB_M.bin |
-| ESP32-S3-WROOM-1-N16R2 | NV3023 | 不接入米家   | firmware_NV3023_16MB.bin   |
-| ESP32-S3-WROOM-1-N16R2 | GC9107 | 不接入米家   | firmware_GC9107_16MB.bin   |
-| ESP32-S3-WROOM-1-N8R2  | NV3023 | 接入米家     | firmware_NV3023_8MB_M.bin  |
-| ESP32-S3-WROOM-1-N8R2  | GC9107 | 接入米家     | firmware_GC9107_8MB_M.bin  |
-| ESP32-S3-WROOM-1-N8R2  | NV3023 | 不接入米家   | firmware_NV3023_8MB.bin    |
-| ESP32-S3-WROOM-1-N8R2  | GC9107 | 不接入米家   | firmware_GC9107_8MB.bin    |
+| 主控                   | 屏幕   | 固件                     |
+| ---------------------- | ------ | ------------------------ |
+| ESP32-S3-WROOM-1-N16R2 | NV3023 | firmware_NV3023_16MB.bin |
+| ESP32-S3-WROOM-1-N16R2 | GC9107 | firmware_GC9107_16MB.bin |
+| ESP32-S3-WROOM-1-N8R2  | NV3023 | firmware_NV3023_8MB.bin  |
+| ESP32-S3-WROOM-1-N8R2  | GC9107 | firmware_GC9107_8MB.bin  |
 
 按照下图方式进行安装
 
