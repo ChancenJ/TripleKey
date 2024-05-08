@@ -32,3 +32,59 @@ ESP32-S3-WROOM-1-N8R2或ESP32-S3-WROOM-1-N16R2。区别在于后者拥有更多R
 
 立创EDA中使用阿尔卑斯阿尔派EC11J1524413，成本高昂。若需要降低成本，可选择廉价普通插件编码器改贴片，详见后文额外BOM表。区别在于质感和焊接方式，编码器限位值和正反方向不同，可进行自定义配置。
 
+<img src="README.assets/编码器.jpg" alt="编码器" style="zoom:25%;" />
+
+#### 屏幕
+
+- 方案一：0.85英寸长排焊接12PIN（驱动GC9107）直达链接：https://m.tb.cn/h.gXZoDytOg9CEca7?tk=Qb9vWtzlGgj
+
+此方案一定需要定位板，焊接及组装方式详见后文。
+
+<img src="README.assets/焊接长排12PIN实物.jpg" alt="焊接长排12PIN实物" style="zoom:25%;" /><img src="README.assets/焊接长排12PIN.jpg" alt="焊接长排12PIN" style="zoom:25%;" />
+
+- 方案二：0.85英寸长排插接12PIN（驱动NV3023）直达链接：https://m.tb.cn/h.gc6dU3OZHkynqdG?tk=nWm8WtzFscl
+
+此方案定位板非必须，但为了按键稳固，依然推荐使用定位板但无需焊接，组装方式详见后文。
+
+<img src="README.assets/插接长排12PIN实物.jpg" alt="插接长排12PIN实物" style="zoom: 33%;" /><img src="README.assets/插接长排12PIN.jpg" alt="插接长排12PIN" style="zoom: 33%;" />
+
+==区别在于两者成本，方案一成本约15元，但需要焊接屏幕和FPC排线座，方案二成本约30元，直接插接主板。两者固件不同，功能一致。==
+
+### 硬件准备
+
+#### PCB
+
+PCB共分为主板、定位板、拓展板，工程中已标明。
+
+主板必备，定位板强烈推荐（屏幕方案一必备），拓展板可选（用于接入米家和人在感应）。
+
+**主板**
+
+<img src="README.assets/主板.jpg" alt="主板" style="zoom: 67%;" />
+
+扬声器与米家拓展接口已标出，可选择性焊接。
+
+**定位板**
+
+<img src="README.assets/image-20240508171413572.png" alt="image-20240508171413572" style="zoom:67%;" />
+
+用于固定键轴和方案一的屏幕连接。（方案一如下图所示焊接屏幕、安装键轴，屏幕方案二无需焊接）
+
+<img src="README.assets/屏幕定位板2.jpg" alt="屏幕定位板2" style="zoom:25%;" />
+
+<img src="README.assets/屏幕定位板1.jpg" alt="屏幕定位板1" style="zoom:25%;" />
+
+**米家拓展板**
+
+==根据3D打印外壳方案进行选择==
+
+拓展方案一：选择3D打印文件中的方案一，工程中标注【拓展方案1】的1块PCB。
+
+
+
+拓展方案二：选择3D打印文件中的方案二，工程中标注【拓展方案2】的2块PCB。
+
+<img src="README.assets/拓展方案二.jpg" alt="拓展方案二" style="zoom:25%;" />
+
+<img src="README.assets/image-20240508174730741.png" alt="image-20240508174730741" style="zoom:50%;" />
+
