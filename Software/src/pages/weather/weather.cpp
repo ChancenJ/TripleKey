@@ -6,6 +6,8 @@
 #include "fonts/MiSans_LightCN_Weather_20.h"
 #include "fonts/DreamHanSerifCN_W17_NoWarning_24.h"
 
+extern page_t page_clock;
+
 Weather weather;
 String day[3] = {"今天", "明天", "后天"};
 int8_t dispIndex;
@@ -346,7 +348,9 @@ static void loop(void *data)
 		}
 		disp[dispIndex]();
 		break;
-
+	case KEY4_SHORT:
+		manager_switchToPage(&page_clock);
+		break;
 	case KEY4_LONG:				  // 长按
 		manager_switchToParent(); // 进入父项目 //退出
 		break;
