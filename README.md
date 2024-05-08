@@ -28,7 +28,7 @@ CC BY-NC-SA 4.0（署名-非商业性使用-相同方式共享 4.0 国际）
 
 ## 硬件准备
 
-### 硬件选择
+### 硬件说明
 
 #### 主控
 
@@ -120,7 +120,36 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 表中不包含阻容、二极管、稳压器等常见器件，自行根据立创导出的BOM解决。多数器件可在优信电子买到。
 
+## 软件说明
 
+### 固件烧录
 
+使用乐鑫的[flash download tool](https://www.espressif.com.cn/sites/default/files/tools/flash_download_tool_3.9.5_0.zip)工具，固件有多个版本，根据自身硬件自行选择适配版本。
 
+| 主控                   | 屏幕   | 是否接入米家 | 固件                       |
+| ---------------------- | ------ | ------------ | -------------------------- |
+| ESP32-S3-WROOM-1-N16R2 | NV3023 | 接入米家     | firmware_full.bin          |
+| ESP32-S3-WROOM-1-N16R2 | GC9107 | 接入米家     | firmware_GC9107_16MB_M.bin |
+| ESP32-S3-WROOM-1-N16R2 | NV3023 | 不接入米家   | firmware_NV3023_16MB.bin   |
+| ESP32-S3-WROOM-1-N16R2 | GC9107 | 不接入米家   | firmware_GC9107_16MB.bin   |
+| ESP32-S3-WROOM-1-N8R2  | NV3023 | 接入米家     | firmware_NV3023_8MB_M.bin  |
+| ESP32-S3-WROOM-1-N8R2  | GC9107 | 接入米家     | firmware_GC9107_8MB_M.bin  |
+| ESP32-S3-WROOM-1-N8R2  | NV3023 | 不接入米家   | firmware_NV3023_8MB.bin    |
+| ESP32-S3-WROOM-1-N8R2  | GC9107 | 不接入米家   | firmware_GC9107_8MB.bin    |
+
+按照下图方式进行安装
+
+1. 在上电前，按住左数第三个按钮，然后上电，进入烧录模式，会听到设备管理器提示音。
+2. 打开工具，按下图设置。
+3. 下载成功后，手动开关重启，按照提示进行连接设备热点配置WIFI。
+
+<img src="README.assets/image-20240508223518974.png" alt="image-20240508223518974" style="zoom: 80%;" />
+
+<img src="README.assets/image-20240508223740065.png" alt="image-20240508223740065" style="zoom:67%;" />
+
+### 功能说明与更新日志
+
+详见[软件说明](./Software/README.md)
+
+## 实物展示
 
