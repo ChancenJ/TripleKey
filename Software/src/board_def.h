@@ -44,6 +44,7 @@
 #include "app/app_led.h"
 #include "app/app_humansensor.h"
 #include "app/app_settings.h"
+#include "app/app_drawpicture.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
 #define VER_SW "0.8.0"
@@ -91,13 +92,6 @@ extern uint8_t rotary;
 extern bool enc_reverse;
 extern bool photoscroll;
 
-void PNGDraw1(PNGDRAW *pDraw);
-void PNGDraw2(PNGDRAW *pDraw);
-void PNGDraw3(PNGDRAW *pDraw);
-void myDrawPNG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
-void DrawPNGCentre(const char *path, uint8_t oled_index);
-void DrawJPEG(int16_t x, int16_t y, const char *path, uint8_t oled_index);
-void DrawJPEGCentre(const char *path, uint8_t oled_index);
 void dispProcessing(uint8_t screen);
 
 void board_init();
