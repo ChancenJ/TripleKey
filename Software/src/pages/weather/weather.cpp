@@ -248,7 +248,8 @@ void dispWarning()
 				gfx[i]->println(weather.warnings[i].title);
 				gfx[i]->println(weather.warnings[i].starttime);
 			}
-			else{
+			else
+			{
 				String unipath = "/weather/warning/Uni" + weather.warnings[i].color + ".png";
 				myDrawPNG(32, 0, unipath.c_str(), i);
 				gfx[i]->setTextColor(BLACK);
@@ -321,7 +322,10 @@ static void enter(void *data)
 	getDay3Weather(&weather);
 	dispMtempAndSun();
 	getWarning(&weather);
-	getCNWarningTitle(&weather);
+	if (weather.warnings.size() > 0)
+	{
+		getCNWarningTitle(&weather);
+	}
 	//
 	manager_setBusy(false);
 }
