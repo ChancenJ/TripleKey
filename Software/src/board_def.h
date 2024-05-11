@@ -80,6 +80,7 @@ extern Encoder myEnc;
 
 extern DFRobot_CH423 ch423;
 extern uint8_t HumanState;
+extern uint8_t WireErr;
 
 struct StockInfo;
 struct MijiaSwitch;
