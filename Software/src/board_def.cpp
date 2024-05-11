@@ -75,6 +75,7 @@ Arduino_GFX *gfx3 = new Arduino_GC9107(bus3, -1, 0 /* rotation */, true, 128, 12
 Arduino_GFX *gfx[3] = {gfx1, gfx2, gfx3};
 
 uint8_t HumanState;
+uint8_t WireErr;
 
 void configModeCallback(WiFiManager *myWiFiManager)
 {
@@ -206,6 +207,8 @@ void board_init()
 #ifdef SUPPORT_CH423S
     Wire.begin(SDA_PIN, SCL_PIN);
     ch423.begin();
+    Wire.beginTransmission(0x44 >> 1);
+    WireErr = Wire.endTransmission(); // 检查I2C是否正常（是否接拓展芯片），0为正常
     ch423.pinMode(ch423.eGPO, ch423.ePUSH_PULL);
     delay(100);
     ch423.digitalWrite(ch423.eGPO, 0xFFFF);
@@ -225,8 +228,15 @@ void board_init()
     gfx3->begin(40000000);
     gfx3->fillScreen(BLACK);
 
-    xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
-    xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
+    if (WireErr == 0)
+    {
+        xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
+        xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
+    }
+    else
+    {
+        Serial.println("米家及人在传感器异常");
+    }
 
     if (LittleFS.begin(true))
     {
@@ -353,7 +363,7 @@ void board_init()
     if (value_custom_rotary == 4 || value_custom_rotary == 2)
     {
         rotary = value_custom_rotary;
-        Serial.println("限位值：" + rotary);
+        Serial.printf("限位值：%d\n", rotary);
     }
     else
     {
