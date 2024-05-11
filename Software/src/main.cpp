@@ -19,6 +19,4 @@ void setup()
 void loop()
 {
 	manager_loop();
-	Mijia_UpdateHumanState();
-	Screen_Control_by_HumanSensor();
 }

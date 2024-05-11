@@ -3,10 +3,9 @@
 #include <Arduino.h>
 
 #include "board_def.h"
-#include "app/app_mijia.h"
 
-uint8_t getHumanSensorState();
-void Mijia_UpdateHumanState();
-void Screen_Control_by_HumanSensor();
-
+extern TaskHandle_t Handle_humanstate;
+extern TaskHandle_t Handle_AutoScreenOnOff;
+void Task_UpdateHumanState(void *pvParam);
+void Task_Screen_Control_by_HumanSensor(void *pvParam);
 #endif

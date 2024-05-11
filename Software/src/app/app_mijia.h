@@ -13,6 +13,10 @@
 #define K7 6
 #define K8 7
 
+#define MIJIA_SHORT 1
+#define MIJIA_DOUBLE 2
+#define MIJIA_LONG 3
+
 struct MijiaSwitch
 {
 	uint8_t pin;
@@ -24,11 +28,21 @@ struct MijiaSwitch
 	MijiaSwitch(uint8_t pin, String name_cn, String name_en, uint8_t optype, uint8_t type) : pin(pin), name_cn(name_cn), name_en(name_en), optype(optype), type(type), on(0) {}
 };
 
+struct MijiaOp
+{
+	uint8_t _pin;
+	uint8_t _optype;
+	MijiaOp() : _pin(255), _optype(0) {}
+	MijiaOp(uint8_t pin, uint8_t optype) : _pin(pin), _optype(optype) {}
+};
+extern QueueHandle_t Queue_Mijia;
+extern TaskHandle_t Handle_mijia;
+void Task_mijia(void *pvParameters);
+
 void app_mijia_short(uint8_t pin);
 void app_mijia_double(uint8_t pin);
 void app_mijia_long(uint8_t pin);
-void app_mijia_control(uint8_t pin,uint8_t type);
+void app_mijia_control(uint8_t pin, uint8_t type);
 uint8_t app_mijia_get(uint8_t pin);
-
 
 #endif
