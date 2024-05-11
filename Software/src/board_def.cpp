@@ -557,6 +557,9 @@ void board_init()
     gfx3->begin(40000000);
     gfx3->fillScreen(BLACK);
 
+    xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
+    xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
+
     if (LittleFS.begin(true))
     {
         Serial.println("mounted file system");
@@ -596,8 +599,6 @@ void board_init()
     {
         Serial.println("failed to mount FS");
     }
-
-    Mijia_UpdateHumanState();
 
     myDrawPNG(0, 0, "/TRI.png", 0);
     myDrawPNG(0, 0, "/PLE.png", 1);

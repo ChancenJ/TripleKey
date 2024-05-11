@@ -46,7 +46,7 @@
 #include "app/app_settings.h"
 
 #define VER_HW "TRIPLEKEY_V0.2"
-#define VER_SW "0.7.3"
+#define VER_SW "0.8.0"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
@@ -59,7 +59,7 @@
 #define QINGSHUILAN RGB565(147, 213, 220)  //清水蓝
 #define JINZI RGB565(128,109,158)  //槿紫
 
-#define PCF8574_ADDRESS 0x20
+// #define PCF8574_ADDRESS 0x20
 
 extern char stored_weather_key[], stored_weather_city[];
 
