@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 #include "board_def.h"
-#include "app/app_mijia.h"
+#include "app_mijia.h"
 
 uint8_t getHumanSensorState();
 void Mijia_UpdateHumanState();

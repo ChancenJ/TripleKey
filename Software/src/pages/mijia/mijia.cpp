@@ -111,6 +111,8 @@ static void init(void *data)
 	firstindex = 0;
 	Serial.println(maxsw);
 	lastUpdateTime = millis();
+	Queue_Mijia = xQueueCreate(5, sizeof(uint8_t));
+	xTaskCreate(Task_mijia_long, "Task_mijia_long", 2048, NULL, 1, &Handle_mijia_long);
 }
 
 static void enter(void *data)
@@ -184,7 +186,8 @@ static void loop(void *data)
 static void exit(void *data)
 {
 	// insert code
-
+	vTaskDelete(Handle_mijia_long);
+	xQueueReset(Queue_Mijia);
 	//
 	manager_setBusy(true);
 }
