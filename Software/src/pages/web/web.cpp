@@ -11,7 +11,7 @@
 // 	{"https://www.szlcsc.com/", "/web/lcsc.png"},
 // 	{"https://oshwhub.com/", "/web/oshwhub.png"},
 // 	{"https://github.com/", "/web/github.png"},
-	
+
 // 	// {"https://www.mouser.cn/", "/web/mouser.png"},
 
 // };
@@ -26,9 +26,12 @@ static void dispWeb()
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-	for(uint8_t i =0 ;i<3;i++){
+	for (uint8_t i = 0; i < 3; i++)
+	{
 		if ((pageindex * 3 + i) < maxweb)
-		DrawPNGCentre(("/web/"+webstring[pageindex * 3 + i][1]).c_str(), i);
+		{
+			DrawPNGCentre(("/web/" + webstring[pageindex * 3 + i][1]).c_str(), i);
+		}
 	}
 	// gfx[1]->setTextColor(BLUE >> 1);
 	// // gfx[1]->setFont(u8g2_font_10x20_mr);
@@ -36,6 +39,16 @@ static void dispWeb()
 	// gfx[1]->setCursor(0, 63);
 	// gfx[1]->printf("%d %d %d",maxweb,pageindex,index_num);
 }
+
+void Task_sanlian(void *pvParam)
+{
+	vTaskDelay(7000);
+	bleKeyboard.press('q');
+	vTaskDelay(2000);
+	bleKeyboard.release('q');
+	vTaskDelete(NULL);
+}
+
 static void gotoWeb(String web)
 {
 	bleKeyboard.releaseAll();
@@ -45,7 +58,11 @@ static void gotoWeb(String web)
 	delay(200);
 	bleKeyboard.write(KEY_DELETE);
 	delay(200);
-	bleKeyboard.write(KEY_RETURN); //回车
+	bleKeyboard.write(KEY_RETURN); // 回车
+	if (web.indexOf("b23.tv") != -1)
+	{
+		xTaskCreate(Task_sanlian, "Task_sanlian", 2048, NULL, 1, NULL);
+	}
 }
 
 static void init(void *data)
@@ -113,8 +130,8 @@ static void loop(void *data)
 		dispWeb();
 
 		break;
-	case KEY4_LONG:				  //长按
-		manager_switchToParent(); //进入父项目 //退出
+	case KEY4_LONG:				  // 长按
+		manager_switchToParent(); // 进入父项目 //退出
 		break;
 	default:
 		break;
