@@ -17,6 +17,8 @@ BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
 DFRobot_CH423 ch423;
 
+String NewVersion = "NA";
+
 // flag for saving data
 bool shouldSaveConfig = false;
 
@@ -282,7 +284,7 @@ void board_init()
     myDrawPNG(0, 0, "/PLE.png", 1);
     myDrawPNG(0, 0, "/KEY.png", 2);
 
-    delay(1000);
+    delay(800);
 
     for (uint8_t i = 0; i < OLED_HEIGHT; i++)
     {
@@ -304,7 +306,7 @@ void board_init()
 
     gfx1->setCursor(0, 7);
     gfx1->printf("HW: %s\r\n", VER_HW);
-    gfx1->printf("SW: %s\r\n", VER_SW);
+    gfx1->printf("SW: V%s\r\n", VER_SW);
 
     gfx1->printf("Free rom: %dKB\r\n", (LittleFS.totalBytes() - LittleFS.usedBytes()) / 1024);
     // gfx3->printf("Free rom: %dKB\r\n", (SPIFFS.totalBytes() - SPIFFS.usedBytes()) / 1024);
@@ -439,6 +441,14 @@ void board_init()
         server.begin();
         while (1)
             ;
+    }
+
+    NewVersion = getNewVersion();
+    if (NewVersion != VER_SW && NewVersion != "NA")
+    {
+        gfx1->setTextColor(ORANGE);
+        gfx1->printf("New version (V%s) has been released.\n", NewVersion);
+        gfx1->setTextColor(QINGSHUILAN);
     }
 
     gfx3->setCursor(0, 7);
