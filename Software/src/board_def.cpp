@@ -17,6 +17,8 @@ BleKeyboard bleKeyboard("TripleKey", "ChancenJ", 100);
 
 DFRobot_CH423 ch423;
 
+String NewVersion = "NA";
+
 // flag for saving data
 bool shouldSaveConfig = false;
 
@@ -75,6 +77,7 @@ Arduino_GFX *gfx3 = new Arduino_NV3023(bus3, -1, 2 /* rotation */, false, 128, 1
 Arduino_GFX *gfx[3] = {gfx1, gfx2, gfx3};
 
 uint8_t HumanState;
+uint8_t WireErr;
 
 void configModeCallback(WiFiManager *myWiFiManager)
 {
@@ -206,6 +209,8 @@ void board_init()
 #ifdef SUPPORT_CH423S
     Wire.begin(SDA_PIN, SCL_PIN);
     ch423.begin();
+    Wire.beginTransmission(0x44 >> 1);
+    WireErr = Wire.endTransmission(); // 检查I2C是否正常（是否接拓展芯片），0为正常
     ch423.pinMode(ch423.eGPO, ch423.ePUSH_PULL);
     delay(100);
     ch423.digitalWrite(ch423.eGPO, 0xFFFF);
@@ -225,8 +230,15 @@ void board_init()
     gfx3->begin(40000000);
     gfx3->fillScreen(BLACK);
 
-    xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
-    xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
+    if (WireErr == 0)
+    {
+        xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
+        xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
+    }
+    else
+    {
+        Serial.println("米家及人在传感器异常");
+    }
 
     if (LittleFS.begin(true))
     {
@@ -272,7 +284,7 @@ void board_init()
     myDrawPNG(0, 0, "/PLE.png", 1);
     myDrawPNG(0, 0, "/KEY.png", 2);
 
-    delay(1000);
+    delay(800);
 
     for (uint8_t i = 0; i < OLED_HEIGHT; i++)
     {
@@ -294,7 +306,7 @@ void board_init()
 
     gfx1->setCursor(0, 7);
     gfx1->printf("HW: %s\r\n", VER_HW);
-    gfx1->printf("SW: %s\r\n", VER_SW);
+    gfx1->printf("SW: V%s\r\n", VER_SW);
 
     gfx1->printf("Free rom: %dKB\r\n", (LittleFS.totalBytes() - LittleFS.usedBytes()) / 1024);
     // gfx3->printf("Free rom: %dKB\r\n", (SPIFFS.totalBytes() - SPIFFS.usedBytes()) / 1024);
@@ -353,7 +365,7 @@ void board_init()
     if (value_custom_rotary == 4 || value_custom_rotary == 2)
     {
         rotary = value_custom_rotary;
-        Serial.println("限位值：" + rotary);
+        Serial.printf("限位值：%d\n", rotary);
     }
     else
     {
@@ -429,6 +441,14 @@ void board_init()
         server.begin();
         while (1)
             ;
+    }
+
+    NewVersion = getNewVersion();
+    if (NewVersion != VER_SW && NewVersion != "NA")
+    {
+        gfx1->setTextColor(ORANGE);
+        gfx1->printf("New version (V%s) has been released.\n", NewVersion);
+        gfx1->setTextColor(QINGSHUILAN);
     }
 
     gfx3->setCursor(0, 7);

@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>TripleKey固件下载</title>
+    <style>
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+        }
+
+        @media (max-width: 767px) {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        table {
+            border-collapse: collapse;
+            width: auto;
+            table-layout: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+
+        @media screen and (max-width: 768px) {
+            td {
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+        }
+
+        th {
+            background-color: #f2f2f2;
+            min-width: 75px;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
+    <h1>TripleKey 设置</h1>
+    <h2>固件下载</h2>
+    <p>当前固件版本：V{{SWVERSION}}<br>
+        最新固件版本：V{{NEWVERSION}}</p>
+    <h3>完整固件：</h3>
+    <p>使用乐鑫官方工具flash_download_tool_3.9.5刷入<br>
+        <a href="https://www.espressif.com.cn/sites/default/files/tools/flash_download_tool_3.9.5_0.zip"
+            target="_blank">flash_download_tool下载地址</a>
+    </p>
+    <table>
+        <tr>
+            <th>屏幕\主控</th>
+            <th>N16R2</th>
+            <th>N8R2</th>
+        </tr>
+        <tr>
+            <th>NV3023</th>
+            <td><a href="https://gitee.com/chancenj/triplekey/raw/main/Firmware/firmware_NV3023_16MB.bin"
+                    target="_blank">firmware_NV3023_16MB.bin</a></td>
+            <td><a href="https://gitee.com/chancenj/triplekey/raw/main/Firmware/firmware_NV3023_8MB.bin"
+                    target="_blank">firmware_NV3023_8MB.bin</a></td>
+        </tr>
+        <tr>
+            <th>GC9107</th>
+            <td><a href="https://gitee.com/chancenj/triplekey/raw/main/Firmware/firmware_GC9107_16MB.bin"
+                    target="_blank">firmware_GC9107_16MB.bin</a></td>
+            <td><a href="https://gitee.com/chancenj/triplekey/raw/main/Firmware/firmware_GC9107_8MB.bin"
+                    target="_blank">firmware_GC9107_8MB.bin</a></td>
+        </tr>
+    </table>
+    <P></P>
+    <h3>OTA固件：</h3>
+    <p>前往仓库发行版选择OTA固件下载，开机时长按右键，使用OTA刷入<br>
+        <a href="https://gitee.com/chancenj/triplekey/releases" target="_blank">发行版</a>
+    </p>
+    <p><input type="button" value="返回主页" onclick="location.href='/';"></p>
+</body>
+
+</html>

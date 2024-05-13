@@ -25,6 +25,7 @@ void handleClock(AsyncWebServerRequest *request);
 void handleEncoder(AsyncWebServerRequest *request);
 void handlePhoto(AsyncWebServerRequest *request);
 void handleUpload(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final);
+void handleFirmware(AsyncWebServerRequest *request);
 
 std::vector<String> SplitString(String origin, char flag);
 void AnalyzeStocksConfig();
@@ -36,6 +37,8 @@ void AnalyzePhotoConfig();
 
 String humanReadableSize(const size_t bytes);
 String listFiles(String path, bool DeleteButton);
+
+String getNewVersion();
 
 extern uint8_t photonum;
 

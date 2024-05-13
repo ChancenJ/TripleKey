@@ -126,10 +126,13 @@ static void enter(void *data)
 
 static void loop(void *data)
 {
-	if (millis() - lastUpdateTime >= 500)
+	if (WireErr == 0)
 	{
-		UpdateState();
-		lastUpdateTime = millis();
+		if (millis() - lastUpdateTime >= 500)
+		{
+			UpdateState();
+			lastUpdateTime = millis();
+		}
 	}
 	KEY_TYPE key;
 	key = app_key_get();

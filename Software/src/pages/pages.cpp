@@ -94,17 +94,15 @@ static void enter(void *data)
             gfx[i]->setFont(u8g2_font_maniac_tr);
             gfx[i]->printf("%d\r\n", page_index + i);
 
-            
             gfx[i]->setFont(Guangliang_Title_26);
             gfx[i]->getTextBounds(pages[page_index + i]->title_cn, 0, 0, &x1, &y1, &w, &h);
-            Serial.printf("%d %d %d %d\r\n",x1,y1,w,h);
 	        gfx[i]->setCursor((OLED_WIDTH - w) / 2, 108);
             gfx[i]->printf("%s", pages[page_index + i]->title_cn);
             gfx[i]->drawXBitmap(40, 0+32, pages[page_index + i]->icon, pages[page_index + i]->icon_width, pages[page_index + i]->icon_height, random(0xffff));
         }
     }
 
-    delay(500);
+    delay(200);
 
     app_key_clean();
 
