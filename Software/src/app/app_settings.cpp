@@ -70,6 +70,7 @@ void handleRoot(AsyncWebServerRequest *request)
 	String webConfig = readConfig(web_path);
 
 	page.replace("{{SWVERSION}}", VER_SW);
+	page.replace("{{NEWVERSION}}", NewVersion);
 	page.replace("{{CITY}}", stored_weather_city);
 	page.replace("{{KEY}}", stored_weather_key);
 	page.replace("{{stocksConfig}}", stocksConfig);
@@ -373,6 +374,13 @@ void handlePhoto(AsyncWebServerRequest *request)
 	request->redirect("/moresettings");
 }
 
+void handleFirmware(AsyncWebServerRequest *request){
+	String page = readHTML("/webserver/firmware.html");
+	page.replace("{{SWVERSION}}", VER_SW);
+	page.replace("{{NEWVERSION}}", NewVersion);
+	request->send(200, "text/html", page);
+}
+
 // 处理未找到的路由
 void notFoundHandler(AsyncWebServerRequest *request)
 {
@@ -531,4 +539,26 @@ String listFiles(String path, bool DeleteButton)
 	foundfile.close();
 	Serial.println(returnText);
 	return returnText;
+}
+
+String getNewVersion()  //获取最新固件版本号
+{
+	String URL = "https://gitee.com/chancenj/triplekey/raw/main/Software/VERSION";
+	HTTPClient httpClient;
+	httpClient.begin(URL);
+	Serial.println("正在获取最新固件版本号");
+	Serial.println(URL);
+	int httpCode = httpClient.GET();
+	String version ="NA";
+	if (httpCode == HTTP_CODE_OK)
+	{
+		version = httpClient.getString();
+		Serial.println(version);
+	}
+	else{
+		Serial.println(httpCode);
+		Serial.println("最新固件版本号获取失败");
+	}
+	httpClient.end();
+	return version;
 }

@@ -46,8 +46,8 @@
 #include "app/app_settings.h"
 #include "app/app_drawpicture.h"
 
-#define VER_HW "TRIPLEKEY_V0.2"
-#define VER_SW "0.8.0"
+#define VER_HW "TRIPLEKEY_V2"
+#define VER_SW "0.9.0"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
@@ -92,6 +92,8 @@ extern bool autotheme;
 extern uint8_t rotary;
 extern bool enc_reverse;
 extern bool photoscroll;
+
+extern String NewVersion;
 
 void dispProcessing(uint8_t screen);
 

@@ -5,13 +5,11 @@
 
 #include "QRCode_Library.h"
 
-void dispInfo()
+void dispInstruction()
 {
 	gfx[0]->fillScreen(BLACK);
 	gfx[0]->setTextColor(QINGSHUILAN);
 	gfx[0]->setCursor(0, 13);
-	//gfx[0]->setFont(u8g2_font_7x13B_mr);
-	//gfx[0]->println("Enter the URL:");
 	gfx[0]->setUTF8Print(true);
 	gfx[0]->setFont(u8g2_font_wqy13_t_gb2312);
 	gfx[0]->println("进入网页:");
@@ -19,9 +17,12 @@ void dispInfo()
 	gfx[0]->println("或");
 	gfx[0]->println("扫描右侧二维码");
 	gfx[0]->println(" ");
-	gfx[0]->println("短按左键快捷进入网页");
+	gfx[0]->println("单击左键快捷进入网页");
 	gfx[0]->println("长按中键重启设备");
-
+	gfx[0]->println("单击右键下载固件");
+}
+void dispInfo()
+{
 	gfx[2]->fillScreen(BLACK);
 	gfx[2]->setTextColor(QINGSHUILAN);
 	gfx[2]->setCursor(0, 13);
@@ -29,11 +30,17 @@ void dispInfo()
 	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312);
 	gfx[2]->print("软件版本: V");
 	gfx[2]->println(VER_SW);
-	gfx[2]->println(" ");
+	if (NewVersion != VER_SW)
+	{
+		gfx[2]->setTextColor(ORANGE);
+	}
+	gfx[2]->print("最新版本: V");
+	gfx[2]->println(NewVersion);
+	gfx[2]->setTextColor(QINGSHUILAN);
 	gfx[2]->println("项目地址:");
 	gfx[2]->println("https://github.com/ChancenJ/TripleKey");
-	
-	myDrawPNG(0,100,"/Copyright.png",2);
+
+	myDrawPNG(0, 100, "/Copyright.png", 2);
 	// int16_t x1;
 	// int16_t y1;
 	// uint16_t w;
@@ -44,7 +51,7 @@ void dispInfo()
 	// gfx[2]->setCursor((OLED_WIDTH - w) / 2,120);
 	// gfx[2]->println("©ChancenJ");
 }
-void drawQRCode(QRCode qrcode, uint8_t magnification /*放大倍数*/, uint8_t xpos /*左上角x坐标*/, uint8_t ypos /*左上角y坐标*/,uint8_t screen/*屏幕*/)
+void drawQRCode(QRCode qrcode, uint8_t magnification /*放大倍数*/, uint8_t xpos /*左上角x坐标*/, uint8_t ypos /*左上角y坐标*/, uint8_t screen /*屏幕*/)
 {
 	for (uint8_t y = 0; y < qrcode.size; y++)
 	{
@@ -69,9 +76,8 @@ void dispQRCode()
 	uint8_t qrcodeBytes[qrcode_getBufferSize(2)];
 	qrcode_initText(&qrcode, qrcodeBytes, 2, ECC_MEDIUM, ip);
 	Serial.println(qrcode.size);
-	drawQRCode(qrcode,4,(OLED_WIDTH-qrcode.size*4)/2,(OLED_HEIGHT-qrcode.size*4)/2,1);
+	drawQRCode(qrcode, 4, (OLED_WIDTH - qrcode.size * 4) / 2, (OLED_HEIGHT - qrcode.size * 4) / 2, 1);
 }
-
 
 static void gotoConfig()
 {
@@ -82,34 +88,34 @@ static void gotoConfig()
 	bleKeyboard.println(url);
 }
 
+static void gotoRelease()
+{
+	String url = "https://gitee.com/chancenj/triplekey/releases";
+	bleKeyboard.releaseAll();
+	bleKeyboard.write(KEY_MEDIA_WWW_HOME);
+	delay(800);
+	bleKeyboard.println(url);
+	delay(200);
+	bleKeyboard.write(KEY_DELETE);
+	delay(200);
+	bleKeyboard.write(KEY_RETURN); // 回车
+}
+
 static void init(void *data)
 {
 }
 
 static void enter(void *data)
 {
-
-	// insert code
 	gfx1->fillScreen(BLACK);
 	gfx2->fillScreen(BLACK);
 	gfx3->fillScreen(BLACK);
-	while (WiFi.status() != WL_CONNECTED)
-	{
-		delay(500);
-	}
-	dispInfo();
+	dispInstruction();
 	dispQRCode();
-	Serial.println("");
-	Serial.print("Connected to WiFi. IP address: ");
+	dispInfo();
+	// insert code
+	Serial.print("IP address: ");
 	Serial.println(WiFi.localIP());
-
-	// // 挂载LittleFS文件系统
-	// if (!LittleFS.begin())
-	// {
-	// 	Serial.println("LittleFS mount failed");
-	// 	return;
-	// }
-	// Serial.println("LittleFS mounted");
 
 	// 设置Web服务器的路由
 	server.on("/", HTTP_GET, handleRoot);
@@ -124,6 +130,7 @@ static void enter(void *data)
 	server.on("/clock",HTTP_POST,handleClock);
 	server.on("/encoder",HTTP_POST,handleEncoder);
 	server.on("/photo",HTTP_POST,handlePhoto);
+	server.on("/firmware",HTTP_GET,handleFirmware);
 	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
 	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {
         request->send(200);
@@ -137,7 +144,6 @@ static void enter(void *data)
 	//
 	manager_setBusy(false);
 }
-
 static void loop(void *data)
 {
 	KEY_TYPE key;
@@ -150,6 +156,9 @@ static void loop(void *data)
 		break;
 	case KEY2_LONG:
 		ESP.restart();
+		break;
+	case KEY3_SHORT:
+		gotoRelease();
 		break;
 
 	case KEY4_LONG:				  // 长按
