@@ -7,9 +7,6 @@
 
 const String weatherapi = "https://devapi.qweather.com/v7/";
 const String citycodeapi = "https://geoapi.qweather.com/v2/city/lookup?location=";
-// const String apikey = "6c643fe9ed644de789830619cbea6a95";
-//  const String cityname="宜兴";
-//  const String citycode="101190203";
 
 void getCity(Weather *weather)
 {

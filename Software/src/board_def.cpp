@@ -216,23 +216,24 @@ void board_init()
     ch423.digitalWrite(ch423.eGPO, 0xFFFF);
 #endif
 
-    pinMode(backlight, OUTPUT);
-    digitalWrite(backlight, 1);
-
     pinMode(BUTTON3_PIN, INPUT);
 
     gfx1->begin(40000000);
-    gfx1->fillScreen(BLACK);
-
     gfx2->begin(40000000);
-    gfx2->fillScreen(BLACK);
-
     gfx3->begin(40000000);
+    gfx1->fillScreen(BLACK);
+    gfx2->fillScreen(BLACK);
     gfx3->fillScreen(BLACK);
 
+    delay(30);
+
+    pinMode(backlight, OUTPUT);
+    digitalWrite(backlight, 1);
+
+    
     if (WireErr == 0)
     {
-        xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
+        xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 4096, NULL, 1, &Handle_humanstate);
         xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
     }
     else
