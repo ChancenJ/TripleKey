@@ -24,7 +24,7 @@ CC BY-NC-SA 4.0（署名-非商业性使用-相同方式共享 4.0 国际）
 - 【可选，需额外硬件】接入米家，作为米家无线开关和状态寄存器。
 - 【可选，需额外硬件】人体存在感应，有人时自动亮屏，无人时自动熄屏，有无人状态接入米家，可搭配米家智能家居设备进行智能联动。
 
-功能展示：{{B站链接}}
+功能展示：[功能展示](https://b23.tv/3Hd1zba)
 
 ## 硬件准备
 
@@ -100,9 +100,11 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 若需要接入米家和人体传感器，自选方案一或方案二进行打印，同时**拓展PCB也应选择对应文件打板**。
 
-<img src="README.assets/image-20240508174730741.png" alt="image-20240508174730741" style="zoom:50%;" />
+<img src="README.assets/IMG_20240522_190503.jpg" alt="IMG_20240522_190503" style="zoom:25%;" />
 
 附加方案：盖板可选择使用亚克力面板打印，自行选择方案与屏幕面板一起打印。
+
+<img src="README.assets/IMG_20240522_190955.jpg" alt="IMG_20240522_190955" style="zoom:25%;" />
 
 #### 面板
 
@@ -143,9 +145,24 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 <img src="README.assets/image-20240508223740065.png" alt="image-20240508223740065" style="zoom:67%;" />
 
+### 开始使用
+
+固件烧录完成后开机，连接设备自带热点，进入屏幕提示网址（手机连接后一般自动进入）配置WIFI。启动时按住中键可重新配置，启动时按住右键可进入OTA模式。
+
+连接电脑蓝牙即可使用。
+
+<img src="README.assets/image-20240522181726047.png" alt="image-20240522181726047" style="zoom: 67%;" />
+
 ### 功能说明与更新日志
 
 详见[软件说明](./Software/README.md)
 
 ## 实物展示
 
+<img src="README.assets/IMG_20240515_004026.jpg" alt="IMG_20240515_004026" style="zoom: 25%;" />
+
+<img src="README.assets/IMG_20240514_224814.jpg" alt="IMG_20240514_224814" style="zoom:25%;" />
+
+<img src="README.assets/IMG_20240514_224806.jpg" alt="IMG_20240514_224806" style="zoom:25%;" />
+
+<img src="README.assets/IMG_20240514_225016.jpg" alt="IMG_20240514_225016" style="zoom:25%;" />

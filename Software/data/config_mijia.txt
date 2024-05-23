@@ -1,4 +1,4 @@
 K5,睡眠模式,K5Short,1,1
 K6,关闭所有灯,K6Short,1,1
-K3,吸顶灯,K2Short,1,2
+K3,吸顶灯,K3Short,1,2
 K5,情景,long,3,1

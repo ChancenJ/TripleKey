@@ -233,7 +233,7 @@ void board_init()
     
     if (WireErr == 0)
     {
-        xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 2048, NULL, 1, &Handle_humanstate);
+        xTaskCreate(Task_UpdateHumanState, "Task_UpdateHumanState", 4096, NULL, 1, &Handle_humanstate);
         xTaskCreate(Task_Screen_Control_by_HumanSensor, "Task_AutoScreenOnOff", 2048, NULL, 1, &Handle_AutoScreenOnOff);
     }
     else
