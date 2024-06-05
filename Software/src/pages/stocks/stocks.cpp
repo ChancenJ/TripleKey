@@ -120,7 +120,7 @@ void dispWeekday()
 	uint16_t h;
 	gfx[1]->setUTF8Print(true);
 	gfx[1]->setTextColor(BLUE);
-	gfx[1]->setFont(DreamHanSerifCN_W17_21);
+	gfx[1]->setFont(DreamHanSerifCN_W17_Weekday_21);
 	gfx[1]->getTextBounds(weekdaystr[timeInfo.tm_wday], 0, 0, &x1, &y1, &w, &h);
 	gfx[1]->setCursor((OLED_WIDTH - w) / 2, 22);
 	gfx[1]->fillRect(0, 0, 128, 26, QINGSHUILAN);
