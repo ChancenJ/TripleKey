@@ -22,7 +22,7 @@ static void dispPCState()
 	char buffer[50];
 
 	// Draw some text with botttom right datum
-	gfx1->setFont(&Orbitron_Medium_16);
+	gfx1->setFont(&MiSans_Demibold_12);
 	gfx1->setCursor(0, 24);
 	gfx1->setTextColor(PC_LABLE_COLOR);
 	gfx1->print("CPU");
@@ -50,7 +50,7 @@ static void dispPCState()
 		gfx1->fillRoundRect(0 + i * (6 + 3), 40, 6, 20, 2, PC_BAR_BACK_COLOR);
 	}
 
-	gfx1->setFont(&Orbitron_Light_24);
+	gfx1->setFont(&MiSans_Demibold_12);
 	if (old_cpu_use != pc.CPU_USE)
 	{
 
@@ -93,7 +93,7 @@ static void dispPCState()
 
 	// temp
 	// Draw some text with botttom right datum
-	gfx2->setFont(&Orbitron_Medium_16);
+	gfx2->setFont(&MiSans_Demibold_12);
 	gfx2->setCursor(0, 24);
 	gfx2->setTextColor(PC_LABLE_COLOR);
 	gfx2->print("TMP");
@@ -121,7 +121,7 @@ static void dispPCState()
 		gfx2->fillRoundRect(0 + i * (6 + 3), 40, 6, 20, 2, PC_BAR_BACK_COLOR);
 	}
 
-	gfx2->setFont(&Orbitron_Light_24);
+	gfx2->setFont(&MiSans_Demibold_12);
 	if (old_cpu_temp != pc.CPU_TEMP)
 	{
 
@@ -165,7 +165,7 @@ static void dispPCState()
 
 	// ram
 	// Draw some text with botttom right datum
-	gfx3->setFont(&Orbitron_Medium_16);
+	gfx3->setFont(&MiSans_Demibold_12);
 	gfx3->setCursor(0, 24);
 	gfx3->setTextColor(PC_LABLE_COLOR);
 	gfx3->print("RAM");
@@ -193,7 +193,7 @@ static void dispPCState()
 		gfx3->fillRoundRect(0 + i * (6 + 3), 40, 6, 20, 2, PC_BAR_BACK_COLOR);
 	}
 
-	gfx3->setFont(&Orbitron_Light_24);
+	gfx3->setFont(&MiSans_Demibold_12);
 	if (old_ram_use != pc.RAM_USE)
 	{
 

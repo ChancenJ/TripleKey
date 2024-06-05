@@ -24,16 +24,12 @@
 #include <Wire.h>
 #include "DFRobot_CH423.h"
 
-#include "fonts/Orbitron_Light_32.h"
-#include "fonts/Orbitron_Light_24.h"
-#include "fonts/Orbitron_Medium_48.h"
-#include "fonts/Orbitron_Medium_16.h"
 #include "fonts/Calligraffitti_Regular_12.h"
 #include "fonts/Coming_Soon_Regular_12.h"
 #include "fonts/MiSans_Demibold_12.h"
-#include "fonts/DreamHanSerifCN-W15_21.h"
+#include "fonts/DreamHanSerifCN_W15_21.h"
 #include "fonts/MiSans_MediumEN_12.h"
-#include "fonts/DreamHanSerifCN_W17_21.h"
+#include "fonts/DreamHanSerifCN_W17_Weekday_21.h"
 #include "fonts/DreamHanSerifCN_W17_Processing_24.h"
 #include "fonts/MiSans_Regular45pt_num.h"
 #include "fonts/DouyinSansBoldCN_Weather_38.h"
@@ -47,7 +43,7 @@
 #include "app/app_drawpicture.h"
 
 #define VER_HW "TRIPLEKEY_V2"
-#define VER_SW "1.0.0"
+#define VER_SW "1.0.2"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
