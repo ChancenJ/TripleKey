@@ -17,13 +17,34 @@
                 height: auto;
             }
         }
+
+        .config-title{
+            background-color: rgb(0, 200, 255);
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: fit-content;
+        }
+
+        .save-button {
+            background-color: #ff6f00;
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 5px;
+            margin: 6px;
+            border: 1px solid #000000;
+            transition: all 0.1s;
+        }
+
+        .save-button:hover {
+            box-shadow: 5px 5px 5px #c7c7c7;
+        }
     </style>
 </head>
 
 <body>
     <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
     <h1>TripleKey 设置</h1>
-    <h2>更多设置</h2>
+    <h2 class="config-title">更多设置</h2>
     <form action="/clock" method="post">
         <h3>时钟设置：</h3>
         <p>整点报时：
@@ -46,7 +67,7 @@
                 否
             </label>
         </p>
-        <p><input type="submit" value="保存"></p>
+        <p><button class="save-button" type="submit" title="保存时钟设置">保存</button></p>
     </form>
     <form action="/encoder" method="post">
         <h3>旋转编码器设置：</h3>
@@ -70,7 +91,7 @@
                 否
             </label>
         </p>
-        <p><input type="submit" value="保存"></p>
+        <p><button class="save-button" type="submit" title="保存编码器设置">保存</button></p>
     </form>
     <form action="/photo" method="post">
         <h3>照片设置：</h3>
@@ -85,7 +106,7 @@
             </label>
         </p>
         <P><input type="button" value="上传/删除照片" onclick="location.href='/uploadphoto';"></P>
-        <p><input type="submit" value="保存"></p>
+        <p><button class="save-button" type="submit" title="保存照片设置">保存</button></p>
     </form>
     <input type="button" value="返回主页" onclick="location.href='/';">
 </body>

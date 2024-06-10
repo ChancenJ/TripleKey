@@ -17,13 +17,20 @@
                 height: auto;
             }
         }
+
+        .config-title{
+            background-color: rgb(0, 200, 255);
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: fit-content;
+        }
     </style>
 </head>
 
 <body>
     <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
     <h1>TripleKey 设置</h1>
-    <h2>上传网页图标</h2>
+    <h2 class="config-title">上传网页图标</h2>
     <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
     <p id="rom"></p>
     <form method="POST" action="/upload?dir=web" enctype="multipart/form-data">

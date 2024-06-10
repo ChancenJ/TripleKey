@@ -19,6 +19,60 @@
             max-width: 100%;
         }
 
+        .form-container {
+            border: none;
+            padding: 4px;
+            margin-bottom: 5px;
+            width: fit-content;
+            border-radius: 5px;
+            background-color: #e4e4e4;
+        }
+
+        .save-button {
+            background-color: #ff6f00;
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 5px;
+            margin: 6px;
+            border: 1px solid #000000;
+            transition: all 0.1s;
+        }
+
+        .save-button:hover {
+            box-shadow: 5px 5px 5px #c7c7c7;
+        }
+
+        .plus-button {
+            background-color: #efefef;
+            color: #303030;
+            width: 36px;
+            height: 36px;
+            padding: 0px 2px;
+            border-radius: 50%;
+            margin: 6px;
+            font-size: x-large;
+            border: 2px solid #858585;
+        }
+
+        .plus-button:hover {
+            background-color: #c7c7c7;
+        }
+
+        .warning {
+            background-color: rgb(255, 230, 0);
+            border-radius: 10px;
+            padding: 8px;
+            max-width: fit-content;
+            line-height: 1.5;
+        }
+
+        .config-title {
+            background-color: rgb(0, 200, 255);
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: fit-content;
+        }
+
         @media (max-width: 767px) {
             img {
                 width: 100%;
@@ -31,22 +85,25 @@
 <body>
     <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
     <h1>TripleKey 设置</h1>
-    <p>
+    <p
+        style="background-color: rgb(146, 246, 255);padding: 10px;border-radius: 10px;width: fit-content;text-align: center;line-height: 1.5;font-family: '华文中宋', 'Times New Roman', Times, serif">
         <a href="https://github.com/ChancenJ/TripleKey" target="_blank">Github项目地址</a><br>
         <a href="https://gitee.com/chancenj/triplekey" target="_blank">Gitee项目地址</a><br>
         Copyright &copy 2024 ChancenJ
     </p>
-    <p>软件版本：V{{SWVERSION}}<br>
+    <p>软件版本：V{{SWVERSION}}<br style="margin: 50px;">
         最新版本：V{{NEWVERSION}}</p>
     <input type="button" value="下载固件" onclick="location.href='/firmware';">
     <form accept-charset="UTF-8" method="post" action="/weather">
         <div>
-            <h2>天气配置：</h2>
-            <p>※需前往和风天气开发服务官网获取密钥（KEY）：<a href="https://dev.qweather.com/" target="_blank">https://dev.qweather.com/</a>
-            </p>
-            <p>※如果输入拼音读取为其他重名城市，请前往<a href="http://www.weather.com.cn/"
+            <h2 class="config-title">天气配置</h2>
+            <p class="warning">※需前往和风天气开发服务官网获取密钥（KEY）：<a href="https://dev.qweather.com/"
+                    target="_blank">https://dev.qweather.com/</a>
+                <br>
+                ※如果输入拼音读取为其他重名城市，请前往<a href="http://www.weather.com.cn/"
                     target="_blank">http://www.weather.com.cn/</a>获取代码。<br>
-                搜索城市进入城市天气页面后，网址内那串数字即为城市代码。</p>
+                搜索城市进入城市天气页面后，网址内那串数字即为城市代码。
+            </p>
             <p>
                 <label for="city">城市（拼音或代码）：</label>
                 <input type="text" id="city" value="{{CITY}}" name="city" class="input-text" required>
@@ -56,31 +113,38 @@
                 <input type="text" id="key" value="{{KEY}}" name="key" class="input-text" required>
             </p>
             <p>
-                <input type="submit" value="保存天气配置">
+                <button type="submit" class="save-button">保存天气配置</button>
             </p>
+        </div>
+    </form>
+    <form accept-charset="UTF-8">
+        <div>
+            <h2 class="config-title">米家配置</h2>
+            <p class="warning">※开关K1用于显示人体存在传感器状态，可用于米家联动，无法进行自定义
+                <br>※普通开关只能单击，选择双击长按将功能异常，请勿选择双击和长按；情景开关可以单击双击长按
+                <br>※请勿添加重复开关操作
+            </p>
+            <div id="forms">
+                {{mijiaOption}}
+            </div>
+            <button class="plus-button" type="button" id="add-form-btn" title="添加开关">＋</button>
+            <br>
+            <button class="save-button" type="button" id="submit-btn">保存米家配置</button>
         </div>
     </form>
     <form accept-charset="UTF-8" method="post" action="/config">
         <div>
-            <h2>实时股票配置：</h2>
+            <h2 class="config-title">实时股票配置</h2>
+            <p class="warning">※注意最后不要有空行</p>
             <p>每行格式：名称,ID</p>
             <p>例：上证指数,sh000001（沪市加sh，深市加sz）</p>
             <textarea name="stocksConfig" rows="12" cols="45">{{stocksConfig}}</textarea>
         </div>
         <div>
-            <h2>米家配置：</h2>
-            <p>每行格式：开关编号,中文名称,英文名称,操作类型,开关类型</p>
-            <p>操作类型：1单击2双击3长按；开关类型：1无线开关2普通开关（可显示开关状态）</p>
-            <p>※开关K1用于显示人体存在传感器状态，可用于米家联动，请勿在下方添加K1</p>
-            <p>※K2-4为普通开关，只能单击；K5-8为无线开关，可单击双击长按</p>
-            <p>例：K5,睡眠模式,K5Short,1,1<br>
-                例：K2,吸顶灯,K2Short,1,2</p>
-            <textarea name="mijiaConfig" rows="10" cols="45">{{mijiaConfig}}</textarea>
-        </div>
-        <div>
-            <h2>网页配置：</h2>
+            <h2 class="config-title">网页配置</h2>
+            <p class="warning">※网页图标需自行点击下方按钮上传，图标格式为png，图标名称不能使用特殊符号，使用英文字符，如oshwhub.png<br>
+            ※注意最后不要有空行</p>
             <p>每行格式：URL,图标文件名</p>
-            <p>※网页图标需自行点击下方按钮上传，图标格式为png，图标名称不能使用特殊符号，使用英文字符，如oshwhub.png</p>
             <p>例：https://oshwhub.com/,oshwhub.png</p>
             <p id="filelist"></p>
             <input type="button" value="文件列表" onclick="listFilesButton()">
@@ -90,12 +154,113 @@
         </div>
         <div>
             <p></p>
-            <input type="submit" value="保存">
+            <button type="submit" class="save-button">保存股票和网页配置</button>
             <p></p>
         </div>
     </form>
     <P><input type="button" value="更多设置" onclick="location.href='/moresettings';"></P>
     <script>
+        const MAX_FORMS = 16;
+        const formTemplate = `
+        <div class="form-container">
+            <select name="k-select">
+                <option value="K2">普通开关2</option>
+                <option value="K3">普通开关3</option>
+                <option value="K4">普通开关4</option>
+                <option value="K5">情景开关1</option>
+                <option value="K6">情景开关2</option>
+                <option value="K7">情景开关3</option>
+                <option value="K8">情景开关4</option>
+            </select>
+            <select name="op-select">
+                <option value="1">单击</option>
+                <option value="2">双击</option>
+                <option value="3">长按</option>
+            </select>
+            <input type="text" name="text-input" placeholder="请输入开关名称">
+            <button type="button" class="move-up-btn">上移</button>
+            <button type="button" class="move-down-btn">下移</button>
+            <button type="button" class="delete-btn">删除</button>
+        </div>
+    `;
+
+        document.getElementById('add-form-btn').addEventListener('click', function () {
+            const formsContainer = document.getElementById('forms');
+            const formCount = formsContainer.querySelectorAll('.form-container').length;
+            if (formCount < MAX_FORMS) {
+                formsContainer.insertAdjacentHTML('beforeend', formTemplate);
+                updateButtons();
+            } else {
+                alert('最多只能添加16个开关');
+            }
+
+        });
+
+        function updateButtons() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(button => {
+                button.removeEventListener('click', handleDelete);
+                button.addEventListener('click', handleDelete);
+            });
+
+            const moveUpButtons = document.querySelectorAll('.move-up-btn');
+            moveUpButtons.forEach(button => {
+                button.removeEventListener('click', handleMoveUp);
+                button.addEventListener('click', handleMoveUp);
+            });
+
+            const moveDownButtons = document.querySelectorAll('.move-down-btn');
+            moveDownButtons.forEach(button => {
+                button.removeEventListener('click', handleMoveDown);
+                button.addEventListener('click', handleMoveDown);
+            });
+        }
+
+        function handleDelete(event) {
+            const formContainer = event.target.closest('.form-container');
+            formContainer.remove();
+        }
+
+        function handleMoveUp(event) {
+            const formContainer = event.target.closest('.form-container');
+            const previousFormContainer = formContainer.previousElementSibling;
+            if (previousFormContainer) {
+                formContainer.parentNode.insertBefore(formContainer, previousFormContainer);
+            }
+        }
+
+        function handleMoveDown(event) {
+            const formContainer = event.target.closest('.form-container');
+            const nextFormContainer = formContainer.nextElementSibling;
+            if (nextFormContainer) {
+                formContainer.parentNode.insertBefore(nextFormContainer, formContainer);
+            }
+        }
+
+        document.getElementById('submit-btn').addEventListener('click', function () {
+            const forms = document.querySelectorAll('.form-container');
+            let result = '';
+            forms.forEach(form => {
+                const kSelect = form.querySelector('select[name="k-select"]').value;
+                const opSelect = form.querySelector('select[name="op-select"]').value;
+                const textInput = form.querySelector('input[name="text-input"]').value;
+                result += `${kSelect},${textInput},${opSelect}\n`;
+            });
+            result = result.trim();
+            //document.getElementById('result').textContent = result;
+            fetch('/mijia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'plain=' + encodeURIComponent(result)
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/';
+                }
+            });
+        });
+
+        updateButtons();
+
         function listFilesButton() {
             var urltocall = "/listfiles?dir=web&deletebutton=0";
             xmlhttp = new XMLHttpRequest();

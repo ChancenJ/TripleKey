@@ -456,7 +456,7 @@ void board_init()
 
     gfx3->println("Config reading");
     AnalyzeStocksConfig();
-    sws.push_back(MijiaSwitch(K1, "有人存在", "Sensor", 1, 2)); // 固定KEY1用于人在传感器显示有人无人
+    sws.push_back(MijiaSwitch(K1, "有人存在", MIJIA_SHORT)); // 固定KEY1用于人在传感器显示有人无人
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
     AnalyzeClockConfig();
