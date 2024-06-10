@@ -17,15 +17,27 @@
 #define MIJIA_DOUBLE 2
 #define MIJIA_LONG 3
 
+#define SCENE_SWTICH 1
+#define COMMON_SWTICH 2
+
 struct MijiaSwitch
 {
 	uint8_t pin;
 	String name_cn;
-	String name_en;
 	uint8_t optype; // 1为单击，2为双击，3为长按
 	uint8_t type;	// 1为场景开关，2为普通开关
 	uint8_t on;		// 普通开关开关状态
-	MijiaSwitch(uint8_t pin, String name_cn, String name_en, uint8_t optype, uint8_t type) : pin(pin), name_cn(name_cn), name_en(name_en), optype(optype), type(type), on(0) {}
+	MijiaSwitch(uint8_t pin, String name_cn, uint8_t optype) : pin(pin), name_cn(name_cn), optype(optype), on(0)
+	{
+		if (pin >= 0 && pin <= 3)
+		{
+			type = COMMON_SWTICH;
+		}
+		else if (pin >= 4 && pin <= 7)
+		{
+			type = SCENE_SWTICH;
+		}
+	}
 };
 
 struct MijiaOp

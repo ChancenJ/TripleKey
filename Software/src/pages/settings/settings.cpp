@@ -124,6 +124,7 @@ static void enter(void *data)
 	server.on("/uploadphoto",HTTP_GET, handleUploadPhoto);
 	server.on("/rom",HTTP_GET, handleROM);
 	server.on("/weather",HTTP_POST, handleWeather);
+	server.on("/mijia",HTTP_POST, handleMijiaPost);
 	server.on("/listfiles",HTTP_GET, handleListFile);
 	server.on("/delete",HTTP_GET,handleDelete);
 	server.on("/moresettings",HTTP_GET,handleMoreSettings);
