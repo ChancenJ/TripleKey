@@ -130,6 +130,12 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 附件下载外壳文件进行打印，可在嘉立创三维猴下单。
 
+**外观套件** 可在B站工房购买，包含外壳与亚克力屏幕面板，成本可大幅下降几十元。
+
+https://mall.bilibili.com/neul-next/index.html?page=mall-up_itemDetail&noTitleBar=1&itemsId=1106898060&from=items_share&msource=items_share
+
+<img src="README.assets/image-20240628224732417.png" alt="image-20240628224732417" style="zoom: 33%;" />
+
 ------
 
 - 20240605修改
@@ -162,9 +168,15 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 使用工程中面板文件，自行选择修改需要的颜色和方案，删掉不需要的颜色，进行面板下单。
 
-设置如下图：
+设置如下图：（注意：立创面板定制已改版，不再限制尺寸，未实践过新版）
 
 <img src="README.assets/image-20240508221109063.png" alt="image-20240508221109063" style="zoom: 50%;" />
+
+**外观套件** 可在B站工房购买，包含外壳与亚克力屏幕面板，成本可大幅下降几十元。
+
+https://mall.bilibili.com/neul-next/index.html?page=mall-up_itemDetail&noTitleBar=1&itemsId=1106898060&from=items_share&msource=items_share
+
+<img src="README.assets/image-20240628224732417.png" alt="image-20240628224732417" style="zoom: 33%;" />
 
 
 
