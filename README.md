@@ -126,11 +126,11 @@ PCB共分为主板、定位板、拓展板，工程中已标明。
 
 如果在嘉立创3D打印下单，请使用SLA版本。
 
-**外观套件** 可在B站工房购买，包含外壳与亚克力屏幕面板，成本可大幅下降几十元。
+**外观套件** 可在闲鱼及B站工房购买，包含外壳与亚克力屏幕面板，成本可大幅下降几十元。
 
-https://mall.bilibili.com/neul-next/index.html?page=mall-up_itemDetail&noTitleBar=1&itemsId=1106898060&from=items_share&msource=items_share
+【闲鱼】https://m.tb.cn/h.ghdc3uN?tk=5sQg3ZmLgs0 CZ0000 「我在闲鱼发布了【TripleKey多功能小键盘外观件】」点击链接直接打开
 
-<img src="README.assets/image-20240628224732417.png" alt="image-20240628224732417" style="zoom: 33%;" />
+<img src="README.assets/image-20240703203100893.png" alt="image-20240703203100893" style="zoom:25%;" />
 
 ------
 
@@ -154,13 +154,11 @@ https://mall.bilibili.com/neul-next/index.html?page=mall-up_itemDetail&noTitleBa
 
 <img src="README.assets/image-20240508221109063.png" alt="image-20240508221109063" style="zoom: 50%;" />
 
-**外观套件** 可在B站工房购买，包含外壳与亚克力屏幕面板，成本可大幅下降几十元。
+**外观套件** 可在闲鱼及B站工房购买，包含外壳与亚克力屏幕面板，成本可大幅下降几十元。
 
-https://mall.bilibili.com/neul-next/index.html?page=mall-up_itemDetail&noTitleBar=1&itemsId=1106898060&from=items_share&msource=items_share
+【闲鱼】https://m.tb.cn/h.ghdc3uN?tk=5sQg3ZmLgs0 CZ0000 「我在闲鱼发布了【TripleKey多功能小键盘外观件】」点击链接直接打开
 
-<img src="README.assets/image-20240628224732417.png" alt="image-20240628224732417" style="zoom: 33%;" />
-
-
+<img src="README.assets/image-20240703203100893.png" alt="image-20240703203100893" style="zoom:25%;" />
 
 #### 额外BOM
 
