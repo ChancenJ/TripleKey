@@ -13,6 +13,7 @@ void saveConfig(const char *config_path, String config_content);
 
 void handleRoot(AsyncWebServerRequest *request);
 void handleConfigPost(AsyncWebServerRequest *request);
+void handleMijiaPost(AsyncWebServerRequest *request);
 void handleWeather(AsyncWebServerRequest *request);
 void notFoundHandler(AsyncWebServerRequest *request);
 void handleUploadWeb(AsyncWebServerRequest *request);
@@ -37,6 +38,7 @@ void AnalyzePhotoConfig();
 
 String humanReadableSize(const size_t bytes);
 String listFiles(String path, bool DeleteButton);
+String CreateMijiaConfigHTML();
 
 String getNewVersion();
 
