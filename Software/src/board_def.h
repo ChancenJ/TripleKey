@@ -43,7 +43,7 @@
 #include "app/app_drawpicture.h"
 
 #define VER_HW "TRIPLEKEY_V2"
-#define VER_SW "1.0.2"
+#define VER_SW "1.1.0"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"

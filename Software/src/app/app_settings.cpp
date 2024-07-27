@@ -66,17 +66,16 @@ void handleRoot(AsyncWebServerRequest *request)
 
 	// 读取配置文件中的默认值
 	String stocksConfig = readConfig(stocks_path);
-	String mijiaConfig = readConfig(mijia_path);
 	String webConfig = readConfig(web_path);
-
+	String mijiaOption = CreateMijiaConfigHTML();
 	page.replace("{{SWVERSION}}", VER_SW);
 	page.replace("{{NEWVERSION}}", NewVersion);
 	page.replace("{{CITY}}", stored_weather_city);
 	page.replace("{{KEY}}", stored_weather_key);
+	page.replace("{{mijiaOption}}", mijiaOption);
 	page.replace("{{stocksConfig}}", stocksConfig);
-	page.replace("{{mijiaConfig}}", mijiaConfig);
 	page.replace("{{webConfig}}", webConfig);
-
+	
 	request->send(200, "text/html", page);
 }
 
@@ -84,23 +83,29 @@ void handleConfigPost(AsyncWebServerRequest *request)
 {
 	// 从表单中获取输入值
 	String stocksConfig = request->arg("stocksConfig");
-	String mijiaConfig = request->arg("mijiaConfig");
 	String webConfig = request->arg("webConfig");
 	Serial.println(stocksConfig);
-	Serial.println(mijiaConfig);
 	Serial.println(webConfig);
 	// 保存配置
 	saveConfig(stocks_path, stocksConfig);
-	saveConfig(mijia_path, mijiaConfig);
 	saveConfig(web_path, webConfig);
 	AnalyzeStocksConfig();
-	AnalyzeMijiaConfig();
 	AnalyzeWebConfig();
 
 	String page = readHTML("/webserver/config.html");
 
 	// 返回成功消息
 	request->send(200, "text/html", page);
+}
+
+void handleMijiaPost(AsyncWebServerRequest *request){
+	if(request->hasArg("plain")){
+		String mijiaConfig = request->arg("plain");
+		Serial.println(mijiaConfig);
+		saveConfig(mijia_path, mijiaConfig);
+		AnalyzeMijiaConfig();
+		request->send(200);
+	}
 }
 
 void handleWeather(AsyncWebServerRequest *request)
@@ -374,7 +379,8 @@ void handlePhoto(AsyncWebServerRequest *request)
 	request->redirect("/moresettings");
 }
 
-void handleFirmware(AsyncWebServerRequest *request){
+void handleFirmware(AsyncWebServerRequest *request)
+{
 	String page = readHTML("/webserver/firmware.html");
 	page.replace("{{SWVERSION}}", VER_SW);
 	page.replace("{{NEWVERSION}}", NewVersion);
@@ -448,10 +454,8 @@ void AnalyzeMijiaConfig()
 		std::vector<String> line = SplitString(lines[i], ',');
 		uint8_t pin = line[0][1] - '1';
 		String name_cn = line[1];
-		String name_en = line[2];
-		uint8_t optype = line[3].toInt();
-		uint8_t type = line[4].toInt();
-		sws.push_back(MijiaSwitch(pin, name_cn, name_en, optype, type));
+		uint8_t optype = line[2].toInt();
+		sws.push_back(MijiaSwitch(pin, name_cn, optype));
 	}
 	Serial.printf("米家开关数量:%d\n", sws.size());
 }
@@ -541,7 +545,7 @@ String listFiles(String path, bool DeleteButton)
 	return returnText;
 }
 
-String getNewVersion()  //获取最新固件版本号
+String getNewVersion() // 获取最新固件版本号
 {
 	String URL = "https://gitee.com/chancenj/triplekey/raw/main/Software/VERSION";
 	HTTPClient httpClient;
@@ -549,16 +553,94 @@ String getNewVersion()  //获取最新固件版本号
 	Serial.println("正在获取最新固件版本号");
 	Serial.println(URL);
 	int httpCode = httpClient.GET();
-	String version ="NA";
+	String version = "NA";
 	if (httpCode == HTTP_CODE_OK)
 	{
 		version = httpClient.getString();
 		Serial.println(version);
 	}
-	else{
+	else
+	{
 		Serial.println(httpCode);
 		Serial.println("最新固件版本号获取失败");
 	}
 	httpClient.end();
 	return version;
+}
+
+String CreateMijiaConfigHTML()
+{
+	String result = "";
+	for (int i = 1; i < sws.size(); i++)
+	{
+		uint8_t pin = sws[i].pin;
+		uint8_t optype = sws[i].optype;
+		String name = sws[i].name_cn;
+		result += R"(
+			<div class="form-container">
+    			<select name="k-select">
+		)";
+		for (int j = 0; j < 8; j++)
+		{
+			String option = "<option value=\"K";
+			char j_c = j + 1 + '0';
+			option += j_c;
+			option += "\" ";
+			if (pin == j)
+			{
+				option += "selected";
+			}
+			option += ">";
+			if (j < 4)
+			{
+				option += "普通";
+			}
+			else
+			{
+				option += "情景";
+			}
+			option += "开关";
+			char jmod4_c = j % 4 + 1 + '0';
+			option += jmod4_c;
+			option += "</option>\n";
+			result += option;
+		}
+		result += R"(</select>
+    		<select name="op-select">)";
+		if (optype == 1)
+		{
+			result += R"(
+				<option value="1" selected>单击</option>
+				<option value="2">双击</option>
+				<option value="3">长按</option>
+			)";
+		}
+		else if (optype == 2)
+		{
+			result += R"(
+				<option value="1">单击</option>
+				<option value="2" selected>双击</option>
+				<option value="3">长按</option>
+			)";
+		}
+		else if (optype == 3)
+		{
+			result += R"(
+				<option value="1">单击</option>
+				<option value="2">双击</option>
+				<option value="3" selected>长按</option>
+			)";
+		}
+		result += "</select>\n";
+		result += "<input type=\"text\" name=\"text-input\" placeholder=\"请输入开关名称\" value=\"";
+		result += name;
+		result += "\">\n";
+		result += R"(
+				<button type="button" class="move-up-btn">上移</button>
+				<button type="button" class="move-down-btn">下移</button>
+				<button type="button" class="delete-btn">删除</button>
+			</div>
+		)";
+	}
+	return result;
 }

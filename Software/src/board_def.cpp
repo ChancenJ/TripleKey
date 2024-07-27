@@ -82,12 +82,11 @@ uint8_t WireErr;
 void configModeCallback(WiFiManager *myWiFiManager)
 {
     gfx2->setTextColor(RED);
-    gfx2->println("Entered config mode");
-    gfx2->setTextColor(RED, WHITE);
-    gfx2->println(WiFi.softAPIP());
-    gfx2->setTextColor(RED);
-    gfx2->println("Please connect to");
+    gfx2->println("进入配置模式");
+    gfx2->print("请连接热点");
     gfx2->println(myWiFiManager->getConfigPortalSSID());
+    gfx2->print("进入");
+    gfx2->println(WiFi.softAPIP());
     gfx2->setTextColor(QINGSHUILAN);
 }
 
@@ -299,17 +298,21 @@ void board_init()
     gfx2->setTextColor(QINGSHUILAN);
     gfx3->setTextColor(QINGSHUILAN);
 
-    gfx1->setFont(u8g2_font_6x10_mr);
-    gfx2->setFont(u8g2_font_6x10_mr);
-    gfx3->setFont(u8g2_font_6x10_mr);
+    gfx1->setUTF8Print(true);
+    gfx2->setUTF8Print(true);
+    gfx3->setUTF8Print(true);
+
+    gfx1->setFont(u8g2_font_wqy13_t_gb2312);
+    gfx2->setFont(u8g2_font_wqy13_t_gb2312);
+    gfx3->setFont(u8g2_font_wqy13_t_gb2312);
 
     // if (!SPIFFS.begin())
 
-    gfx1->setCursor(0, 7);
+    gfx1->setCursor(0, 13);
     gfx1->printf("HW: %s\r\n", VER_HW);
     gfx1->printf("SW: V%s\r\n", VER_SW);
 
-    gfx1->printf("Free rom: %dKB\r\n", (LittleFS.totalBytes() - LittleFS.usedBytes()) / 1024);
+    gfx1->printf("剩余空间: %dKB\r\n", (LittleFS.totalBytes() - LittleFS.usedBytes()) / 1024);
     // gfx3->printf("Free rom: %dKB\r\n", (SPIFFS.totalBytes() - SPIFFS.usedBytes()) / 1024);
 
     // WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
@@ -346,8 +349,8 @@ void board_init()
     // then goes into a blocking loop awaiting configuration and will return success result
 
     // res = wm.autoConnect("AutoConnectAP","password"); // password protected ap
-    gfx2->setCursor(0, 7);
-    gfx2->println("WiFi Connecting ");
+    gfx2->setCursor(0, 13);
+    gfx2->println("连接WIFI中");
 
     // and goes into a blocking loop awaiting configuration
     if (!wm.autoConnect("TripleKey"))
@@ -413,17 +416,15 @@ void board_init()
         // end save
     }
 
-    gfx2->println("WiFi Connected ");
-    gfx2->println("IP address: ");
-    gfx2->setTextColor(QINGSHUILAN);
+    gfx2->println("WiFi连接成功");
+    gfx2->println("IP地址: ");
     gfx2->println(WiFi.localIP()); // 显示连接WIFI后的IP地址
-    gfx2->setTextColor(QINGSHUILAN);
     gfx2->print("RSSI: ");      // 显示连接WIFI后的IP地址
     gfx2->println(WiFi.RSSI()); // 显示连接WIFI后的IP地址
     delay(1000);
     if (digitalRead(BUTTON3_PIN) == 0)
     {
-        gfx3->setCursor(0, 14);
+        gfx3->setCursor(0, 26);
         gfx3->setTextSize(2);
         gfx3->println("OTA"); //
         gfx3->setTextSize(1);
@@ -448,21 +449,22 @@ void board_init()
     if (NewVersion != VER_SW && NewVersion != "NA")
     {
         gfx1->setTextColor(ORANGE);
-        gfx1->printf("New version (V%s) has been released.\n", NewVersion);
+        gfx1->printf("新固件 (V%s) 已发布\n", NewVersion);
         gfx1->setTextColor(QINGSHUILAN);
     }
 
-    gfx3->setCursor(0, 7);
+    gfx3->setCursor(0, 13);
 
-    gfx3->println("Config reading");
+    gfx3->print("读取配置中 ");
     AnalyzeStocksConfig();
-    sws.push_back(MijiaSwitch(K1, "有人存在", "Sensor", 1, 2)); // 固定KEY1用于人在传感器显示有人无人
+    sws.push_back(MijiaSwitch(K1, "有人存在", MIJIA_SHORT)); // 固定KEY1用于人在传感器显示有人无人
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
     AnalyzeClockConfig();
     AnalyzePhotoConfig();
+    gfx3->println("已完成");
 
-    gfx3->print("time updating");
+    gfx3->print("时间更新中");
     configTime(8 * 3600, 0, NTP1, NTP2, NTP3);
     while (!getLocalTime(&timeInfo))
     {

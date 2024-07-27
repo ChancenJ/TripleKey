@@ -44,7 +44,7 @@ static void dispSwitch()
 
 	for (uint8_t i = 0; i < (maxsw < 3 ? maxsw : 3); i++)
 	{
-		if (sws[(firstindex + i) % maxsw].type == 1) // 情景开关
+		if (sws[(firstindex + i) % maxsw].type == SCENE_SWTICH) // 情景开关
 		{
 			gfx[i]->setTextColor(MIJIALV);
 			gfx[i]->setUTF8Print(true);
@@ -53,7 +53,7 @@ static void dispSwitch()
 			gfx[i]->setCursor((OLED_WIDTH - w) / 2, (OLED_HEIGHT - h) / 2 - y1);
 			gfx[i]->print(sws[(firstindex + i) % maxsw].name_cn);
 		}
-		else if (sws[(firstindex + i) % maxsw].type == 2) // 普通开关（显示开关状态）
+		else if (sws[(firstindex + i) % maxsw].type == COMMON_SWTICH) // 普通开关（显示开关状态）
 		{
 			gfx[i]->setTextColor(MIJIALV);
 			gfx[i]->setUTF8Print(true);
@@ -93,7 +93,7 @@ void UpdateState()
 {
 	for (int i = 0; i < maxsw; i++)
 	{
-		if (sws[i].type == 2)
+		if (sws[i].type == COMMON_SWTICH)
 		{
 			uint8_t on = app_mijia_get(sws[i].pin);
 			if (on != sws[i].on)
