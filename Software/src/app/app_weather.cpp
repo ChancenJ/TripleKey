@@ -5,15 +5,17 @@
 #define NOWAIR "air/now"
 #define WARNING "warning/now"
 
-const String weatherapi = "https://devapi.qweather.com/v7/";
-const String citycodeapi = "https://geoapi.qweather.com/v2/city/lookup?location=";
+const String https = "https://";
+const String weatherapi = "/v7/";
+const String citycodeapi = "/geo/v2/city/lookup?location=";
 
 void getCity(Weather *weather)
 {
-    String city, apikey;
+    String city, apikey, apihost;
     city = stored_weather_city;
     apikey = stored_weather_key;
-    String URL = citycodeapi + city + "&key=" + apikey;
+    apihost = stored_weather_apihost;
+    String URL = https + apihost + citycodeapi + city + "&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
     // 启动连接并发送HTTP请求
@@ -51,9 +53,10 @@ void getCity(Weather *weather)
 
 void getNowWeather(Weather *weather)
 {
-    String apikey;
+    String apikey, apihost;
     apikey = stored_weather_key;
-    String URL = weatherapi + NOWWEATHER + "?location=" + weather->citycode + "&key=" + apikey;
+    apihost = stored_weather_apihost;
+    String URL = https + apihost + weatherapi + NOWWEATHER + "?location=" + weather->citycode + "&key=" + apikey;
     //  创建 HTTPClient 对象
     HTTPClient httpClient;
     httpClient.begin(URL);
@@ -98,9 +101,10 @@ void getNowWeather(Weather *weather)
 
 void getNowAir(Weather *weather)
 {
-    String apikey;
+    String apikey, apihost;
     apikey = stored_weather_key;
-    String URL = weatherapi + NOWAIR + "?location=" + weather->citycode + "&key=" + apikey;
+    apihost = stored_weather_apihost;
+    String URL = https + apihost + weatherapi + NOWAIR + "?location=" + weather->citycode + "&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
     int httpCode = httpClient.GET();
@@ -139,9 +143,10 @@ void getNowAir(Weather *weather)
 
 void getDay3Weather(Weather *weather)
 {
-    String apikey;
+    String apikey, apihost;
     apikey = stored_weather_key;
-    String URL = weatherapi + DAY3WEATHER + "?location=" + weather->citycode + "&key=" + apikey;
+    apihost = stored_weather_apihost;
+    String URL = https + apihost + weatherapi + DAY3WEATHER + "?location=" + weather->citycode + "&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
     int httpCode = httpClient.GET();
@@ -190,9 +195,10 @@ void getDay3Weather(Weather *weather)
 
 void getWarning(Weather *weather)
 {
-    String apikey;
+    String apikey, apihost;
     apikey = stored_weather_key;
-    String URL = weatherapi + WARNING + "?location=" + weather->citycode + "&lang=en&key=" + apikey;
+    apihost = stored_weather_apihost;
+    String URL = https + apihost + weatherapi + WARNING + "?location=" + weather->citycode + "&lang=en&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
     int httpCode = httpClient.GET();
@@ -240,9 +246,10 @@ void getWarning(Weather *weather)
 }
 
 void getCNWarningTitle(Weather *weather){
-    String apikey;
+    String apikey, apihost;
     apikey = stored_weather_key;
-    String URL = weatherapi + WARNING + "?location=" + weather->citycode + "&lang=cn&key=" + apikey;
+    apihost = stored_weather_apihost;
+    String URL = https + apihost + weatherapi + WARNING + "?location=" + weather->citycode + "&lang=cn&key=" + apikey;
     HTTPClient httpClient;
     httpClient.begin(URL);
     int httpCode = httpClient.GET();
