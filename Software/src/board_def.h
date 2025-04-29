@@ -27,7 +27,7 @@
 #include "fonts/Calligraffitti_Regular_12.h"
 #include "fonts/Coming_Soon_Regular_12.h"
 #include "fonts/MiSans_Demibold_12.h"
-#include "fonts/DreamHanSerifCN_W15_21.h"
+#include "fonts/DreamHanSerifCN_W15_Stocks_21.h"
 #include "fonts/MiSans_MediumEN_12.h"
 #include "fonts/DreamHanSerifCN_W17_Weekday_21.h"
 #include "fonts/DreamHanSerifCN_W17_Processing_24.h"
@@ -43,7 +43,7 @@
 #include "app/app_drawpicture.h"
 
 #define VER_HW "TRIPLEKEY_V2"
-#define VER_SW "1.1.0"
+#define VER_SW "1.2.0"
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
@@ -58,7 +58,7 @@
 
 // #define PCF8574_ADDRESS 0x20
 
-extern char stored_weather_key[], stored_weather_city[];
+extern char stored_weather_key[], stored_weather_city[], stored_weather_apihost[];
 
 extern Arduino_GFX *gfx1;
 extern Arduino_GFX *gfx2;

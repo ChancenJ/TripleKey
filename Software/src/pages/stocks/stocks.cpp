@@ -59,7 +59,7 @@ void dispStocks()
 		if ((pageindex * 3 + i) < maxstocks)
 		{
 			uint16_t color = (stocks[pageindex * 3 + i].difference.toFloat() > 0) ? RED : ((stocks[pageindex * 3 + i].difference.toFloat() < 0) ? DARKGREEN : DARKGREY);
-			gfx[i]->setFont(DreamHanSerifCN_W15_21);
+			gfx[i]->setFont(DreamHanSerifCN_W15_Stocks_21);
 			gfx[i]->setTextColor(color);
 			gfx[i]->setCursor(5, 120);
 			if (stocks[pageindex * 3 + i].difference.toFloat() > 0)
