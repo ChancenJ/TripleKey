@@ -7,6 +7,7 @@ AsyncWebServer server(80);
 
 char stored_weather_key[40];
 char stored_weather_city[40];
+char stored_weather_apihost[40];
 std::vector<StockInfo> stocks;
 std::vector<MijiaSwitch> sws;
 std::vector<std::vector<String>> webstring;
@@ -265,6 +266,7 @@ void board_init()
                     Serial.println("\nparsed json");
                     strcpy(stored_weather_city, json["weather_city"]);
                     strcpy(stored_weather_key, json["weather_key"]);
+                    strcpy(stored_weather_apihost, json["api_host"]);
                 }
                 else
                 {
@@ -332,8 +334,10 @@ void board_init()
     wm.addParameter(&custom_text);
     WiFiManagerParameter custom_weather_city("weather_city", "城市拼音或代码", stored_weather_city, 40);
     WiFiManagerParameter custom_weather_key("weather_key", "私钥", stored_weather_key, 40);
+    WiFiManagerParameter custom_api_host("api_host", "API HOST", stored_weather_apihost, 40);
     wm.addParameter(&custom_weather_city);
     wm.addParameter(&custom_weather_key);
+    wm.addParameter(&custom_api_host);
 
     // wm.setSaveConfigCallback();
     // reset settings - wipe stored credentials for testing
@@ -365,6 +369,7 @@ void board_init()
     // read updated parameters
     strcpy(stored_weather_city, custom_weather_city.getValue());
     strcpy(stored_weather_key, custom_weather_key.getValue());
+    strcpy(stored_weather_apihost, custom_api_host.getValue());
     uint8_t value_custom_rotary = String(custom_rotary.getValue()).toInt();
     if (value_custom_rotary == 4 || value_custom_rotary == 2)
     {
@@ -381,6 +386,7 @@ void board_init()
     Serial.println("The values in the file are: ");
     Serial.println("\tweather_city : " + String(stored_weather_city));
     Serial.println("\tweather_key: " + String(stored_weather_key));
+    Serial.println("\tapi_host: " + String(stored_weather_apihost));
 
     // save the custom parameters to FS
     if (shouldSaveConfig)
@@ -391,6 +397,7 @@ void board_init()
 
         json["weather_city"] = stored_weather_city;
         json["weather_key"] = stored_weather_key;
+        json["api_host"] = stored_weather_apihost;
 
         File configFile = LittleFS.open("/config_weather.json", "w");
         if (!configFile)

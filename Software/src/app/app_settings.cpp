@@ -72,6 +72,7 @@ void handleRoot(AsyncWebServerRequest *request)
 	page.replace("{{NEWVERSION}}", NewVersion);
 	page.replace("{{CITY}}", stored_weather_city);
 	page.replace("{{KEY}}", stored_weather_key);
+	page.replace("{{API}}", stored_weather_apihost);
 	page.replace("{{mijiaOption}}", mijiaOption);
 	page.replace("{{stocksConfig}}", stocksConfig);
 	page.replace("{{webConfig}}", webConfig);
@@ -113,8 +114,10 @@ void handleWeather(AsyncWebServerRequest *request)
 	DynamicJsonDocument json(1024);
 	json["weather_city"] = request->arg("city");
 	json["weather_key"] = request->arg("key");
+	json["api_key"] = request->arg("api");
 	strcpy(stored_weather_city, request->arg("city").c_str());
 	strcpy(stored_weather_key, request->arg("key").c_str());
+	strcpy(stored_weather_apihost, request->arg("api").c_str());
 	File configFile = LittleFS.open("/config_weather.json", "w");
 	if (!configFile)
 	{
