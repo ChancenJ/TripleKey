@@ -114,7 +114,7 @@ void handleWeather(AsyncWebServerRequest *request)
 	DynamicJsonDocument json(1024);
 	json["weather_city"] = request->arg("city");
 	json["weather_key"] = request->arg("key");
-	json["api_key"] = request->arg("api");
+	json["api_host"] = request->arg("api");
 	strcpy(stored_weather_city, request->arg("city").c_str());
 	strcpy(stored_weather_key, request->arg("key").c_str());
 	strcpy(stored_weather_apihost, request->arg("api").c_str());
