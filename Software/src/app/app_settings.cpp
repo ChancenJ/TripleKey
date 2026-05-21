@@ -59,6 +59,21 @@ void saveConfig(const char *config_path, String config_content)
 	}
 }
 
+void handleStyle(AsyncWebServerRequest *request)
+{
+	File file = LittleFS.open("/webserver/style.css", "r");
+	if (file)
+	{
+		String css = file.readString();
+		file.close();
+		request->send(200, "text/css", css);
+	}
+	else
+	{
+		request->send(404, "text/plain", "Not Found");
+	}
+}
+
 void handleRoot(AsyncWebServerRequest *request)
 {
 	// 读取HTML
@@ -83,15 +98,20 @@ void handleRoot(AsyncWebServerRequest *request)
 void handleConfigPost(AsyncWebServerRequest *request)
 {
 	// 从表单中获取输入值
-	String stocksConfig = request->arg("stocksConfig");
-	String webConfig = request->arg("webConfig");
-	Serial.println(stocksConfig);
-	Serial.println(webConfig);
-	// 保存配置
-	saveConfig(stocks_path, stocksConfig);
-	saveConfig(web_path, webConfig);
-	AnalyzeStocksConfig();
-	AnalyzeWebConfig();
+	if (request->hasArg("stocksConfig"))
+	{
+		String stocksConfig = request->arg("stocksConfig");
+		Serial.println(stocksConfig);
+		saveConfig(stocks_path, stocksConfig);
+		AnalyzeStocksConfig();
+	}
+	if (request->hasArg("webConfig"))
+	{
+		String webConfig = request->arg("webConfig");
+		Serial.println(webConfig);
+		saveConfig(web_path, webConfig);
+		AnalyzeWebConfig();
+	}
 
 	String page = readHTML("/webserver/config.html");
 
@@ -550,13 +570,18 @@ String listFiles(String path, bool DeleteButton)
 	Serial.println("Listing files stored on LittleFS");
 	File root = LittleFS.open(path);
 	File foundfile = root.openNextFile();
-	returnText += "<table><tr><th align='left'>文件名</th><th align='left'>大小</th></tr>";
+	returnText += "<table><tr><th>文件名</th><th>大小</th>";
+	if (DeleteButton)
+	{
+		returnText += "<th>操作</th>";
+	}
+	returnText += "</tr>";
 	while (foundfile)
 	{
-		returnText += "<tr align='left'><td>" + String(foundfile.name()) + "</td><td>" + humanReadableSize(foundfile.size()) + "</td>";
+		returnText += "<tr><td>" + String(foundfile.name()) + "</td><td>" + humanReadableSize(foundfile.size()) + "</td>";
 		if (DeleteButton)
 		{
-			returnText += "<td><button onclick=\"DeleteButton(\'" + String(foundfile.name()) + "\', \'delete\')\">删除</button></tr>";
+			returnText += "<td><button class=\"btn btn-danger btn-sm\" onclick=\"DeleteButton(\'" + String(foundfile.name()) + "\')\">删除</button></tr>";
 		}
 		else
 		{
@@ -661,12 +686,10 @@ String CreateMijiaConfigHTML()
 		result += "<input type=\"text\" name=\"text-input\" placeholder=\"请输入开关名称\" value=\"";
 		result += name;
 		result += "\">\n";
-		result += R"(
-				<button type="button" class="move-up-btn">上移</button>
-				<button type="button" class="move-down-btn">下移</button>
-				<button type="button" class="delete-btn">删除</button>
-			</div>
-		)";
+		result += "<button type=\"button\" class=\"btn btn-outline btn-sm\" onclick=\"moveUp(this)\">上移</button>\n";
+		result += "<button type=\"button\" class=\"btn btn-outline btn-sm\" onclick=\"moveDown(this)\">下移</button>\n";
+		result += "<button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"this.closest('.form-container').remove()\">删除</button>\n";
+		result += "</div>\n";
 	}
 	return result;
 }

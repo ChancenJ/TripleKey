@@ -11,6 +11,7 @@ String readConfig(const char *config_path);
 String readHTML(const char *html_path);
 void saveConfig(const char *config_path, String config_content);
 
+void handleStyle(AsyncWebServerRequest *request);
 void handleRoot(AsyncWebServerRequest *request);
 void handleConfigPost(AsyncWebServerRequest *request);
 void handleMijiaPost(AsyncWebServerRequest *request);

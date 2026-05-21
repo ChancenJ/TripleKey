@@ -1,116 +1,80 @@
+<!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>TripleKey更多设置</title>
-    <style>
-        img {
-            width: auto;
-            height: auto;
-            max-width: 100%;
-        }
-
-        @media (max-width: 767px) {
-            img {
-                width: 100%;
-                height: auto;
-            }
-        }
-
-        .config-title{
-            background-color: rgb(0, 200, 255);
-            border-radius: 30px;
-            padding: 10px 20px;
-            width: fit-content;
-        }
-
-        .save-button {
-            background-color: #ff6f00;
-            color: #ffffff;
-            padding: 6px 10px;
-            border-radius: 5px;
-            margin: 6px;
-            border: 1px solid #000000;
-            transition: all 0.1s;
-        }
-
-        .save-button:hover {
-            box-shadow: 5px 5px 5px #c7c7c7;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
-    <h1>TripleKey 设置</h1>
-    <h2 class="config-title">更多设置</h2>
+<div class="container">
+    <img class="logo" src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
+    <h1>更多设置</h1>
+
     <form action="/clock" method="post">
-        <h3>时钟设置：</h3>
-        <p>整点报时：
-            <label for="audioyes">
-                <input type="radio" id="audioyes" name="clockaudio" value="yes" {{YESCHECKED_AUDIO}}>
-                是
-            </label>
-            <label for="audiono">
-                <input type="radio" id="audiono" name="clockaudio" value="no" {{NOCHECKED_AUDIO}}>
-                否
-            </label>
-        </p>
-        <p>时钟主题自动切换：
-            <label for="themeyes">
-                <input type="radio" id="themeyes" name="clocktheme" value="yes" {{YESCHECKED_THEME}}>
-                是
-            </label>
-            <label for="themeno">
-                <input type="radio" id="themeno" name="clocktheme" value="no" {{NOCHECKED_THEME}}>
-                否
-            </label>
-        </p>
-        <p><button class="save-button" type="submit" title="保存时钟设置">保存</button></p>
+    <div class="card">
+        <div class="card-title">时钟设置</div>
+        <div class="form-group">
+            <div class="form-group-label">整点报时</div>
+            <div class="radio-group">
+                <label><input type="radio" name="clockaudio" value="yes" {{YESCHECKED_AUDIO}}> 是</label>
+                <label><input type="radio" name="clockaudio" value="no" {{NOCHECKED_AUDIO}}> 否</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group-label">时钟主题自动切换</div>
+            <div class="radio-group">
+                <label><input type="radio" name="clocktheme" value="yes" {{YESCHECKED_THEME}}> 是</label>
+                <label><input type="radio" name="clocktheme" value="no" {{NOCHECKED_THEME}}> 否</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">保存</button>
+    </div>
     </form>
+
     <form action="/encoder" method="post">
-        <h3>旋转编码器设置：</h3>
-        <p>旋转编码器限位值：
-            <label for="four">
-                <input type="radio" id="four" name="rotary" value="4" {{FOUR}}>
-                4
-            </label>
-            <label for="two">
-                <input type="radio" id="two" name="rotary" value="2" {{TWO}}>
-                2
-            </label>
-        </p>
-        <p>旋转编码器是否反向：
-            <label for="reverseyes">
-                <input type="radio" id="reverseyes" name="reverse" value="yes" {{YESCHECKED_REVERSE}}>
-                是
-            </label>
-            <label for="reverseno">
-                <input type="radio" id="reverseno" name="reverse" value="no" {{NOCHECKED_REVERSE}}>
-                否
-            </label>
-        </p>
-        <p><button class="save-button" type="submit" title="保存编码器设置">保存</button></p>
+    <div class="card">
+        <div class="card-title">旋转编码器设置</div>
+        <div class="form-group">
+            <div class="form-group-label">旋转编码器限位值</div>
+            <div class="radio-group">
+                <label><input type="radio" name="rotary" value="4" {{FOUR}}> 4</label>
+                <label><input type="radio" name="rotary" value="2" {{TWO}}> 2</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group-label">旋转编码器是否反向</div>
+            <div class="radio-group">
+                <label><input type="radio" name="reverse" value="yes" {{YESCHECKED_REVERSE}}> 是</label>
+                <label><input type="radio" name="reverse" value="no" {{NOCHECKED_REVERSE}}> 否</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">保存</button>
+    </div>
     </form>
+
     {{PHOTO_SECTION_BEGIN}}
     <form action="/photo" method="post">
-        <h3>照片设置：</h3>
-        <p>自动轮播：
-            <label for="scrollyes">
-                <input type="radio" id="scrollyes" name="photoscroll" value="1" {{YESCHECKED_SCROLL}}>
-                是
-            </label>
-            <label for="scrollno">
-                <input type="radio" id="scrollno" name="photoscroll" value="0" {{NOCHECKED_SCROLL}}>
-                否
-            </label>
-        </p>
-        <P><input type="button" value="上传/删除照片" onclick="location.href='/uploadphoto';"></P>
-        <p><button class="save-button" type="submit" title="保存照片设置">保存</button></p>
+    <div class="card">
+        <div class="card-title">照片设置</div>
+        <div class="form-group">
+            <div class="form-group-label">自动轮播</div>
+            <div class="radio-group">
+                <label><input type="radio" name="photoscroll" value="1" {{YESCHECKED_SCROLL}}> 是</label>
+                <label><input type="radio" name="photoscroll" value="0" {{NOCHECKED_SCROLL}}> 否</label>
+            </div>
+        </div>
+        <div style="margin-bottom:12px;">
+            <a class="btn btn-outline btn-sm" href="/uploadphoto">上传/删除照片</a>
+        </div>
+        <button type="submit" class="btn btn-primary">保存</button>
+    </div>
     </form>
     {{PHOTO_SECTION_END}}
-    <input type="button" value="返回主页" onclick="location.href='/';">
-</body>
 
+    <div style="text-align:center;margin-top:8px;">
+        <a class="btn btn-outline" href="/">返回主页</a>
+    </div>
+</div>
+</body>
 </html>

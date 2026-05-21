@@ -118,6 +118,7 @@ static void enter(void *data)
 	Serial.println(WiFi.localIP());
 
 	// 设置Web服务器的路由
+	server.on("/style.css", HTTP_GET, handleStyle);
 	server.on("/", HTTP_GET, handleRoot);
 	server.on("/config", HTTP_POST, handleConfigPost);
 	server.on("/uploadweb",HTTP_GET, handleUploadWeb);

@@ -1,30 +1,19 @@
+<!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>已保存</title>
-    <style>
-        img {
-            width: auto;
-            height: auto;
-            max-width: 100%;
-        }
-
-        @media (max-width: 767px) {
-            img {
-                width: 100%;
-                height: auto;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-
-<body>
-    <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
-    <p>已保存，建议重启设备</p>
-    <p></p>
-    <input type="button" value="返回" onclick="location.href='/';">
+<body class="page-centered">
+<div class="container" style="max-width:400px;text-align:center;">
+    <img class="logo" src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
+    <div class="card">
+        <div class="icon-check" style="color:#00d4ff;">&#10003;</div>
+        <p class="msg">已保存，建议重启设备</p>
+        <a class="btn btn-outline" href="/">返回主页</a>
+    </div>
+</div>
 </body>
-
 </html>

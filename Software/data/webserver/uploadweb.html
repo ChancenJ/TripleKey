@@ -1,64 +1,59 @@
+<!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>上传网页图标</title>
-    <style>
-        img {
-            width: auto;
-            height: auto;
-            max-width: 100%;
-        }
-
-        @media (max-width: 767px) {
-            img {
-                width: 100%;
-                height: auto;
-            }
-        }
-
-        .config-title{
-            background-color: rgb(0, 200, 255);
-            border-radius: 30px;
-            padding: 10px 20px;
-            width: fit-content;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <img src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
-    <h1>TripleKey 设置</h1>
-    <h2 class="config-title">上传网页图标</h2>
-    <input type="button" value="查询剩余ROM（等待2秒）" onclick="ListROM()">
-    <p id="rom"></p>
-    <form method="POST" action="/upload?dir=web" enctype="multipart/form-data">
-        <input type="file" name="data" />
-        <input type="submit" name="Upload" value="上传" title="上传文件">
-    </form>
-    <p id="status"></p>
-    <p id="filelist">{{FILELIST}}</p>
-    <p><input type="button" value="返回" onclick="location.href='/';"></p>
-    <script>
-        function DeleteButton(filename) {
-            var urltocall = "/delete?dir=web&name=" + filename;
-            xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", urltocall, false);
-            xmlhttp.send();
-            document.getElementById("status").innerHTML = xmlhttp.responseText;
-            xmlhttp.open("GET", "/listfiles?dir=web&deletebutton=1", false);
-            xmlhttp.send();
-            document.getElementById("filelist").innerHTML = xmlhttp.responseText;
-        }
-        function ListROM() {
-            var urltocall = "/rom";
-            xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", urltocall, false);
-            xmlhttp.send();
-            document.getElementById("rom").innerHTML = xmlhttp.responseText;
-        }
-    </script>
-</body>
+<div class="container">
+    <img class="logo" src="https://pic.imgdb.cn/item/663758470ea9cb1403f5e51f.png" alt="TripleKey">
+    <h1>上传网页图标</h1>
 
+    <div class="card">
+        <div class="card-title">存储空间</div>
+        <button class="btn btn-outline btn-sm" onclick="ListROM()">查询剩余ROM（等待2秒）</button>
+        <p id="rom" style="margin-top:8px;"></p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">上传文件</div>
+        <form method="POST" action="/upload?dir=web" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="data" />
+            </div>
+            <button type="submit" class="btn btn-primary" name="Upload">上传</button>
+        </form>
+        <p id="status"></p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">已上传图标</div>
+        <div id="filelist">{{FILELIST}}</div>
+    </div>
+
+    <div style="text-align:center;margin-top:8px;">
+        <a class="btn btn-outline" href="/">返回主页</a>
+    </div>
+</div>
+
+<script>
+    function DeleteButton(filename) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "/delete?dir=web&name=" + filename, false);
+        xmlhttp.send();
+        document.getElementById("status").innerHTML = xmlhttp.responseText;
+        xmlhttp.open("GET", "/listfiles?dir=web&deletebutton=1", false);
+        xmlhttp.send();
+        document.getElementById("filelist").innerHTML = xmlhttp.responseText;
+    }
+    function ListROM() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "/rom", false);
+        xmlhttp.send();
+        document.getElementById("rom").innerHTML = xmlhttp.responseText;
+    }
+</script>
+</body>
 </html>
