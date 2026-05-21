@@ -283,9 +283,10 @@ def main():
 
         ok += 1
 
-    # 阶段 4: 清理临时目录
-    if os.path.exists(TEMP_DIR):
-        shutil.rmtree(TEMP_DIR)
+        # 清理该环境的临时目录
+        temp_env = os.path.join(TEMP_DIR, env)
+        if os.path.exists(temp_env):
+            shutil.rmtree(temp_env)
 
     print(f"\n完成: {ok} 成功, {fail} 失败")
 

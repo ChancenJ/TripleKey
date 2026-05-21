@@ -73,12 +73,12 @@ python scripts/release.py --all-envs
 
 ### 版本号管理
 
-版本号以 `VERSION` 文件为唯一真实来源。编译时 pre-build 脚本 `scripts/generate_version.py` 自动读取该文件并生成 `src/version_generated.h`（已加入 `.gitignore`，不入库），代码中通过 `#include "version_generated.h"` 使用 `VER_SW` 宏。
+版本号以 `VERSION` 文件为唯一真实来源。编译时 pre-build 脚本 `scripts/pre_build_generate_version.py` 自动读取该文件并生成 `src/version_generated.h`（已加入 `.gitignore`，不入库），代码中通过 `#include "version_generated.h"` 使用 `VER_SW` 宏。
 
 **首次 clone 后需要先运行一次脚本**，否则 IDE 会因缺少 `version_generated.h` 报错：
 
 ```bash
-python scripts/generate_version.py
+python scripts/pre_build_generate_version.py
 ```
 
 发版时只需修改 `VERSION` 文件，构建脚本 `release.py` 和固件内部版本号会自动同步。
