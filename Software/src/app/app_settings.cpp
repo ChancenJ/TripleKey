@@ -573,7 +573,7 @@ String listFiles(String path, bool DeleteButton)
 
 String getNewVersion() // 获取最新固件版本号
 {
-	String URL = "https://gitee.com/chancenj/triplekey/raw/main/Software/VERSION";
+	String URL = "https://raw.giteeusercontent.com/chancenj/triplekey/raw/main/Software/VERSION";
 	HTTPClient httpClient;
 	httpClient.begin(URL);
 	Serial.println("正在获取最新固件版本号");
