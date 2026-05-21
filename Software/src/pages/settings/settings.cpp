@@ -30,7 +30,7 @@ void dispInfo()
 	gfx[2]->setFont(u8g2_font_wqy13_t_gb2312);
 	gfx[2]->print("软件版本: V");
 	gfx[2]->println(VER_SW);
-	if (NewVersion != VER_SW)
+	if (isNewerVersion(NewVersion, String(VER_SW)))
 	{
 		gfx[2]->setTextColor(ORANGE);
 	}

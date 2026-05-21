@@ -42,6 +42,7 @@ String listFiles(String path, bool DeleteButton);
 String CreateMijiaConfigHTML();
 
 String getNewVersion();
+bool isNewerVersion(const String &newVer, const String &curVer);
 
 #ifdef SUPPORT_PHOTO
 extern uint8_t photonum;

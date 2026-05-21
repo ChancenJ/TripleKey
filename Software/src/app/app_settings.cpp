@@ -619,6 +619,20 @@ String getNewVersion() // 获取最新固件版本号
 	return version;
 }
 
+// 版本号比较：返回 newVer 是否大于 curVer（逐段数字比较）
+bool isNewerVersion(const String &newVer, const String &curVer)
+{
+	int newParts[3] = {0}, curParts[3] = {0};
+	sscanf(newVer.c_str(), "%d.%d.%d", &newParts[0], &newParts[1], &newParts[2]);
+	sscanf(curVer.c_str(), "%d.%d.%d", &curParts[0], &curParts[1], &curParts[2]);
+	for (int i = 0; i < 3; i++)
+	{
+		if (newParts[i] != curParts[i])
+			return newParts[i] > curParts[i];
+	}
+	return false;
+}
+
 String CreateMijiaConfigHTML()
 {
 	String result = "";
