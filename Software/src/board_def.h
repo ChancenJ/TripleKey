@@ -42,8 +42,9 @@
 #include "app/app_settings.h"
 #include "app/app_drawpicture.h"
 
+#include "version_generated.h"
 #define VER_HW "TRIPLEKEY_V2"
-#define VER_SW "1.2.0"
+
 
 #define NTP1 "ntp1.aliyun.com"
 #define NTP2 "ntp2.aliyun.com"
@@ -87,7 +88,10 @@ extern bool clockaudio;
 extern bool autotheme;
 extern uint8_t rotary;
 extern bool enc_reverse;
+#ifdef SUPPORT_PHOTO
 extern bool photoscroll;
+extern uint8_t photonum;
+#endif
 
 extern String NewVersion;
 

@@ -121,7 +121,9 @@ static void enter(void *data)
 	server.on("/", HTTP_GET, handleRoot);
 	server.on("/config", HTTP_POST, handleConfigPost);
 	server.on("/uploadweb",HTTP_GET, handleUploadWeb);
+	#ifdef SUPPORT_PHOTO
 	server.on("/uploadphoto",HTTP_GET, handleUploadPhoto);
+	#endif
 	server.on("/rom",HTTP_GET, handleROM);
 	server.on("/weather",HTTP_POST, handleWeather);
 	server.on("/mijia",HTTP_POST, handleMijiaPost);
@@ -130,7 +132,9 @@ static void enter(void *data)
 	server.on("/moresettings",HTTP_GET,handleMoreSettings);
 	server.on("/clock",HTTP_POST,handleClock);
 	server.on("/encoder",HTTP_POST,handleEncoder);
+	#ifdef SUPPORT_PHOTO
 	server.on("/photo",HTTP_POST,handlePhoto);
+	#endif
 	server.on("/firmware",HTTP_GET,handleFirmware);
 	//server.serveStatic("/uploadpng",LittleFS,"/webserver/uploadpng.html").setTemplateProcessor(processor);
 	server.on("/upload", HTTP_POST, [](AsyncWebServerRequest *request) {

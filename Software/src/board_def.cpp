@@ -468,7 +468,9 @@ void board_init()
     AnalyzeMijiaConfig();
     AnalyzeWebConfig();
     AnalyzeClockConfig();
+#ifdef SUPPORT_PHOTO
     AnalyzePhotoConfig();
+#endif
     gfx3->println("已完成");
 
     gfx3->print("时间更新中");

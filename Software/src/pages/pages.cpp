@@ -17,7 +17,9 @@
 #include "pages/stocks/stocks.h"
 #include "pages/mijia/mijia.h"
 #include "pages/settings/settings.h"
+#ifdef SUPPORT_PHOTO
 #include "pages/photo/photo.h"
+#endif
 #include "pages/countdown/countdown.h"
 
 //需要添加自己的功能页面
@@ -27,7 +29,9 @@ page_t *pages[] = {
     &page_weather,
     &page_stocks,
     &page_mijia,
+    #ifdef SUPPORT_PHOTO
     &page_photo,
+    #endif
     // &page_pcstate,
     &page_keyboard,
     &page_shortcut,

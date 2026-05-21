@@ -175,10 +175,14 @@ void handleUploadWeb(AsyncWebServerRequest *request)
 
 void handleUploadPhoto(AsyncWebServerRequest *request)
 {
+#ifdef SUPPORT_PHOTO
 	String page = readHTML("/webserver/uploadphoto.html");
 	page.replace("{{FILELIST}}", listFiles("/photo", true));
 	// Serial.println(page);
 	request->send(200, "text/html", page);
+#else
+	request->send(404, "text/plain", "Photo feature not available");
+#endif
 }
 
 void handleROM(AsyncWebServerRequest *request)
@@ -279,6 +283,7 @@ void handleMoreSettings(AsyncWebServerRequest *request)
 		page.replace("{{YESCHECKED_REVERSE}}", "");
 		page.replace("{{NOCHECKED_REVERSE}}", "checked");
 	}
+#ifdef SUPPORT_PHOTO
 	if (photoscroll == true)
 	{
 		page.replace("{{YESCHECKED_SCROLL}}", "checked");
@@ -289,6 +294,18 @@ void handleMoreSettings(AsyncWebServerRequest *request)
 		page.replace("{{YESCHECKED_SCROLL}}", "");
 		page.replace("{{NOCHECKED_SCROLL}}", "checked");
 	}
+	// 移除照片区块的占位符标记，保留内容
+	page.replace("{{PHOTO_SECTION_BEGIN}}", "");
+	page.replace("{{PHOTO_SECTION_END}}", "");
+#else
+	// 无照片功能时移除整个照片设置区块
+	int beginIdx = page.indexOf("{{PHOTO_SECTION_BEGIN}}");
+	int endIdx = page.indexOf("{{PHOTO_SECTION_END}}");
+	if (beginIdx >= 0 && endIdx >= 0)
+	{
+		page.remove(beginIdx, endIdx - beginIdx + strlen("{{PHOTO_SECTION_END}}"));
+	}
+#endif
 	request->send(200, "text/html", page);
 }
 
@@ -358,6 +375,7 @@ void handleEncoder(AsyncWebServerRequest *request)
 
 void handlePhoto(AsyncWebServerRequest *request)
 {
+#ifdef SUPPORT_PHOTO
 	uint8_t value_scroll = request->arg("photoscroll").toInt();
 	DynamicJsonDocument json(512);
 	if (value_scroll)
@@ -380,6 +398,9 @@ void handlePhoto(AsyncWebServerRequest *request)
 	configFile.close();
 	photonum = 0;
 	request->redirect("/moresettings");
+#else
+	request->send(404, "text/plain", "Photo feature not available");
+#endif
 }
 
 void handleFirmware(AsyncWebServerRequest *request)
@@ -502,11 +523,13 @@ void AnalyzeEncoderConfig()
 
 void AnalyzePhotoConfig()
 {
+#ifdef SUPPORT_PHOTO
 	String moreConfig = readConfig(photo_path);
 	DynamicJsonDocument json(512);
 	deserializeJson(json, moreConfig);
 	photoscroll = json["photoscroll"];
 	Serial.printf("照片自动轮播:%d\n", photoscroll);
+#endif
 }
 
 String humanReadableSize(const size_t bytes)

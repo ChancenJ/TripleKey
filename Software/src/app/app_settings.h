@@ -42,6 +42,8 @@ String CreateMijiaConfigHTML();
 
 String getNewVersion();
 
+#ifdef SUPPORT_PHOTO
 extern uint8_t photonum;
+#endif
 
 #endif

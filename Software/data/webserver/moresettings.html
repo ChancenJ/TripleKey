@@ -93,6 +93,7 @@
         </p>
         <p><button class="save-button" type="submit" title="保存编码器设置">保存</button></p>
     </form>
+    {{PHOTO_SECTION_BEGIN}}
     <form action="/photo" method="post">
         <h3>照片设置：</h3>
         <p>自动轮播：
@@ -108,6 +109,7 @@
         <P><input type="button" value="上传/删除照片" onclick="location.href='/uploadphoto';"></P>
         <p><button class="save-button" type="submit" title="保存照片设置">保存</button></p>
     </form>
+    {{PHOTO_SECTION_END}}
     <input type="button" value="返回主页" onclick="location.href='/';">
 </body>
 
