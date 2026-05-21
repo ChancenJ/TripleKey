@@ -177,6 +177,20 @@ void dispProcessing(uint8_t screen)
     gfx[screen]->print(processing);
 }
 
+// 版本号比较：返回 newVer 是否大于 curVer（逐段数字比较）
+bool isNewerVersion(const String &newVer, const String &curVer)
+{
+	int newParts[3] = {0}, curParts[3] = {0};
+	sscanf(newVer.c_str(), "%d.%d.%d", &newParts[0], &newParts[1], &newParts[2]);
+	sscanf(curVer.c_str(), "%d.%d.%d", &curParts[0], &curParts[1], &curParts[2]);
+	for (int i = 0; i < 3; i++)
+	{
+		if (newParts[i] != curParts[i])
+			return newParts[i] > curParts[i];
+	}
+	return false;
+}
+
 void board_init()
 {
     WiFi.mode(WIFI_STA);
@@ -453,7 +467,7 @@ void board_init()
     }
 
     NewVersion = getNewVersion();
-    if (NewVersion != VER_SW && NewVersion != "NA")
+    if (isNewerVersion(NewVersion, String(VER_SW)))
     {
         gfx1->setTextColor(ORANGE);
         gfx1->printf("新固件 (V%s) 已发布\n", NewVersion);
